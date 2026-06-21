@@ -1,209 +1,218 @@
 # Midnight Private Auction
 
-Sealed-bid auction smart contract on [Midnight Network](https://midnight.network), built with [Compact](https://docs.midnight.network/develop/reference/compact/) and the Midnight JS SDK.
+![Network](https://img.shields.io/badge/Midnight_Network-Preprod%20%7C%20Mainnet-blue)
+![Compact](https://img.shields.io/badge/Compact-0.20-purple)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-Bid amounts are kept **completely private** during the bidding phase using zero-knowledge proofs and commit-reveal. Chain observers see only a 32-byte commitment hash — the actual amount is never on-chain until the bidder voluntarily reveals it.
+Sealed-bid auction on Midnight Network where bid amounts are zero-knowledge proofs during the bidding phase — the actual amount never appears on-chain until the bidder voluntarily reveals it. Purpose-built for Midnight's Compact language, not a port from EVM.
+
+**Deployment**
+
+The demo script deploys a fresh auction contract on each run. A fixed mainnet address will be listed here once the mainnet PR is approved.
 
 ---
 
-## Why Midnight vs. EVM
+## Why Midnight-Native
 
-| | EVM (Ethereum, etc.) | Midnight |
+This project is not ported from another chain. Every design decision maps to a Midnight-native capability.
+
+| Problem | Generic EVM approach | Midnight-native approach |
 |---|---|---|
-| Bid amount during bidding | Public in calldata | Never on-chain (ZK proof only) |
-| Who can see bids | Everyone | No one until reveal |
-| Privacy primitive | None | Compact private state + ZK circuit |
-| Bid linkability | Trivially traceable | Unlinkable (domain-separated hash) |
+| Bid privacy during bidding | Bids are public in calldata the moment they're sent | Bid amount lives in Compact private state; only a ZK commitment hash goes on-chain |
+| Preventing frontrunning | Manual commit-hash schemes in Solidity | Privacy enforced by the Compact compiler and ZK circuit — no manual scheme needed |
+| Bidder identity | EOA address trivially linkable across bids | Domain-separated `bidderPublicKey = H("auction:bidder:", sk)` derived per-auction |
+| Reveal integrity | Trust event logs or off-chain computation | ZK circuit asserts `H(sk, amount, salt) == stored commitment` before accepting reveal |
 
 ---
 
-## Privacy Model
-
-The contract uses a **commit-reveal** scheme:
-
-### Bidding Phase
-The bidder's local private state holds three secrets:
-- `localSecretKey` — 32-byte identity key, never leaves the prover
-- `myBidAmount` — the actual bid (e.g. 200 Night)
-- `myBidSalt` — 32-byte random nonce, prevents two equal bids from producing the same hash
-
-When `placeBid()` is called, the circuit computes:
+## Architecture
 
 ```
-commitment = persistentHash("auction:seal:", secretKey, amount, salt)
-```
+BIDDING PHASE
 
-Only `commitment` is stored on-chain. Chain observers see: `bidderPublicKey → commitment`. They cannot reverse the hash to learn `amount`.
+  Bidder local private state         Midnight ledger (public, on-chain)
+  ┌─────────────────────────┐        ┌────────────────────────────────────┐
+  │  localSecretKey  (sk)   │─┐      │                                    │
+  │  myBidAmount    (amount)│─┼─ZK──►│  sealedBids[bidderPK]              │
+  │  myBidSalt      (salt)  │─┘ proof│    = H("auction:seal:", sk, amt, salt) │
+  └─────────────────────────┘        │  bidCount++                        │
+                                     └────────────────────────────────────┘
+  Chain observers see: bidderPK + 32-byte hash
+  Chain observers cannot see: amount, salt, secretKey
 
-### Reveal Phase
-After the auctioneer calls `closeAuction()`, each bidder calls `revealBid(amount, salt)`. The circuit:
-1. Recomputes `commitment = H(sk, amount, salt)`
-2. Asserts it matches the stored on-chain hash
-3. Calls `disclose(amount)` to make the amount public and compares against the current leader
 
-The Compact compiler enforces that `disclose()` cannot appear inside a conditional branch — this prevents the circuit from leaking the branch outcome to observers. Since `revealBid` is the intended reveal step, disclosing `amount` unconditionally is correct by design.
+REVEAL PHASE  (after closeAuction)
 
----
-
-## Contract Architecture
-
-**File:** `contract/src/auction.compact`
-
-### Ledger State (public, on-chain)
-
-| Field | Type | Description |
-|---|---|---|
-| `phase` | `AuctionPhase` | `VACANT → BIDDING → CLOSED` |
-| `itemName` | `Opaque<"string">` | Item being auctioned |
-| `auctioneerPK` | `Bytes<32>` | Auctioneer's derived public key |
-| `sealedBids` | `Map<Bytes<32>, Bytes<32>>` | bidderPK → commitment hash |
-| `bidCount` | `Counter` | Number of sealed bids placed |
-| `highestBid` | `Uint<32>` | Revealed after close |
-| `highestBidderPK` | `Bytes<32>` | Winner's public key |
-| `itemClaimed` | `Boolean` | True once winner claims |
-
-### Private State (witnesses — local only, never on-chain)
-
-| Witness | Type | Description |
-|---|---|---|
-| `localSecretKey()` | `Bytes<32>` | Identity key |
-| `myBidAmount()` | `Uint<32>` | Bid amount (sealed during bidding) |
-| `myBidSalt()` | `Bytes<32>` | Random salt for commitment |
-
-### Circuits
-
-| Circuit | Who calls | What it does |
-|---|---|---|
-| `createAuction(item)` | Auctioneer | Sets item name, transitions `VACANT → BIDDING` |
-| `placeBid()` | Bidder | Submits sealed commitment, increments `bidCount` |
-| `closeAuction()` | Auctioneer | Transitions `BIDDING → CLOSED` |
-| `revealBid(amount, salt)` | Bidder | Verifies commitment, updates leaderboard if new highest |
-| `claimItem()` | Winner | Marks item as claimed |
-
----
-
-## Auction Flow (End-to-End Demo)
-
-```
-Step 1  Deploy + createAuction("Vintage Watch")   [auctioneer]
-        → phase: BIDDING, auctioneerPK set
-
-Step 2  placeBid()                                 [bidder1, amount=100, hidden]
-        → sealedBids[bidder1PK] = H(sk1, 100, salt1)
-
-Step 3  placeBid()                                 [bidder2, amount=200, hidden]
-        → sealedBids[bidder2PK] = H(sk2, 200, salt2)
-
-Step 4  closeAuction()                             [auctioneer]
-        → phase: CLOSED
-
-Step 5  revealBid(100, salt1)                      [bidder1]
-        → highestBid=100, highestBidder=bidder1
-
-Step 6  revealBid(200, salt2)                      [bidder2]
-        → highestBid=200, highestBidder=bidder2
-
-Step 7  claimItem()                                [bidder2]
-        → itemClaimed=true
+  Bidder discloses                   Midnight ledger verifies & updates
+  ┌─────────────────────────┐        ┌────────────────────────────────────┐
+  │  amount = 200           │──ZK───►│  assert H(sk, 200, salt)           │
+  │  salt   = 0xabc...      │  verify│    == sealedBids[bidderPK]          │
+  └─────────────────────────┘        │  if 200 > highestBid:              │
+                                     │    highestBid = 200                │
+                                     │    highestBidderPK = bidderPK      │
+                                     └────────────────────────────────────┘
 ```
 
 ---
 
-## Prerequisites
+## Core Features
 
-| Requirement | Version | Notes |
-|---|---|---|
-| Node.js | ≥ 22 | |
-| Compact compiler | latest | `compact` must be in `PATH` |
-| Midnight Proof Server | latest | Running locally on port 6300 |
-| Night tokens | — | Preprod: use the [faucet](https://faucet.preprod.midnight.network); Mainnet: real tokens |
+### Sealed Bids via ZK Commitment
+
+`placeBid()` computes `commitment = persistentHash("auction:seal:", sk, amount, salt)` entirely inside the ZK circuit. The amount is a Compact `witness` — it is never serialised into the transaction or posted to the indexer. Chain observers learn only that a valid sealed bid exists.
+
+### Compact Private State as Bid Vault
+
+Compact's `witness` declarations (`localSecretKey`, `myBidAmount`, `myBidSalt`) act as a type-safe private state vault. The TypeScript SDK stores these locally in LevelDB per role identity (`auctioneer`, `bidder1`, `bidder2`) and passes them to the circuit at prove-time — they never leave the prover machine.
+
+### ZK Commitment Verification in Reveal
+
+`revealBid(amount, salt)` recomputes the commitment inside the circuit and asserts it matches the stored on-chain hash before updating the leaderboard. The Compact compiler enforces that `disclose(amount)` appears unconditionally before any comparison, preventing the circuit from leaking branch outcome to observers (see Implementation Notes).
 
 ---
 
-## Setup
+## Quick Start
+
+**Prerequisites**
+- Node.js ≥ 22
+- `compact` compiler in `PATH`
+- Midnight Proof Server running locally (default port 6300)
+- Night tokens — Preprod: [faucet](https://faucet.preprod.midnight.network); Mainnet: real tokens
 
 ```bash
-git clone <repo-url>
+git clone git@github.com:pplmaverick/midnight-private-auction.git
 cd midnight-private-auction
 npm install
 ```
 
-The compiled contract artifacts (`contract/src/managed/auction/`) are committed to the repo. To recompile from source:
+**Environment variables**
+
+| Variable | Required | Description |
+|---|---|---|
+| `WALLET_SEED` | Optional | Hex seed to reuse an existing wallet; if unset, a fresh wallet is generated |
+| `MIDNIGHT_NETWORK` | Optional | `preprod` (default) or `mainnet` |
+| `MIDNIGHT_PROOF_SERVER` | Optional | Override proof server URL (default: `http://127.0.0.1:6300`) |
+| `MIDNIGHT_INDEXER` | Mainnet only | Indexer GraphQL HTTP endpoint |
+| `MIDNIGHT_INDEXER_WS` | Mainnet only | Indexer GraphQL WebSocket endpoint |
+| `MIDNIGHT_NODE` | Mainnet only | Node RPC endpoint |
 
 ```bash
+# Recompile contract from source (pre-compiled artifacts are committed)
 npm run compile
+
+# Run on Preprod
+WALLET_SEED=<hex> npm run preprod
+
+# Run on Mainnet
+MIDNIGHT_INDEXER=<url> MIDNIGHT_INDEXER_WS=<url> MIDNIGHT_NODE=<url> \
+WALLET_SEED=<hex> npm run mainnet
 ```
 
----
+**Wallet sync phases**
 
-## Running on Preprod
+On first run the wallet must sync from genesis. The script handles this automatically in three phases:
 
-```bash
-# First run — generates a fresh wallet and prints its seed
-npm run preprod
-
-# Save the seed, fund the address from the faucet, then re-run with the seed
-WALLET_SEED=<hex-seed> npm run preprod
-```
-
-### Wallet Sync Phases
-
-The script handles wallet sync in three phases automatically:
-
-| Phase | What happens | Time | RAM |
+| Phase | What happens | Time | Peak RAM |
 |---|---|---|---|
-| **Phase 1** | DustWallet genesis sync; ShieldedWallet deliberately idle | 10–20 min | ~8 GB |
-| **Phase 2** | ShieldedWallet genesis sync; DustWallet restores from checkpoint | 10–20 min | ~7 GB |
-| **Phase 3** | Both wallets restore from saved checkpoints | < 30 sec | < 1 GB |
+| Phase 1 | DustWallet genesis sync; ShieldedWallet deliberately idle via stub | 10–20 min | ~8 GB |
+| Phase 2 | ShieldedWallet genesis sync; DustWallet restores from checkpoint | 10–20 min | ~7 GB |
+| Phase 3 | Both wallets restore from saved checkpoints — fast path | < 30 sec | < 1 GB |
 
-Checkpoints are saved to `.wallet-state/` (git-ignored). After Phase 2 completes, subsequent runs use Phase 3 (fast restore).
-
-**Memory note:** A 9 GB RSS guard is in place. If the process exceeds this limit (due to RPC disconnects stalling DustWallet sync), it exits cleanly with instructions to retry.
+Checkpoints are saved to `.wallet-state/` (git-ignored). Subsequent runs go straight to Phase 3.
 
 ---
 
-## Running on Mainnet
+## Contract Interface
 
-Set the required environment variables, then run:
+**File:** `contract/src/auction.compact`
 
-```bash
-export MIDNIGHT_INDEXER=<indexer-http-url>
-export MIDNIGHT_INDEXER_WS=<indexer-ws-url>
-export MIDNIGHT_NODE=<node-rpc-url>
-export WALLET_SEED=<hex-seed>
+```
+// Pure circuits (no state change)
+bidderPublicKey(sk: Bytes<32>): Bytes<32>
+computeCommitment(sk: Bytes<32>, amount: Uint<32>, salt: Bytes<32>): Bytes<32>
 
-npm run mainnet
+// Impure circuits (change ledger state)
+createAuction(item: Opaque<"string">): []   — auctioneer only
+placeBid(): []                              — any bidder, BIDDING phase
+closeAuction(): []                          — auctioneer only
+revealBid(amount: Uint<32>, salt: Bytes<32>): []   — any bidder, CLOSED phase
+claimItem(): []                             — highest bidder only
 ```
 
-Or override the proof server if not on the default port:
+**Auction phase transitions**
 
-```bash
-export MIDNIGHT_PROOF_SERVER=http://127.0.0.1:6300
+```
+VACANT  ──createAuction()──►  BIDDING  ──closeAuction()──►  CLOSED
 ```
 
 ---
 
-## Repository Structure
+## Security
 
+- **Commitment binding:** each commitment is tied to `localSecretKey` — a bidder cannot replay another bidder's commitment
+- **Commitment hiding:** without all three of `sk`, `amount`, and `salt`, the on-chain hash reveals nothing
+- **Auctioneer auth:** `closeAuction()` asserts `auctioneerPK == bidderPublicKey(localSecretKey())` inside the ZK circuit — no external role system needed
+- **Claim guard:** `claimItem()` asserts the caller's derived public key equals `highestBidderPK` and `highestBid > 0` and `!itemClaimed`
+- **No private key on-chain:** all secret material stays in Compact `witness` — never serialised into any transaction
+
+---
+
+## Implementation Notes
+
+**`disclose()` placement constraint in Compact**
+
+The Compact compiler enforces that `disclose()` cannot appear inside a conditional branch — if it did, chain observers could infer the branch outcome from whether a disclosure event fired. In `revealBid`, this means `amount` must be disclosed unconditionally _before_ the `if (pubAmount > highestBid)` comparison:
+
+```compact
+const pubAmount = disclose(amount);   // disclose first — required by compiler
+if (pubAmount > highestBid) {         // comparison is between two already-public values
+  highestBid = pubAmount;
 ```
-midnight-private-auction/
-├── contract/
-│   └── src/
-│       ├── auction.compact          # Compact contract source
-│       ├── witnesses.ts             # Private state type + witness bridge
-│       ├── index.ts                 # Contract exports
-│       └── managed/auction/
-│           ├── contract/            # Compiled JS contract
-│           ├── keys/                # ZK prover/verifier keys
-│           └── zkir/                # ZK intermediate representation
-├── src/
-│   ├── index.ts                     # End-to-end demo script
-│   ├── api.ts                       # Wallet setup + contract call wrappers
-│   ├── config.ts                    # PreprodConfig / MainnetConfig
-│   └── common-types.ts              # Shared types
-├── package.json
-└── tsconfig.json
-```
+
+Attempting `if (amount > highestBid) { highestBid = disclose(amount); }` fails to compile with a hard error. Since `revealBid` is the reveal phase, disclosing unconditionally is correct by design.
+
+**ShieldedWallet WASM memory leak — Phase 1 stub**
+
+ShieldedWallet runs a WASM-backed ZSwap commitment tree. WASM linear memory can only grow, never shrink. During Phase 1 (DustWallet genesis sync), if ShieldedWallet is allowed to start normally it enters a retry-loop replaying thousands of ledger events — each retry leaks several MB of WASM memory. On a 3–4 hour genesis sync this accumulates to crash-level (machine hard-locked at ~11 GB on the first attempt).
+
+Solution: construct a `shielded-temp.json` stub with an empty `ZswapLocalState` and `offset = chain tip`. ShieldedWallet sees the offset as already-current, immediately hits a non-linear commitment tree error (`expected index 0, received N`), and stays in a tight retry loop consuming < 100 MB while DustWallet syncs in the foreground. A 9 GB RSS watchdog exits cleanly if an RPC disconnect stalls DustWallet long enough for retries to accumulate anyway.
+
+**`signTransactionIntents` workaround**
+
+The wallet SDK's `balanceUnboundTransaction` does not automatically apply the unshielded signer's signature to transaction intents in some SDK versions. The `signTransactionIntents` helper in `api.ts` manually deserialises each intent, signs the payload, and re-attaches the signatures to both `fallibleUnshieldedOffer` and `guaranteedUnshieldedOffer` before finalising the recipe.
+
+---
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Smart contract | Compact 0.20 |
+| ZK backend | Midnight Proof Server (local) |
+| Runtime SDK | `@midnight-ntwrk/midnight-js` ^4.0.4 |
+| Wallet | `@midnight-ntwrk/wallet-sdk-facade` ^3.0.0 (Shielded + Dust + Unshielded) |
+| Private state storage | LevelDB via `midnight-js-level-private-state-provider` |
+| Language | TypeScript (ESM, Node.js ≥ 22) |
+
+---
+
+## Roadmap
+
+**✅ M1 — Preprod sealed-bid demo**
+- Compact contract with ZK commit-reveal privacy model
+- Full 7-step e2e demo: deploy → bid (×2) → close → reveal (×2) → claim
+- 3-phase wallet sync with checkpoint persistence
+- WASM memory guard
+
+**⬜ M2 — Mainnet deployment**
+- Awaiting Foundation PR approval
+- Mainnet config via environment variables (ready)
+
+---
+
+## Developer
+
+GitHub: [pplmaverick](https://github.com/pplmaverick)
 
 ---
 
