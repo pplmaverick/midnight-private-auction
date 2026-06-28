@@ -143,7 +143,7 @@ const loadDustCheckpoint = (dustSecretKey: ledger.DustSecretKey): string | null 
 };
 
 const auctionCompiledContract = CompiledContract.make('auction', Auction.Contract).pipe(
-  CompiledContract.withVacantWitnesses,
+  CompiledContract.withWitnesses(witnesses),
   CompiledContract.withCompiledFileAssets(zkConfigPath),
 );
 
@@ -386,7 +386,8 @@ export const buildWalletAndWaitForFunds = async (config: Config, seed: string): 
     console.log(`  Shielded address: ${MidnightBech32m.encode(networkId, new ShieldedAddress(coinPubKey2, encPubKey2))}`);
 
     const balance2 = syncedState.unshielded.balances[unshieldedToken().raw] ?? 0n;
-    if (balance2 === 0n) {
+    const dustReady2 = syncedState.dust.availableCoins.length > 0;
+    if (balance2 === 0n && !dustReady2) {
       await withStatus('Waiting for tNight tokens (check faucet)', () => waitForFunds(wallet));
     }
 
@@ -421,12 +422,68 @@ export const buildWalletAndWaitForFunds = async (config: Config, seed: string): 
   console.log(`  Shielded address: ${MidnightBech32m.encode(networkId, new ShieldedAddress(coinPubKey, encPubKey))}`);
 
   const balance = syncedState.unshielded.balances[unshieldedToken().raw] ?? 0n;
-  if (balance === 0n) {
+  const dustReady = syncedState.dust.availableCoins.length > 0;
+  if (balance === 0n && !dustReady) {
     await withStatus('Waiting for tNight tokens (check faucet)', () => waitForFunds(wallet));
   }
 
   await registerForDustGeneration(wallet, unshieldedKeystore);
   return { wallet, shieldedSecretKeys, dustSecretKey, unshieldedKeystore };
+};
+
+// Fast wallet restore from checkpoints with a potentially different node URL.
+// Used to create a short-lived deploy-only wallet that connects to the private RPC relay.
+// Requires both .wallet-state/dust-checkpoint.json and .wallet-state/shielded-checkpoint.json.
+export const buildWalletFromCheckpoints = async (config: Config, seed: string): Promise<WalletContext> => {
+  const keys = deriveKeysFromSeed(seed);
+  const shieldedSecretKeys = ledger.ZswapSecretKeys.fromSeed(keys[Roles.Zswap]);
+  const dustSecretKey = ledger.DustSecretKey.fromSeed(keys[Roles.Dust]);
+  const unshieldedKeystore = createKeystore(keys[Roles.NightExternal], getNetworkId());
+
+  const dustCheckpoint = loadDustCheckpoint(dustSecretKey);
+  const shieldedCheckpoint = loadShieldedCheckpoint(shieldedSecretKeys);
+  if (!dustCheckpoint || !shieldedCheckpoint) {
+    throw new Error(
+      'Wallet checkpoints not found — complete a full sync first (run without MIDNIGHT_DEPLOY_NODE)',
+    );
+  }
+
+  const walletConfig = {
+    ...buildShieldedConfig(config),
+    ...buildUnshieldedConfig(config),
+    ...buildDustConfig(config),
+  };
+
+  const wallet = await WalletFacade.init({
+    configuration: walletConfig,
+    shielded:   (cfg) => ShieldedWallet(cfg).restore(shieldedCheckpoint),
+    unshielded: (cfg) => UnshieldedWallet(cfg).startWithPublicKey(PublicKey.fromKeyStore(unshieldedKeystore)),
+    dust:       (cfg) => DustWallet(cfg).restore(dustCheckpoint),
+  });
+  await wallet.start(shieldedSecretKeys, dustSecretKey);
+  await withStatus('Deploy wallet syncing', () => waitForSync(wallet));
+  return { wallet, shieldedSecretKeys, dustSecretKey, unshieldedKeystore };
+};
+
+// Providers for the deploy step — uses a separate Level DB store name so it can
+// run alongside the main providers without LevelDB lock conflicts.
+export const configureDeployProviders = async (ctx: WalletContext, config: Config): Promise<AuctionProviders> => {
+  const walletAndMidnightProvider = await createWalletAndMidnightProvider(ctx);
+  const zkConfigProvider = new NodeZkConfigProvider<AuctionCircuits>(zkConfigPath);
+  const accountId = walletAndMidnightProvider.getCoinPublicKey();
+  const storagePassword = `${Buffer.from(accountId, 'hex').toString('base64')}!`;
+  return {
+    privateStateProvider: levelPrivateStateProvider<AuctionRoleId>({
+      privateStateStoreName: privateStateStoreName + '-deploy',
+      accountId,
+      privateStoragePasswordProvider: () => storagePassword,
+    }),
+    publicDataProvider: indexerPublicDataProvider(config.indexer, config.indexerWS),
+    zkConfigProvider,
+    proofProvider: httpClientProofProvider(config.proofServer, zkConfigProvider),
+    walletProvider: walletAndMidnightProvider,
+    midnightProvider: walletAndMidnightProvider,
+  };
 };
 
 export const buildFreshWallet = async (config: Config): Promise<WalletContext> => {

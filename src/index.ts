@@ -42,12 +42,12 @@ function printTxHash(label: string, txData: { txId: string; blockHeight: number 
 }
 
 async function main() {
+  const network = process.env.MIDNIGHT_NETWORK ?? 'preprod';
+  const config = network === 'mainnet' ? new MainnetConfig() : new PreprodConfig();
+
   console.log(`\n${DIVIDER}`);
   console.log(`  Midnight Private Auction — Sealed-Bid Demo (${network})`);
   console.log(`${DIVIDER}\n`);
-
-  const network = process.env.MIDNIGHT_NETWORK ?? 'preprod';
-  const config = network === 'mainnet' ? new MainnetConfig() : new PreprodConfig();
 
   // ── Wallet ──────────────────────────────────────────────────────────────────
   const seed = process.env.WALLET_SEED;
@@ -81,14 +81,35 @@ async function main() {
 
   // ── Step 1: Deploy + createAuction ──────────────────────────────────────────
   printStep(1, 'Deploy contract and create auction');
-  const auctionContract = await api.withStatus('Deploying auction contract', () =>
-    api.deployAuction(providers, aucPrivState),
-  );
-  const contractAddress = auctionContract.deployTxData.public.contractAddress;
-  console.log(`  address : ${contractAddress}`);
+  const deployNodeUrl = process.env.MIDNIGHT_DEPLOY_NODE;
+  let contractAddress: string;
 
+  if (deployNodeUrl && seed) {
+    // Private RPC for contractDeploy only — all other steps use public RPC.
+    const maskedUrl = deployNodeUrl.replace(/(\/mk_)[^/]+/, '$1***');
+    console.log(`\n  Private RPC deploy: ${maskedUrl}`);
+    const deployConfig = { ...config, node: deployNodeUrl };
+    const deployWalletCtx = await api.buildWalletFromCheckpoints(deployConfig, seed);
+    const deployProviders = await api.configureDeployProviders(deployWalletCtx, deployConfig);
+    const deployed = await api.withStatus('Deploying auction contract (private RPC)', () =>
+      api.deployAuction(deployProviders, aucPrivState),
+    );
+    contractAddress = deployed.deployTxData.public.contractAddress;
+    console.log(`  address : ${contractAddress}`);
+    await deployWalletCtx.wallet.stop();
+    console.log('  ✓ Deploy wallet stopped — back on public RPC');
+  } else {
+    const deployed = await api.withStatus('Deploying auction contract', () =>
+      api.deployAuction(providers, aucPrivState),
+    );
+    contractAddress = deployed.deployTxData.public.contractAddress;
+    console.log(`  address : ${contractAddress}`);
+  }
+
+  // createAuction uses main providers (public RPC)
+  const aucContractMain = await api.joinAs(providers, contractAddress, AUCTIONEER_STATE_ID, aucPrivState);
   const createTx = await api.withStatus('createAuction("Vintage Watch")', () =>
-    api.createAuction(auctionContract, 'Vintage Watch'),
+    api.createAuction(aucContractMain, 'Vintage Watch'),
   );
   txHashes['createAuction'] = createTx.txId;
   printTxHash('createAuction', createTx);
