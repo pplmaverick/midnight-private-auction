@@ -6,9 +6,26 @@
 
 Sealed-bid auction on Midnight Network where bid amounts are zero-knowledge proofs during the bidding phase — the actual amount never appears on-chain until the bidder voluntarily reveals it. Purpose-built for Midnight's Compact language, not a port from EVM.
 
-**Deployment**
+**Mainnet Deployment**
 
-The demo script deploys a fresh auction contract on each run. A fixed mainnet address will be listed here once the mainnet PR is approved.
+Contract deployed and full e2e verified on Midnight mainnet (2026-06-30).
+
+| | |
+|---|---|
+| Contract Address | `872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b` |
+| Network | Midnight Mainnet |
+
+**Verified Transaction Hashes**
+
+| Step | Operation | Tx Hash | Block |
+|------|-----------|---------|-------|
+| 1 | createAuction("Vintage Watch") | `0063b38a84248b42f0ed7159a6e58ee85854a424fffe4d9a460cad660ef613ea49` | 1481208 |
+| 2 | placeBid — Bidder1 (100, sealed) | `0009774d6a24523671d50b0e5889f93f30f4880c527a2a0fe209caaabf93966b3d` | 1481212 |
+| 3 | placeBid — Bidder2 (200, sealed) | `0096991c60537449589e52440d0f71e021a6687e795eaab0e42442bdc8e8f6d3f1` | 1481216 |
+| 4 | closeAuction | `001d75c44d93506e4f66a8ea7f84603be1076d9b786f3a184880eb7e400f469723` | 1481220 |
+| 5 | revealBid — Bidder1 (100) | `000f2627943c045e0bd5614785dd22b62a10727873e8460425c43da4572c3bfb3f` | 1481223 |
+| 6 | revealBid — Bidder2 (200, winner) | `00b2a12cb45a69efedc9d6a0178dfca000e279b01d28da7eef9f990e4fc3145f2e` | 1481227 |
+| 7 | claimItem — Bidder2 | `0004b3ed5d8bbec7c43463896d92dd6ab87c2ad6ab047497c7ba4c22f1507a15f0` | 1481231 |
 
 ---
 
@@ -177,6 +194,14 @@ ShieldedWallet runs a WASM-backed ZSwap commitment tree. WASM linear memory can 
 
 Solution: construct a `shielded-temp.json` stub with an empty `ZswapLocalState` and `offset = chain tip`. ShieldedWallet sees the offset as already-current, immediately hits a non-linear commitment tree error (`expected index 0, received N`), and stays in a tight retry loop consuming < 100 MB while DustWallet syncs in the foreground. A 9 GB RSS watchdog exits cleanly if an RPC disconnect stalls DustWallet long enough for retries to accumulate anyway.
 
+**Deploy transaction size and RPC requirements**
+
+A Midnight contract deploy transaction embeds the ZK verifier keys for every circuit in the contract. For this auction contract (5 circuits), this produces a transaction that exceeds the per-transaction size limit enforced by the public RPC (`rpc.mainnet.midnight.network`), causing an immediate `1016: Immediately Dropped` rejection regardless of pool state.
+
+All post-deploy transactions (createAuction, placeBid, closeAuction, revealBid, claimItem) are significantly smaller — they carry only the ZK proof for their single circuit and succeed on the public RPC without issue.
+
+**Practical requirement:** `contractDeploy` must target an authorised/private RPC endpoint. All other operations can use the public RPC. Set `MIDNIGHT_DEPLOY_NODE` to your authorised endpoint; the script routes only the deploy transaction through it and switches back automatically.
+
 **`signTransactionIntents` workaround**
 
 The wallet SDK's `balanceUnboundTransaction` does not automatically apply the unshielded signer's signature to transaction intents in some SDK versions. The `signTransactionIntents` helper in `api.ts` manually deserialises each intent, signs the payload, and re-attaches the signatures to both `fallibleUnshieldedOffer` and `guaranteedUnshieldedOffer` before finalising the recipe.
@@ -198,15 +223,18 @@ The wallet SDK's `balanceUnboundTransaction` does not automatically apply the un
 
 ## Roadmap
 
-**✅ M1 — Preprod sealed-bid demo**
+**✅ M1 — Sealed-bid demo, fully verified on mainnet (2026-06-30)**
 - Compact contract with ZK commit-reveal privacy model
-- Full 7-step e2e demo: deploy → bid (×2) → close → reveal (×2) → claim
+- Full 7-step e2e verified on Midnight mainnet: deploy → bid (×2) → close → reveal (×2) → claim
+- Contract: `872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b`
 - 3-phase wallet sync with checkpoint persistence
 - WASM memory guard
+- `MIDNIGHT_DEPLOY_NODE` routing: deploy via authorised RPC, all other steps via public RPC
 
-**⬜ M2 — Mainnet deployment**
-- Awaiting Foundation PR approval
-- Mainnet config via environment variables (ready)
+**⬜ M2 — Extended auction features**
+- Time-based auction close (block height deadline)
+- Multi-item support
+- Bidder refund circuit
 
 ---
 

@@ -84,10 +84,11 @@ Ricardo 提供的私有 RPC：
 - `additionalFeeOverhead: 300_000_000_000_000n` 造成 tx 結構異常（官方不設此項）
 - 先前私有 RPC 的 888 次重試在公開 mempool 留下過期 tx，當時池子滿了
 
-待嘗試的修正：
-1. 移除 `additionalFeeOverhead`，改用官方預設（不設此項）
-2. 確認 `additionalFeeOverhead` 的單位是否合理（1 DUST ≈ 10^15 smallest units，300 兆 = 0.3 DUST，應該合理）
-3. 再次部署（池子現在是空的，應可成功）
+**根本原因確認（2026-06-30）：**
+deploy tx 含 5 個 ZK circuit 的 verifier keys，整體大小超過公開 RPC per-transaction 上限，與 pool 狀態無關。
+createAuction / placeBid / revealBid / claimItem 等 call tx 只含單一 ZK proof，公開 RPC 全部接受。
+
+**結論：** deploy 必須走 `MIDNIGHT_DEPLOY_NODE`（授權 RPC），其餘步驟可走公開 RPC。
 
 ---
 
