@@ -1,0 +1,64 @@
+{
+  "contract": "872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b",
+  "network": "mainnet",
+  "indexer": "https://indexer.mainnet.midnight.network/api/v3/graphql",
+  "lastScannedBlock": 1481231,
+  "transactions": [
+    {
+      "seq": 1,
+      "block": 1481204,
+      "operation": "contractDeploy",
+      "hash": "3efc1e880af4f8bf942e66155269c94d1564c8bc13ca8f16b812072c98622e2a",
+      "explorerUrl": "https://explorer.1am.xyz/tx/3efc1e880af4f8bf942e66155269c94d1564c8bc13ca8f16b812072c98622e2a"
+    },
+    {
+      "seq": 2,
+      "block": 1481208,
+      "operation": "createAuction",
+      "hash": "e02593f84fcc73be83e260b5991cca84326cfbf2aaf622168227378ccd4c19b2",
+      "explorerUrl": "https://explorer.1am.xyz/tx/e02593f84fcc73be83e260b5991cca84326cfbf2aaf622168227378ccd4c19b2"
+    },
+    {
+      "seq": 3,
+      "block": 1481212,
+      "operation": "placeBid — Bidder1",
+      "hash": "e30ebf6c5547c80d52adc33a375f4ae688625587953c1338496dfcb5d27690f2",
+      "explorerUrl": "https://explorer.1am.xyz/tx/e30ebf6c5547c80d52adc33a375f4ae688625587953c1338496dfcb5d27690f2"
+    },
+    {
+      "seq": 4,
+      "block": 1481216,
+      "operation": "placeBid — Bidder2",
+      "hash": "91c30ed68772352d54bb0ac8d1d3105610f5345bf86cd482fdcd2d6e1e740f23",
+      "explorerUrl": "https://explorer.1am.xyz/tx/91c30ed68772352d54bb0ac8d1d3105610f5345bf86cd482fdcd2d6e1e740f23"
+    },
+    {
+      "seq": 5,
+      "block": 1481220,
+      "operation": "closeAuction",
+      "hash": "ad082d3fee7e99f4bf30a1dd56eb63a8b8065668d411b291b4f90c713556ee39",
+      "explorerUrl": "https://explorer.1am.xyz/tx/ad082d3fee7e99f4bf30a1dd56eb63a8b8065668d411b291b4f90c713556ee39"
+    },
+    {
+      "seq": 6,
+      "block": 1481223,
+      "operation": "revealBid — Bidder1",
+      "hash": "c56205ccda242d01b906abbd78779be110969285bf6be27031a7aecfb4ff7994",
+      "explorerUrl": "https://explorer.1am.xyz/tx/c56205ccda242d01b906abbd78779be110969285bf6be27031a7aecfb4ff7994"
+    },
+    {
+      "seq": 7,
+      "block": 1481227,
+      "operation": "revealBid — Bidder2",
+      "hash": "ec95ff520a27d765059a64d18ad1b1fc4e27ddc7bac7fd86d962fb7079279f45",
+      "explorerUrl": "https://explorer.1am.xyz/tx/ec95ff520a27d765059a64d18ad1b1fc4e27ddc7bac7fd86d962fb7079279f45"
+    },
+    {
+      "seq": 8,
+      "block": 1481231,
+      "operation": "claimItem",
+      "hash": "902147716d8ef35267f6793e1589cc46ccfabe3a98a8b6f952e5033567389033",
+      "explorerUrl": "https://explorer.1am.xyz/tx/902147716d8ef35267f6793e1589cc46ccfabe3a98a8b6f952e5033567389033"
+    }
+  ]
+}
