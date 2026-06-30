@@ -5,7 +5,7 @@
 ![Compact](https://img.shields.io/badge/Compact-0.20-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-Sealed-bid auction on Midnight Network where bid amounts are zero-knowledge proofs during the bidding phase — the actual amount never appears on-chain until the bidder voluntarily reveals it. Purpose-built for Midnight's Compact language, not a port from EVM.
+Sealed-bid auction on Midnight Network. During the bidding phase, bid amounts and bidder identities are hidden by ZK proofs — chain observers can see that a `placeBid()` call occurred, but not who made it or how much they bid. The amount only appears on-chain when the bidder voluntarily calls `revealBid()`. Purpose-built for Midnight's Compact language, not a port from EVM.
 
 **Mainnet Deployment**
 
@@ -170,6 +170,23 @@ VACANT  ──createAuction()──►  BIDDING  ──closeAuction()──►  
 ---
 
 ## Security
+
+**Privacy boundary**
+
+What a chain observer (or block explorer) can see for each `placeBid()` transaction:
+
+| Observable | Visible? | Notes |
+|---|---|---|
+| Function called (`placeBid`) | ✓ Yes | Transaction metadata is public |
+| When it occurred (block number) | ✓ Yes | Transaction metadata is public |
+| Fee paid | ✓ Yes | DUST fee amount is public |
+| **Sender / bidder address** | **✗ No** | No "from" field — DUST fee is paid via shielded mechanism |
+| **Bid amount** | **✗ No** | Compact `witness` — never serialised into the transaction |
+| **Commitment hash preimage** | **✗ No** | Without `(sk, amount, salt)` the on-chain hash reveals nothing |
+
+Compare with an equivalent EVM contract: `placeBid(uint256 amount, bytes32 salt)` would expose both the sender address and the bid amount in calldata, permanently and publicly. On Midnight, the function name is visible but the meaningful data (who and how much) is not.
+
+**Commitment properties**
 
 - **Commitment binding:** each commitment is tied to `localSecretKey` — a bidder cannot replay another bidder's commitment
 - **Commitment hiding:** without all three of `sk`, `amount`, and `salt`, the on-chain hash reveals nothing
