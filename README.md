@@ -13,7 +13,7 @@ Contract deployed and full e2e verified on Midnight mainnet (2026-06-30).
 
 | | |
 |---|---|
-| Contract Address | `872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b` |
+| Contract Address | [`872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b`](https://explorer.1am.xyz/contract/872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b) |
 | Network | Midnight Mainnet |
 
 **Verified Transaction Hashes**
@@ -22,13 +22,13 @@ All 7 transactions verified on-chain via public indexer GraphQL (`indexer.mainne
 
 | Step | Operation | Block | Indexer Hash (on-chain, 64 chars) |
 |------|-----------|-------|----------------------------------|
-| 1 | createAuction("Vintage Watch") | 1481208 | `e02593f84fcc73be83e260b5991cca84326cfbf2aaf622168227378ccd4c19b2` |
-| 2 | placeBid — Bidder1 (100, sealed) | 1481212 | `e30ebf6c5547c80d52adc33a375f4ae688625587953c1338496dfcb5d27690f2` |
-| 3 | placeBid — Bidder2 (200, sealed) | 1481216 | `91c30ed68772352d54bb0ac8d1d3105610f5345bf86cd482fdcd2d6e1e740f23` |
-| 4 | closeAuction | 1481220 | `ad082d3fee7e99f4bf30a1dd56eb63a8b8065668d411b291b4f90c713556ee39` |
-| 5 | revealBid — Bidder1 (100) | 1481223 | `c56205ccda242d01b906abbd78779be110969285bf6be27031a7aecfb4ff7994` |
-| 6 | revealBid — Bidder2 (200, winner) | 1481227 | `ec95ff520a27d765059a64d18ad1b1fc4e27ddc7bac7fd86d962fb7079279f45` |
-| 7 | claimItem — Bidder2 | 1481231 | `902147716d8ef35267f6793e1589cc46ccfabe3a98a8b6f952e5033567389033` |
+| 1 | createAuction("Vintage Watch") | 1481208 | [e02593f8…](https://explorer.1am.xyz/tx/e02593f84fcc73be83e260b5991cca84326cfbf2aaf622168227378ccd4c19b2) |
+| 2 | placeBid — Bidder1 (100, sealed) | 1481212 | [e30ebf6c…](https://explorer.1am.xyz/tx/e30ebf6c5547c80d52adc33a375f4ae688625587953c1338496dfcb5d27690f2) |
+| 3 | placeBid — Bidder2 (200, sealed) | 1481216 | [91c30ed6…](https://explorer.1am.xyz/tx/91c30ed68772352d54bb0ac8d1d3105610f5345bf86cd482fdcd2d6e1e740f23) |
+| 4 | closeAuction | 1481220 | [ad082d3f…](https://explorer.1am.xyz/tx/ad082d3fee7e99f4bf30a1dd56eb63a8b8065668d411b291b4f90c713556ee39) |
+| 5 | revealBid — Bidder1 (100) | 1481223 | [c56205cc…](https://explorer.1am.xyz/tx/c56205ccda242d01b906abbd78779be110969285bf6be27031a7aecfb4ff7994) |
+| 6 | revealBid — Bidder2 (200, winner) | 1481227 | [ec95ff52…](https://explorer.1am.xyz/tx/ec95ff520a27d765059a64d18ad1b1fc4e27ddc7bac7fd86d962fb7079279f45) |
+| 7 | claimItem — Bidder2 | 1481231 | [90214771…](https://explorer.1am.xyz/tx/902147716d8ef35267f6793e1589cc46ccfabe3a98a8b6f952e5033567389033) |
 
 > **Hash format note:** The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version prefix byte). The public indexer stores 64-character Substrate extrinsic hashes (32 bytes). These are different encodings of the same transaction. Block height is the authoritative cross-reference.
 
@@ -231,7 +231,7 @@ The wallet SDK's `balanceUnboundTransaction` does not automatically apply the un
 **✅ M1 — Sealed-bid demo, fully verified on mainnet (2026-06-30)**
 - Compact contract with ZK commit-reveal privacy model
 - Full 7-step e2e verified on Midnight mainnet: deploy → bid (×2) → close → reveal (×2) → claim
-- Contract: `872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b`
+- Contract: [`872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b`](https://explorer.1am.xyz/contract/872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b)
 - 3-phase wallet sync with checkpoint persistence
 - WASM memory guard
 - `MIDNIGHT_DEPLOY_NODE` routing: deploy via authorised RPC, all other steps via public RPC
