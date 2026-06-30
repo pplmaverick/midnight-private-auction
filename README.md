@@ -18,15 +18,19 @@ Contract deployed and full e2e verified on Midnight mainnet (2026-06-30).
 
 **Verified Transaction Hashes**
 
-| Step | Operation | Tx Hash | Block |
-|------|-----------|---------|-------|
-| 1 | createAuction("Vintage Watch") | `0063b38a84248b42f0ed7159a6e58ee85854a424fffe4d9a460cad660ef613ea49` | 1481208 |
-| 2 | placeBid — Bidder1 (100, sealed) | `0009774d6a24523671d50b0e5889f93f30f4880c527a2a0fe209caaabf93966b3d` | 1481212 |
-| 3 | placeBid — Bidder2 (200, sealed) | `0096991c60537449589e52440d0f71e021a6687e795eaab0e42442bdc8e8f6d3f1` | 1481216 |
-| 4 | closeAuction | `001d75c44d93506e4f66a8ea7f84603be1076d9b786f3a184880eb7e400f469723` | 1481220 |
-| 5 | revealBid — Bidder1 (100) | `000f2627943c045e0bd5614785dd22b62a10727873e8460425c43da4572c3bfb3f` | 1481223 |
-| 6 | revealBid — Bidder2 (200, winner) | `00b2a12cb45a69efedc9d6a0178dfca000e279b01d28da7eef9f990e4fc3145f2e` | 1481227 |
-| 7 | claimItem — Bidder2 | `0004b3ed5d8bbec7c43463896d92dd6ab87c2ad6ab047497c7ba4c22f1507a15f0` | 1481231 |
+All 7 transactions verified on-chain via public indexer GraphQL (`indexer.mainnet.midnight.network/api/v3/graphql`).
+
+| Step | Operation | Block | Indexer Hash (on-chain, 64 chars) |
+|------|-----------|-------|----------------------------------|
+| 1 | createAuction("Vintage Watch") | 1481208 | `e02593f84fcc73be83e260b5991cca84326cfbf2aaf622168227378ccd4c19b2` |
+| 2 | placeBid — Bidder1 (100, sealed) | 1481212 | `e30ebf6c5547c80d52adc33a375f4ae688625587953c1338496dfcb5d27690f2` |
+| 3 | placeBid — Bidder2 (200, sealed) | 1481216 | `91c30ed68772352d54bb0ac8d1d3105610f5345bf86cd482fdcd2d6e1e740f23` |
+| 4 | closeAuction | 1481220 | `ad082d3fee7e99f4bf30a1dd56eb63a8b8065668d411b291b4f90c713556ee39` |
+| 5 | revealBid — Bidder1 (100) | 1481223 | `c56205ccda242d01b906abbd78779be110969285bf6be27031a7aecfb4ff7994` |
+| 6 | revealBid — Bidder2 (200, winner) | 1481227 | `ec95ff520a27d765059a64d18ad1b1fc4e27ddc7bac7fd86d962fb7079279f45` |
+| 7 | claimItem — Bidder2 | 1481231 | `902147716d8ef35267f6793e1589cc46ccfabe3a98a8b6f952e5033567389033` |
+
+> **Hash format note:** The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version prefix byte). The public indexer stores 64-character Substrate extrinsic hashes (32 bytes). These are different encodings of the same transaction. Block height is the authoritative cross-reference.
 
 ---
 
