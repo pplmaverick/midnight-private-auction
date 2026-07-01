@@ -11,7 +11,7 @@ import type { ConnectedAPI, InitialAPI } from '@midnight-ntwrk/dapp-connector-ap
 export type WalletState =
   | { status: 'disconnected' }
   | { status: 'connecting' }
-  | { status: 'connected'; api: ConnectedAPI; address: string; balance: string }
+  | { status: 'connected'; api: ConnectedAPI; address: string; balance: string; provingSupported: boolean }
   | { status: 'error'; message: string }
 
 export interface WalletInfo {
