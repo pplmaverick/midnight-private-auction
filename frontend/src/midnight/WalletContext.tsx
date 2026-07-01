@@ -3,7 +3,7 @@ import { connectWallet, detectWallets, type WalletState, type WalletInfo } from 
 
 interface WalletContextType {
   walletState: WalletState
-  connect: () => Promise<void>
+  connect: (walletHint?: string) => Promise<void>
   disconnect: () => void
   availableWallets: WalletInfo[]
 }
@@ -14,15 +14,20 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [walletState, setWalletState] = useState<WalletState>({ status: 'disconnected' })
   const availableWallets = detectWallets()
 
-  const connect = useCallback(async () => {
+  const connect = useCallback(async (walletHint: string = 'lace') => {
     setWalletState({ status: 'connecting' })
     try {
-      const result = await connectWallet('lace')
+      const result = await connectWallet(walletHint)
       setWalletState({
         status: 'connected',
         api: result.api,
         address: result.address,
         balance: result.balance,
+        // getProvingProvider is declared on ConnectedAPI's type but not every wallet has
+        // actually implemented it yet (confirmed: Lace lists it but calling it throws;
+        // 1AM's works). A typeof check here — not a call — is enough to detect this
+        // without risking an uncaught TypeError.
+        provingSupported: typeof result.api.getProvingProvider === 'function',
       })
     } catch (err) {
       setWalletState({

@@ -1,8 +1,30 @@
+import { useState } from 'react'
 import { useWallet } from '../midnight/WalletContext'
-import { truncateAddress } from '../midnight/walletConnector'
+import { truncateAddress, detectWallets, type WalletInfo } from '../midnight/walletConnector'
+
+const PROVING_NOT_SUPPORTED_MESSAGE =
+  '此錢包尚未支援自動證明功能,請改用 1AM 錢包連線,或在本機啟動 Midnight proof server 並於錢包設定中指定位址'
 
 export default function Navbar() {
   const { walletState, connect, disconnect } = useWallet()
+  const [walletChoices, setWalletChoices] = useState<WalletInfo[] | null>(null)
+
+  const handleConnectClick = () => {
+    const detected = detectWallets()
+    if (detected.length <= 1) {
+      // Zero wallets: connect() still runs with the default hint so the existing
+      // "no wallet detected" error message surfaces via walletState.status === 'error'.
+      // Exactly one wallet: connect directly, no need to make the user pick.
+      connect(detected[0]?.key)
+      return
+    }
+    setWalletChoices(detected)
+  }
+
+  const handleChoose = (walletKey: string) => {
+    setWalletChoices(null)
+    connect(walletKey)
+  }
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-20 bg-background/80 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_20px_rgba(124,58,237,0.1)]">
@@ -41,7 +63,7 @@ export default function Navbar() {
         {walletState.status === 'disconnected' && (
           <button
             type="button"
-            onClick={() => connect()}
+            onClick={handleConnectClick}
             className="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-bold transition-all duration-300 ease-in-out active:scale-95 hover:bg-primary-container/90 shadow-[0_0_15px_rgba(124,58,237,0.4)]"
           >
             Connect Wallet
@@ -60,31 +82,78 @@ export default function Navbar() {
         )}
 
         {walletState.status === 'connected' && (
-          <div className="flex items-center gap-2 bg-surface-container px-4 py-2 rounded-lg border border-outline-variant">
-            <span className="font-label-mono text-sm text-on-surface">
-              {truncateAddress(walletState.address)} | {walletState.balance}
-            </span>
-            <button
-              type="button"
-              onClick={() => disconnect()}
-              aria-label="Disconnect wallet"
-              className="text-on-surface-variant hover:text-error transition-colors font-bold px-1"
-            >
-              ×
-            </button>
+          <div className="flex items-center gap-2">
+            {!walletState.provingSupported && (
+              <span
+                title={PROVING_NOT_SUPPORTED_MESSAGE}
+                className="font-label-mono text-xs text-error border border-error/50 rounded-lg px-3 py-2 max-w-xs truncate"
+              >
+                {PROVING_NOT_SUPPORTED_MESSAGE}
+              </span>
+            )}
+            <div className="flex items-center gap-2 bg-surface-container px-4 py-2 rounded-lg border border-outline-variant">
+              <span className="font-label-mono text-sm text-on-surface">
+                {truncateAddress(walletState.address)} | {walletState.balance}
+              </span>
+              <button
+                type="button"
+                onClick={() => disconnect()}
+                aria-label="Disconnect wallet"
+                className="text-on-surface-variant hover:text-error transition-colors font-bold px-1"
+              >
+                ×
+              </button>
+            </div>
           </div>
         )}
 
         {walletState.status === 'error' && (
           <button
             type="button"
-            onClick={() => connect()}
+            onClick={handleConnectClick}
             className="bg-error/10 text-error border border-error px-6 py-2 rounded-lg font-bold transition-all hover:bg-error/20"
           >
             Connection Failed
           </button>
         )}
       </div>
+
+      {walletChoices && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+          onClick={() => setWalletChoices(null)}
+        >
+          <div
+            className="bg-surface-container border border-outline-variant rounded-lg p-6 min-w-[280px]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <span className="font-bold text-on-surface">Choose a wallet</span>
+              <button
+                type="button"
+                onClick={() => setWalletChoices(null)}
+                aria-label="Close"
+                className="text-on-surface-variant hover:text-error font-bold px-1"
+              >
+                ×
+              </button>
+            </div>
+            <div className="flex flex-col gap-2">
+              {walletChoices.map((wallet) => (
+                <button
+                  key={wallet.key}
+                  type="button"
+                  onClick={() => handleChoose(wallet.key)}
+                  className="flex items-center gap-3 bg-surface px-4 py-2 rounded-lg border border-outline-variant hover:border-primary transition-colors"
+                >
+                  <img src={wallet.icon} alt={wallet.name} className="w-6 h-6 rounded" />
+                  <span className="font-label-mono text-sm text-on-surface">{wallet.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
