@@ -6,3 +6,9 @@ logs/
 .env
 .env.*
 *.local
+
+# macOS
+.DS_Store
+
+# LevelDB local state
+midnight-level-db/
