@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en" style="background-color: #0A0A0F;"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MIDNIGHT | Private Digital Auctions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&family=Playfair+Display:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#ccbeff",
+                    "on-primary-fixed": "#25005a",
+                    "on-surface": "#e4e1e9",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed": "#1e0e4e",
+                    "on-tertiary-container": "#ffe0cd",
+                    "inverse-surface": "#e4e1e9",
+                    "surface-container-low": "#1b1b20",
+                    "surface-container-lowest": "#0e0e13",
+                    "background": "#131318",
+                    "on-secondary-fixed-variant": "#4a3d7c",
+                    "on-primary": "#3f008e",
+                    "primary-container": "#7c3aed",
+                    "surface-card": "#111118",
+                    "on-tertiary-fixed": "#301400",
+                    "outline-variant": "#4a4455",
+                    "on-surface-variant": "#ccc3d8",
+                    "border-muted": "#1E1E2E",
+                    "surface-bright": "#39383e",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-secondary-container": "#baabf3",
+                    "inverse-primary": "#732ee4",
+                    "success": "#10B981",
+                    "surface-dim": "#131318",
+                    "text-primary": "#F8F8FF",
+                    "outline": "#958da1",
+                    "primary-fixed": "#eaddff",
+                    "surface-container-highest": "#35343a",
+                    "secondary-container": "#4a3d7c",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-background": "#e4e1e9",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-tertiary-fixed-variant": "#713700",
+                    "surface": "#131318",
+                    "surface-tint": "#d2bbff",
+                    "secondary-fixed": "#e7deff",
+                    "surface-variant": "#35343a",
+                    "tertiary": "#ffb784",
+                    "inverse-on-surface": "#303036",
+                    "error": "#ffb4ab",
+                    "surface-container": "#1f1f25",
+                    "on-error": "#690005",
+                    "on-primary-container": "#ede0ff",
+                    "error-container": "#93000a",
+                    "text-secondary": "#8B8BA7",
+                    "on-secondary": "#332664",
+                    "primary": "#d2bbff",
+                    "tertiary-fixed-dim": "#ffb784",
+                    "secondary-fixed-dim": "#ccbeff",
+                    "on-tertiary": "#4f2500",
+                    "surface-container-high": "#2a292f",
+                    "warning": "#F59E0B",
+                    "tertiary-container": "#a15100"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px",
+                    "container-max": "1280px",
+                    "margin-mobile": "20px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "display-xl-mobile": ["Playfair Display"],
+                    "display-xl": ["Playfair Display"],
+                    "label-mono": ["JetBrains Mono"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-xl-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1, "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0A0A0F !important;
+            color: #e4e1e9;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(17, 17, 24, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid #1E1E2E;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #7C3AED;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+        }
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .nav-blur {
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary/30">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-20 bg-background/80 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_20px_rgba(124,58,237,0.1)]">
+<div class="flex items-center gap-stack-md">
+<span class="font-display-xl text-headline-md font-bold text-primary tracking-tight">MIDNIGHT</span>
+</div>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="font-label-mono text-label-mono text-primary font-bold border-b-2 border-primary pb-1" href="#">Auctions</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">How It Works</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">About</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-bold transition-all duration-300 ease-in-out active:scale-95 hover:bg-primary-container/90 shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+                Connect Wallet
+            </button>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex flex-col items-center justify-center text-center px-margin-mobile md:px-margin-desktop overflow-hidden">
+<!-- Subtle Particle Background Layer -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-40">
+<div class="w-full h-full" id="particles-container"></div>
+</div>
+<div class="relative z-10 max-w-4xl">
+<h1 class="font-display-xl text-display-xl-mobile md:text-display-xl text-text-primary mb-stack-md">
+                    Bid in Silence.<br/>Win with Certainty.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-stack-lg">
+                    The world's first private auction house powered by Zero-Knowledge proofs. Your bids are encrypted, your strategy remains hidden, and your privacy is absolute.
+                </p>
+<div class="flex flex-col md:flex-row gap-gutter justify-center">
+<button class="bg-[#7C3AED] text-[#F8F8FF] px-8 py-4 rounded-lg font-bold text-lg hover:shadow-[0_0_25px_rgba(124,58,237,0.5)] transition-all active:scale-95">
+                        View Live Auctions
+                    </button>
+<button class="border border-border-muted text-[#C4B5FD] px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/5 transition-all active:scale-95">
+                        Create Auction
+                    </button>
+</div>
+</div>
+<!-- Floating Decorative Element -->
+<div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-full h-96 bg-gradient-to-t from-primary/5 to-transparent blur-3xl rounded-full opacity-30"></div>
+</section>
+<!-- Auction Grid Section -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-24">
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-text-primary">Featured Collections</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Hand-picked digital masterpieces currently under seal.</p>
+</div>
+<div class="hidden md:flex gap-stack-sm">
+<button class="p-2 border border-border-muted rounded hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">filter_list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Auction Card 1 -->
+<div class="glass-card rounded-xl overflow-hidden group">
+<div class="relative h-80 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A highly detailed 3D digital art piece depicting a translucent obsidian sculpture with liquid violet light swirling inside. The lighting is cinematic, dark, and sophisticated, reflecting a high-end luxury digital art gallery. The background is a minimalist dark space with subtle grain textures and deep shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2Su1ltBPeQ0HzPdD7WFjx4IS7DyzmqjIEpRP_PM1e4J9m4P5fbXtsu-L1MxLZtnV5T6IGSqugGDB1PC0POCOEBfZ2wHBwffhwOgc6ZW7kJPAZfsyhGYnp7eUQIxiiKW7yN_mt124EAsTKK-IZYAhnZnWdVm820q2BHDcCWyvwgznybzPxbZ_zeQd5HDV3pzJ_HcFYrWNDhQJxlt46Irhpi7MVtsr6iTYWikB9mc4lJGib7JY1W-g-a7OlOp6zDKmuJby3UdENWy9S"/>
+<div class="absolute top-4 left-4 flex gap-stack-sm">
+<span class="bg-success text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+<span class="w-2 h-2 bg-white rounded-full status-pulse"></span> LIVE
+                            </span>
+<span class="bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold font-label-mono">
+                                🔒 14 Sealed Bids
+                            </span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-2xl text-text-primary mb-2">Obsidian Core #042</h3>
+<div class="flex justify-between items-center mb-6">
+<div class="flex flex-col">
+<span class="text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-widest">Ending In</span>
+<span class="font-label-mono text-primary text-lg">04h 22m 11s</span>
+</div>
+<div class="text-right">
+<span class="text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-widest">Reserve</span>
+<span class="font-label-mono text-text-primary text-lg">12.5 ETH</span>
+</div>
+</div>
+<button class="w-full py-3 rounded-lg border border-primary text-primary font-bold hover:bg-primary/10 transition-colors">
+                            Place Private Bid
+                        </button>
+</div>
+</div>
+<!-- Auction Card 2 -->
+<div class="glass-card rounded-xl overflow-hidden group">
+<div class="relative h-80 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="An ethereal digital render of a floating crystalline structure resembling a frozen storm, with deep indigo and electric violet hues. The aesthetic is mysterious and premium, reminiscent of a high-end NFT auction house. Soft light glints off sharp edges in a void-like environment with subtle purple atmospheric haze." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDXSpNCkl56JNCORpfCRhLRMbD2QwMXG6aNvg_396cP6P5guPovyw-e143gWrck_yM2vY0_Sdf0ZdF8V-FYj8Tlj5O5hqexqF8vy0Al2M3yI_cY9VSho_I1C1uEbup54_yLf3frvNhzOXxRqUJs-cu0bz6eyEIEq6k7Zm_eG-8P95y5caA40AmjINR6ZeKvLIu14BBObvzm2L0qqzPzuy9JlG9RmnJjn2WnrUZk3ipZ1w-HAg4_PXgt99bDE5mog_W84t1TCkP4ThQ"/>
+<div class="absolute top-4 left-4 flex gap-stack-sm">
+<span class="bg-success text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+<span class="w-2 h-2 bg-white rounded-full status-pulse"></span> LIVE
+                            </span>
+<span class="bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold font-label-mono">
+                                🔒 8 Sealed Bids
+                            </span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-2xl text-text-primary mb-2">Vortex Prism</h3>
+<div class="flex justify-between items-center mb-6">
+<div class="flex flex-col">
+<span class="text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-widest">Ending In</span>
+<span class="font-label-mono text-primary text-lg">1d 02h 45m</span>
+</div>
+<div class="text-right">
+<span class="text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-widest">Reserve</span>
+<span class="font-label-mono text-text-primary text-lg">8.0 ETH</span>
+</div>
+</div>
+<button class="w-full py-3 rounded-lg border border-primary text-primary font-bold hover:bg-primary/10 transition-colors">
+                            Place Private Bid
+                        </button>
+</div>
+</div>
+<!-- Auction Card 3 -->
+<div class="glass-card rounded-xl overflow-hidden group">
+<div class="relative h-80 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A luxurious digital artwork featuring a series of interlocking gold and dark matter rings suspended in zero gravity. The textures are hyper-realistic with soft violet reflections. The overall mood is silent, exclusive, and expensive, following a dark minimalism style with glassmorphism effects and deep shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA168mGumWFvZ1PIHX7hY19beRYCQN48NSfBEp63_0nMtcks4Tb78Rg2N_tBQJgp6R8CSMlwJa5C4fXw_FjlUBFEqUpBKTFUqPB5SL3VN358TT_mG8aFYFfMD0oG3KRzXPb60hL_wA6gRTn24JzXKKRkQxPUBa1w_wUH60SftGeBIDJB-Jl9BKFyVkMfqqO8kLO7I6O3mePcjVQqpHKhWzMzVbbr_QZTvGjqLpO59NJ09lMnZ-3cxEG3oeENIVEHxc6AZOhu2sImiwB"/>
+<div class="absolute top-4 left-4 flex gap-stack-sm">
+<span class="bg-success text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+<span class="w-2 h-2 bg-white rounded-full status-pulse"></span> LIVE
+                            </span>
+<span class="bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold font-label-mono">
+                                🔒 32 Sealed Bids
+                            </span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-2xl text-text-primary mb-2">Ethereal Cycle</h3>
+<div class="flex justify-between items-center mb-6">
+<div class="flex flex-col">
+<span class="text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-widest">Ending In</span>
+<span class="font-label-mono text-primary text-lg">00h 48m 52s</span>
+</div>
+<div class="text-right">
+<span class="text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-widest">Reserve</span>
+<span class="font-label-mono text-text-primary text-lg">25.0 ETH</span>
+</div>
+</div>
+<button class="w-full py-3 rounded-lg border border-primary text-primary font-bold hover:bg-primary/10 transition-colors">
+                            Place Private Bid
+                        </button>
+</div>
+</div>
+</div>
+<div class="mt-12 text-center">
+<button class="text-on-surface-variant font-label-mono text-sm hover:text-primary transition-colors flex items-center gap-2 mx-auto">
+                    View All Live Auctions <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface-container-lowest border-t border-outline-variant flat no shadows">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-display-xl text-headline-sm text-primary">MIDNIGHT</span>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 Midnight Private Auction. Secured by ZK-Proofs.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-stack-lg">
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Security Audit</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Documentation</a>
+</div>
+</footer>
+<script>
+        // Micro-interaction for a subtle particle background
+        const container = document.getElementById('particles-container');
+        if (container) {
+            for (let i = 0; i < 40; i++) {
+                const dot = document.createElement('div');
+                dot.style.position = 'absolute';
+                dot.style.width = Math.random() * 3 + 'px';
+                dot.style.height = dot.style.width;
+                dot.style.backgroundColor = '#7C3AED';
+                dot.style.borderRadius = '50%';
+                dot.style.left = Math.random() * 100 + '%';
+                dot.style.top = Math.random() * 100 + '%';
+                dot.style.opacity = Math.random() * 0.5;
+                dot.style.filter = 'blur(1px)';
+                
+                // Simple float animation
+                dot.animate([
+                    { transform: 'translate(0, 0)' },
+                    { transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)` }
+                ], {
+                    duration: 5000 + Math.random() * 5000,
+                    direction: 'alternate',
+                    iterations: Infinity,
+                    easing: 'ease-in-out'
+                });
+                
+                container.appendChild(dot);
+            }
+        }
+
+        // Active state navigation logic from JSON
+        // Already applied in the HTML manually as the page requested was "Auctions" (Gallery)
+    </script>
+</body></html>

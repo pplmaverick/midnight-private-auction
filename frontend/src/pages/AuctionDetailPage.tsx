@@ -1,0 +1,167 @@
+import { useEffect, useState } from 'react'
+import Navbar from '../components/Navbar'
+import PhaseIndicator from '../components/PhaseIndicator'
+import BidInput from '../components/BidInput'
+
+interface AuctionDetailPageProps {
+  onNavigateToZK: () => void
+}
+
+export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageProps) {
+  const [time, setTime] = useState({ h: 4, m: 21, s: 58 })
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime((prev) => {
+        let { h, m, s } = prev
+        s -= 1
+        if (s < 0) {
+          s = 59
+          m -= 1
+        }
+        if (m < 0) {
+          m = 59
+          h -= 1
+        }
+        if (h < 0) {
+          h = 0
+          m = 0
+          s = 0
+        }
+        return { h, m, s }
+      })
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <div className="bg-[#131318] text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen">
+      <Navbar />
+      <main className="pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <PhaseIndicator />
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-start">
+          {/* Left Column: Item Detail */}
+          <div className="space-y-stack-lg">
+            <div className="luxury-frame group overflow-hidden relative">
+              <img
+                className="w-full aspect-[4/5] object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
+                alt="A mesmerizing piece of digital abstract art with flowing deep violet and midnight blue nebulae."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_E9PKWN_hy7HexwhqwIoNPfb_ZngaGMvhsw1D25WvBi4c7kfv_uKrBIrQLd_PXDjWmUGFSek-M9EvNhGKfPfazIAiZK6DiFLcFuKvfd92Cu83hEenhQOX_xbPNwexDsEL5aU0Hjx03UGF8yx7d1-ysJ4_5rkTaw5Nj27tlBHvMT6sdp1M2OdFRMrPcfffJcN_d3SuDKS5kI8hzIvMOcIe7qBL1a48rKCX19MiqMcj7KH3bRTOGiUMjA1uiTHxuapEoZEvS12vrlhX"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none"></div>
+            </div>
+            <div className="space-y-stack-md">
+              <h1 className="font-headline-lg text-headline-lg text-text-primary tracking-tight">
+                Nebula Prism #042
+              </h1>
+              <div className="flex items-center gap-3">
+                <span className="font-label-mono text-label-mono text-text-secondary">Seller:</span>
+                <span className="font-label-mono text-label-mono text-primary bg-primary-container/10 px-3 py-1 rounded">
+                  0x71C...4f92
+                </span>
+              </div>
+              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                A generative study of light refraction within a theoretical dark matter vacuum. This piece utilizes
+                Midnight's proprietary ZK-State to ensure that ownership history remains anonymous until the moment
+                of final settlement. The visual output is a high-fidelity 8K render with dynamic metadata
+                reactivity.
+              </p>
+            </div>
+            <div className="p-stack-md border border-primary-container/30 bg-primary-container/5 rounded-lg flex gap-4">
+              <span className="material-symbols-outlined text-primary" data-weight="fill">
+                privacy_tip
+              </span>
+              <div className="space-y-1">
+                <h4 className="font-label-caps text-label-caps text-primary uppercase">
+                  Cryptographic Privacy Notice
+                </h4>
+                <p className="font-body-md text-sm text-on-surface-variant leading-relaxed">
+                  Your bid is sealed using Zero-Knowledge proofs. Only the commitment hash is public. The actual
+                  amount remains hidden on-chain until the Reveal Phase, ensuring absolute game-theoretic fairness
+                  and preventing bid-sniping.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Status & Bidding */}
+          <div className="sticky top-28 space-y-stack-lg">
+            <div className="glass-panel p-8 rounded-xl space-y-6">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2 px-3 py-1 bg-success/10 rounded-full">
+                  <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
+                  <span className="font-label-mono text-xs text-success font-bold tracking-widest uppercase">
+                    Live Auction
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-on-surface-variant">
+                  <span className="material-symbols-outlined text-sm">lock</span>
+                  <span className="font-label-mono text-xs">12 Sealed Bids</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <span className="font-label-caps text-label-caps text-text-secondary uppercase">
+                  Time Remaining
+                </span>
+                <div className="flex gap-4 font-display-xl text-headline-lg text-text-primary">
+                  <div>
+                    {String(time.h).padStart(2, '0')}
+                    <span className="text-sm font-label-mono ml-1 text-on-surface-variant">h</span>
+                  </div>
+                  <div className="text-primary-container">:</div>
+                  <div>
+                    {String(time.m).padStart(2, '0')}
+                    <span className="text-sm font-label-mono ml-1 text-on-surface-variant">m</span>
+                  </div>
+                  <div className="text-primary-container">:</div>
+                  <div>
+                    {String(time.s).padStart(2, '0')}
+                    <span className="text-sm font-label-mono ml-1 text-on-surface-variant">s</span>
+                  </div>
+                </div>
+              </div>
+              <div className="h-px bg-outline-variant/30"></div>
+
+              <BidInput onSealSubmit={onNavigateToZK} />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="glass-panel p-4 rounded-lg flex flex-col gap-1">
+                <span className="font-label-caps text-[10px] text-text-secondary uppercase">Protocol</span>
+                <span className="font-label-mono text-sm">ZK-SNARKS v2</span>
+              </div>
+              <div className="glass-panel p-4 rounded-lg flex flex-col gap-1">
+                <span className="font-label-caps text-[10px] text-text-secondary uppercase">Standard</span>
+                <span className="font-label-mono text-sm">ERC-721P</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer className="w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface-container-lowest border-t border-outline-variant">
+        <div className="flex flex-col items-center md:items-start gap-2">
+          <div className="font-display-xl text-headline-sm text-primary">MIDNIGHT</div>
+          <p className="font-label-mono text-xs text-on-surface-variant opacity-80">
+            © 2024 Midnight Private Auction. Secured by ZK-Proofs.
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-stack-md">
+          <a className="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors" href="#">
+            Terms of Service
+          </a>
+          <a className="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors" href="#">
+            Privacy Policy
+          </a>
+          <a className="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors" href="#">
+            Security Audit
+          </a>
+          <a className="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors" href="#">
+            Documentation
+          </a>
+        </div>
+      </footer>
+    </div>
+  )
+}
