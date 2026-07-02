@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useWallet } from '../midnight/WalletContext'
+import { usePrivateState } from '../midnight/PrivateStateContext'
 import { truncateAddress, detectWallets, type WalletInfo } from '../midnight/walletConnector'
 
 const PROVING_NOT_SUPPORTED_MESSAGE =
@@ -7,6 +8,7 @@ const PROVING_NOT_SUPPORTED_MESSAGE =
 
 export default function Navbar() {
   const { walletState, connect, disconnect } = useWallet()
+  const { isUnlocked, lock } = usePrivateState()
   const [walletChoices, setWalletChoices] = useState<WalletInfo[] | null>(null)
 
   const handleConnectClick = () => {
@@ -95,6 +97,17 @@ export default function Navbar() {
               <span className="font-label-mono text-sm text-on-surface">
                 {truncateAddress(walletState.address)} | {walletState.balance}
               </span>
+              {isUnlocked && (
+                <button
+                  type="button"
+                  onClick={() => lock()}
+                  aria-label="Lock private state"
+                  title="Lock private state"
+                  className="text-on-surface-variant hover:text-primary transition-colors flex items-center"
+                >
+                  <span className="material-symbols-outlined text-base">lock_open</span>
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => disconnect()}
