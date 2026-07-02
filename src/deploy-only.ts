@@ -38,7 +38,7 @@ async function main() {
   const walletCtx = await api.buildWalletAndWaitForFunds(config, seed);
 
   const aucSecretKey = api.randomBytes32();
-  const aucPrivState = createAuctionPrivateState(aucSecretKey, 0n, new Uint8Array(32));
+  const aucPrivState = createAuctionPrivateState(aucSecretKey);
 
   let contractAddress: string;
   let txId: string;

@@ -1,14 +1,18 @@
 // Midnight Private Auction Contract
 // Sealed-bid auction using Compact private state + ZK proofs.
+// Multi-auction: a single contract deployment hosts many independent
+// auctions, each identified by an auctionId assigned by the contract.
 //
 // Privacy model (commit-reveal):
 //   BIDDING phase: each bid amount is kept in the bidder's local private state.
-//     Only a commitment hash (H(secretKey, amount, salt)) is stored on-chain.
+//     Only a commitment hash (H(secretKey, auctionId, amount, salt)) is stored
+//     on-chain, under that auction's own bid map.
 //     Chain observers see: bidder public key + opaque 32-byte hash.
 //     Chain observers cannot see: actual bid amount.
 //   REVEAL phase: after closeAuction(), each bidder reveals amount + salt.
-//     The circuit verifies H(sk, amount, salt) == stored commitment on-chain,
-//     then updates highestBid if the revealed amount exceeds the current leader.
+//     The circuit verifies H(sk, auctionId, amount, salt) == stored commitment
+//     on-chain, then updates that auction's highestBid if the revealed amount
+//     exceeds the current leader.
 //
 // This is the key Midnight differentiator vs. standard EVM:
 //   EVM: bids are public the moment they're sent.
@@ -29,47 +33,64 @@ export enum AuctionPhase {
 
 // --- Public ledger state (visible to everyone on-chain) ---
 
-export ledger phase: AuctionPhase;
-export ledger itemName: Opaque<"string">;
-export ledger auctioneerPK: Bytes<32>;
+// Auto-incrementing ID assigned to each new auction by createAuction().
+// The contract assigns IDs itself so callers can never collide or overwrite
+// an existing auction.
+export ledger nextAuctionId: Counter;
 
-// Maps bidder public key -> sealed commitment (hash of sk + amount + salt).
-// Amount is NOT on-chain during bidding phase — only its hash is.
-export ledger sealedBids: Map<Bytes<32>, Bytes<32>>;
+// Every field below is keyed by auctionId so one deployment can host many
+// auctions concurrently, each with its own independent state.
+export ledger phase: Map<Uint<32>, AuctionPhase>;
+export ledger itemName: Map<Uint<32>, Opaque<"string">>;
+export ledger auctioneerPK: Map<Uint<32>, Bytes<32>>;
 
-export ledger bidCount: Counter;
+// Per-auction map of bidder public key -> sealed commitment (hash of
+// sk + auctionId + amount + salt). Amount is NOT on-chain during bidding
+// phase — only its hash is.
+export ledger sealedBids: Map<Uint<32>, Map<Bytes<32>, Bytes<32>>>;
 
-// Set after reveal phase: the winner and their revealed bid amount.
-export ledger highestBidderPK: Bytes<32>;
-export ledger highestBid: Uint<32>;
-export ledger itemClaimed: Boolean;
+export ledger bidCount: Map<Uint<32>, Counter>;
+
+// Set after reveal phase: the winner and their revealed bid amount, per auction.
+export ledger highestBidderPK: Map<Uint<32>, Bytes<32>>;
+export ledger highestBid: Map<Uint<32>, Uint<32>>;
+export ledger itemClaimed: Map<Uint<32>, Boolean>;
 
 // --- Private state (witness) — lives only in the prover's local state ---
 
 // Each participant holds a 32-byte secret. Never sent to the chain.
 witness localSecretKey(): Bytes<32>;
 
-// Bid amount — private during BIDDING phase. Revealed by bidder in REVEAL phase.
-witness myBidAmount(): Uint<32>;
+// Bid amount for a given auction — private during BIDDING phase.
+// Revealed by the bidder in that auction's REVEAL phase.
+witness myBidAmount(auctionId: Uint<32>): Uint<32>;
 
-// Random salt — keeps commitment unlinkable even if two bidders bid the same amount.
-witness myBidSalt(): Bytes<32>;
+// Random salt for a given auction — keeps commitment unlinkable even if two
+// bidders bid the same amount, and even across different auctions.
+witness myBidSalt(auctionId: Uint<32>): Bytes<32>;
 
 // --- Pure circuits (computation, no state change) ---
 
 // Derive a stable public key from a secret key.
 // Domain-separated so auction keys don't collide with other Midnight contracts.
+// Not auction-specific: the same identity is used across all auctions in
+// this contract, which lets a bidder's history be correlated by design.
 export pure circuit bidderPublicKey(sk: Bytes<32>): Bytes<32> {
   return persistentHash<[Bytes<16>, Bytes<32>]>([pad(16, "auction:bidder:"), sk]);
 }
 
-// Compute the sealed commitment for a bid.
+// Compute the sealed commitment for a bid within a specific auction.
 // Binding: commitment is tied to the bidder's secret key, preventing replay.
-// Hiding: without sk, amount, and salt all three, the commitment reveals nothing.
-export pure circuit computeCommitment(sk: Bytes<32>, amount: Uint<32>, salt: Bytes<32>): Bytes<32> {
-  return persistentHash<[Bytes<13>, Bytes<32>, Uint<32>, Bytes<32>]>([
+// Hiding: without sk, auctionId, amount, and salt all four, the commitment
+// reveals nothing.
+// auctionId is folded into the hash for domain separation: it stops the same
+// sk/amount/salt triple from producing an identical (and thus replayable)
+// commitment in two different auctions.
+export pure circuit computeCommitment(sk: Bytes<32>, auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): Bytes<32> {
+  return persistentHash<[Bytes<13>, Bytes<32>, Uint<32>, Uint<32>, Bytes<32>]>([
     pad(13, "auction:seal:"),
     sk,
+    auctionId,
     amount,
     salt
   ]);
@@ -77,45 +98,61 @@ export pure circuit computeCommitment(sk: Bytes<32>, amount: Uint<32>, salt: Byt
 
 // --- Constructor ---
 
+// No per-auction state to initialize: nextAuctionId defaults to 0 and every
+// ledger field above is a Map that starts empty until an auctionId is
+// inserted by createAuction().
 constructor() {
-  phase = AuctionPhase.VACANT;
-  highestBid = 0;
-  itemClaimed = false;
-  highestBidderPK = default<Bytes<32>>;
-  auctioneerPK = default<Bytes<32>>;
 }
 
 // --- Impure circuits (change ledger state) ---
 
-// Auctioneer creates the auction and sets the item name.
-// Caller's public key (derived from their localSecretKey) becomes the auctioneer.
-export circuit createAuction(item: Opaque<"string">): [] {
-  assert(phase == AuctionPhase.VACANT, "Auction already exists");
-  auctioneerPK = disclose(bidderPublicKey(localSecretKey()));
-  itemName = disclose(item);
-  phase = AuctionPhase.BIDDING;
+// Auctioneer creates a new auction and sets the item name.
+// The contract assigns the new auctionId (current nextAuctionId, then
+// increments it) so callers never choose or collide on IDs.
+// Caller's public key (derived from their localSecretKey) becomes the
+// auctioneer for this auctionId.
+export circuit createAuction(item: Opaque<"string">): Uint<32> {
+  const auctionId = disclose(nextAuctionId.read() as Uint<32>);
+  nextAuctionId.increment(1);
+
+  auctioneerPK.insert(auctionId, disclose(bidderPublicKey(localSecretKey())));
+  itemName.insert(auctionId, disclose(item));
+  phase.insert(auctionId, AuctionPhase.BIDDING);
+  highestBid.insert(auctionId, 0);
+  highestBidderPK.insert(auctionId, default<Bytes<32>>);
+  itemClaimed.insert(auctionId, false);
+  bidCount.insert(auctionId, default<Counter>);
+  sealedBids.insert(auctionId, default<Map<Bytes<32>, Bytes<32>>>);
+
+  return auctionId;
 }
 
-// Place a sealed bid.
+// Place a sealed bid into a specific auction.
 // The bid amount (myBidAmount witness) never appears on-chain.
 // Only the commitment hash is stored, proving "I have a valid sealed bid"
 // without revealing what the bid is.
-export circuit placeBid(): [] {
-  assert(phase == AuctionPhase.BIDDING, "Auction is not in bidding phase");
+export circuit placeBid(auctionId: Uint<32>): [] {
+  const id = disclose(auctionId);
+  assert(phase.member(id), "Auction does not exist");
+  assert(phase.lookup(id) == AuctionPhase.BIDDING, "Auction is not in bidding phase");
+
   const myPK = bidderPublicKey(localSecretKey());
-  const myCommitment = computeCommitment(localSecretKey(), myBidAmount(), myBidSalt());
-  sealedBids.insert(disclose(myPK), disclose(myCommitment));
-  bidCount.increment(1);
+  const myCommitment = computeCommitment(localSecretKey(), auctionId, myBidAmount(auctionId), myBidSalt(auctionId));
+  sealedBids.lookup(id).insert(disclose(myPK), disclose(myCommitment));
+  bidCount.lookup(id).increment(1);
 }
 
-// Auctioneer closes bidding phase. No more bids accepted after this.
-export circuit closeAuction(): [] {
-  assert(phase == AuctionPhase.BIDDING, "Auction is not in bidding phase");
-  assert(auctioneerPK == bidderPublicKey(localSecretKey()), "Only the auctioneer can close");
-  phase = AuctionPhase.CLOSED;
+// Auctioneer closes bidding phase for one auction. No more bids accepted
+// for that auctionId after this; other auctions are unaffected.
+export circuit closeAuction(auctionId: Uint<32>): [] {
+  const id = disclose(auctionId);
+  assert(phase.member(id), "Auction does not exist");
+  assert(phase.lookup(id) == AuctionPhase.BIDDING, "Auction is not in bidding phase");
+  assert(auctioneerPK.lookup(id) == bidderPublicKey(localSecretKey()), "Only the auctioneer can close");
+  phase.insert(id, AuctionPhase.CLOSED);
 }
 
-// Reveal a bid after the auction is closed.
+// Reveal a bid for a specific auction after that auction is closed.
 // amount and salt are now public — this is the intended reveal.
 // The circuit verifies the commitment matches before updating the leaderboard.
 //
@@ -124,25 +161,32 @@ export circuit closeAuction(): [] {
 // inside an if-branch would leak the branch outcome to observers (the compiler
 // enforces this as a hard error). Since revealBid is the reveal phase,
 // disclosing amount unconditionally is correct by design.
-export circuit revealBid(amount: Uint<32>, salt: Bytes<32>): [] {
-  assert(phase == AuctionPhase.CLOSED, "Auction must be closed before revealing");
+export circuit revealBid(auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): [] {
+  const id = disclose(auctionId);
+  assert(phase.member(id), "Auction does not exist");
+  assert(phase.lookup(id) == AuctionPhase.CLOSED, "Auction must be closed before revealing");
+
   const myPK = disclose(bidderPublicKey(localSecretKey()));
-  assert(sealedBids.member(myPK), "No sealed bid found for this address");
-  const expectedCommitment = computeCommitment(localSecretKey(), amount, salt);
-  assert(sealedBids.lookup(myPK) == expectedCommitment, "Bid commitment verification failed");
+  assert(sealedBids.lookup(id).member(myPK), "No sealed bid found for this address");
+  const expectedCommitment = computeCommitment(localSecretKey(), auctionId, amount, salt);
+  assert(sealedBids.lookup(id).lookup(myPK) == expectedCommitment, "Bid commitment verification failed");
+
   const pubAmount = disclose(amount);
-  if (pubAmount > highestBid) {
-    highestBid = pubAmount;
-    highestBidderPK = myPK;
+  if (pubAmount > highestBid.lookup(id)) {
+    highestBid.insert(id, pubAmount);
+    highestBidderPK.insert(id, myPK);
   }
 }
 
-// Winner claims the item after reveal phase.
-export circuit claimItem(): [] {
-  assert(phase == AuctionPhase.CLOSED, "Auction must be closed");
-  assert(!itemClaimed, "Item already claimed");
-  assert(highestBid > 0, "No valid bids have been revealed");
+// Winner claims the item after reveal phase, for a specific auction.
+export circuit claimItem(auctionId: Uint<32>): [] {
+  const id = disclose(auctionId);
+  assert(phase.member(id), "Auction does not exist");
+  assert(phase.lookup(id) == AuctionPhase.CLOSED, "Auction must be closed");
+  assert(!itemClaimed.lookup(id), "Item already claimed");
+  assert(highestBid.lookup(id) > 0, "No valid bids have been revealed");
+
   const claimerPK = disclose(bidderPublicKey(localSecretKey()));
-  assert(claimerPK == highestBidderPK, "Only the highest bidder can claim");
-  itemClaimed = disclose(true);
+  assert(claimerPK == highestBidderPK.lookup(id), "Only the highest bidder can claim");
+  itemClaimed.insert(id, disclose(true));
 }

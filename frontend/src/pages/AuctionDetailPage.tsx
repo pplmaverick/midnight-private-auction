@@ -29,6 +29,10 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
   const [bidError, setBidError] = useState<string | null>(null)
   const [bidResult, setBidResult] = useState<string | null>(null)
   const [provingUnsupported, setProvingUnsupported] = useState(false)
+  // Which auction (by ID) this page is bidding on. The app doesn't have
+  // per-auction routing yet, so this is a plain input defaulting to the
+  // first auction (id 0) rather than a value threaded in from navigation.
+  const [auctionIdInput, setAuctionIdInput] = useState('0')
 
   const handleSealSubmit = async (amount: string) => {
     setBidError(null)
@@ -41,6 +45,18 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
     const parsedAmount = Number(amount)
     if (!Number.isInteger(parsedAmount) || parsedAmount <= 0 || parsedAmount > MAX_BID_AMOUNT) {
       setBidError(`Enter a whole number between 1 and ${MAX_BID_AMOUNT}.`)
+      return
+    }
+
+    let auctionId: bigint
+    try {
+      auctionId = BigInt(auctionIdInput)
+    } catch {
+      setBidError('Auction ID must be a whole number.')
+      return
+    }
+    if (auctionId < 0n) {
+      setBidError('Auction ID must be a whole number.')
       return
     }
 
@@ -68,9 +84,11 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
       const contract = await getDeployedAuction(
         providers,
         BIDDER1_STATE_ID,
-        createAuctionPrivateState(secretKey, BigInt(parsedAmount), bidSalt),
+        createAuctionPrivateState(secretKey, {
+          [auctionId.toString()]: { bidAmount: BigInt(parsedAmount), bidSalt },
+        }),
       )
-      await contract.callTx.placeBid()
+      await contract.callTx.placeBid(auctionId)
       setBidResult('Bid sealed and submitted.')
       onNavigateToZK()
     } catch (err) {
@@ -221,6 +239,19 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
                   {bidResult}
                 </p>
               )}
+
+              <div className="space-y-2">
+                <label htmlFor="auction-id" className="font-label-caps text-label-caps text-text-secondary uppercase">
+                  Auction ID
+                </label>
+                <input
+                  id="auction-id"
+                  value={auctionIdInput}
+                  onChange={(e) => setAuctionIdInput(e.target.value)}
+                  placeholder="0"
+                  className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
+                />
+              </div>
 
               <BidInput onSealSubmit={handleSealSubmit} />
             </div>

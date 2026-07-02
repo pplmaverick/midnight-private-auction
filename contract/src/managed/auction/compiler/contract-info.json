@@ -34,6 +34,13 @@
           }
         },
         {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        },
+        {
           "name": "amount",
           "type": {
             "type-name": "Uint",
@@ -67,9 +74,8 @@
         }
       ],
       "result-type": {
-        "type-name": "Tuple",
-        "types": [
-        ]
+        "type-name": "Uint",
+        "maxval": 4294967295
       }
     },
     {
@@ -77,6 +83,13 @@
       "pure": false,
       "proof": true,
       "arguments": [
+        {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        }
       ],
       "result-type": {
         "type-name": "Tuple",
@@ -89,6 +102,13 @@
       "pure": false,
       "proof": true,
       "arguments": [
+        {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        }
       ],
       "result-type": {
         "type-name": "Tuple",
@@ -101,6 +121,13 @@
       "pure": false,
       "proof": true,
       "arguments": [
+        {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        },
         {
           "name": "amount",
           "type": {
@@ -127,6 +154,13 @@
       "pure": false,
       "proof": true,
       "arguments": [
+        {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        }
       ],
       "result-type": {
         "type-name": "Tuple",
@@ -148,6 +182,13 @@
     {
       "name": "myBidAmount",
       "arguments": [
+        {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        }
       ],
       "result type": {
         "type-name": "Uint",
@@ -157,6 +198,13 @@
     {
       "name": "myBidSalt",
       "arguments": [
+        {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        }
       ],
       "result type": {
         "type-name": "Bytes",
@@ -168,11 +216,21 @@
   ],
   "ledger": [
     {
-      "name": "phase",
+      "name": "nextAuctionId",
       "index": 0,
       "exported": true,
-      "storage": "Cell",
-      "type": {
+      "storage": "Counter"
+    },
+    {
+      "name": "phase",
+      "index": 1,
+      "exported": true,
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
         "type-name": "Enum",
         "name": "AuctionPhase",
         "elements": [
@@ -184,32 +242,26 @@
     },
     {
       "name": "itemName",
-      "index": 1,
+      "index": 2,
       "exported": true,
-      "storage": "Cell",
-      "type": {
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
         "type-name": "Opaque",
         "tsType": "string"
       }
     },
     {
       "name": "auctioneerPK",
-      "index": 2,
-      "exported": true,
-      "storage": "Cell",
-      "type": {
-        "type-name": "Bytes",
-        "length": 32
-      }
-    },
-    {
-      "name": "sealedBids",
       "index": 3,
       "exported": true,
       "storage": "Map",
       "key": {
-        "type-name": "Bytes",
-        "length": 32
+        "type-name": "Uint",
+        "maxval": 4294967295
       },
       "value": {
         "type-name": "Bytes",
@@ -217,37 +269,77 @@
       }
     },
     {
-      "name": "bidCount",
+      "name": "sealedBids",
       "index": 4,
       "exported": true,
-      "storage": "Counter"
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
+        "type-name": "Map",
+        "key": {
+          "type-name": "Bytes",
+          "length": 32
+        },
+        "value": {
+          "type-name": "Bytes",
+          "length": 32
+        }
+      }
+    },
+    {
+      "name": "bidCount",
+      "index": 5,
+      "exported": true,
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
+        "type-name": "Counter"
+      }
     },
     {
       "name": "highestBidderPK",
-      "index": 5,
+      "index": 6,
       "exported": true,
-      "storage": "Cell",
-      "type": {
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
         "type-name": "Bytes",
         "length": 32
       }
     },
     {
       "name": "highestBid",
-      "index": 6,
+      "index": 7,
       "exported": true,
-      "storage": "Cell",
-      "type": {
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
         "type-name": "Uint",
         "maxval": 4294967295
       }
     },
     {
       "name": "itemClaimed",
-      "index": 7,
+      "index": 8,
       "exported": true,
-      "storage": "Cell",
-      "type": {
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
         "type-name": "Boolean"
       }
     }

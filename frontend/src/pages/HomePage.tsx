@@ -84,10 +84,12 @@ export default function HomePage({ onNavigateToDetail }: HomePageProps) {
       const contract = await getDeployedAuction(
         providers,
         AUCTIONEER_STATE_ID,
-        createAuctionPrivateState(secretKey, 0n, new Uint8Array(32)),
+        // Auctioneer never bids, so no bids record is needed.
+        createAuctionPrivateState(secretKey),
       )
-      await contract.callTx.createAuction(itemName)
-      setCreateResult('createAuction tx submitted')
+      const result = await contract.callTx.createAuction(itemName)
+      const auctionId = result.private.result
+      setCreateResult(`createAuction tx submitted — auctionId: ${auctionId}`)
     } catch (err) {
       setCreateResult(err instanceof Error ? err.message : 'Failed to create auction')
     } finally {

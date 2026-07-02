@@ -581,32 +581,42 @@ export const joinAs = async (
 export const createAuction = async (
   contract: DeployedAuctionContract,
   itemName: string,
-): Promise<FinalizedTxData> => {
+): Promise<{ txData: FinalizedTxData; auctionId: bigint }> => {
   const result = await contract.callTx.createAuction(itemName);
+  return { txData: result.public, auctionId: result.private.result };
+};
+
+export const placeBid = async (
+  contract: DeployedAuctionContract,
+  auctionId: bigint,
+): Promise<FinalizedTxData> => {
+  const result = await contract.callTx.placeBid(auctionId);
   return result.public;
 };
 
-export const placeBid = async (contract: DeployedAuctionContract): Promise<FinalizedTxData> => {
-  const result = await contract.callTx.placeBid();
-  return result.public;
-};
-
-export const closeAuction = async (contract: DeployedAuctionContract): Promise<FinalizedTxData> => {
-  const result = await contract.callTx.closeAuction();
+export const closeAuction = async (
+  contract: DeployedAuctionContract,
+  auctionId: bigint,
+): Promise<FinalizedTxData> => {
+  const result = await contract.callTx.closeAuction(auctionId);
   return result.public;
 };
 
 export const revealBid = async (
   contract: DeployedAuctionContract,
+  auctionId: bigint,
   amount: bigint,
   salt: Uint8Array,
 ): Promise<FinalizedTxData> => {
-  const result = await contract.callTx.revealBid(amount, salt);
+  const result = await contract.callTx.revealBid(auctionId, amount, salt);
   return result.public;
 };
 
-export const claimItem = async (contract: DeployedAuctionContract): Promise<FinalizedTxData> => {
-  const result = await contract.callTx.claimItem();
+export const claimItem = async (
+  contract: DeployedAuctionContract,
+  auctionId: bigint,
+): Promise<FinalizedTxData> => {
+  const result = await contract.callTx.claimItem(auctionId);
   return result.public;
 };
 

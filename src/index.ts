@@ -73,9 +73,10 @@ async function main() {
   const BID1_AMOUNT = 100n;
   const BID2_AMOUNT = 200n;
 
-  const aucPrivState = createAuctionPrivateState(aucSecretKey, 0n, new Uint8Array(32));
-  const bid1PrivState = createAuctionPrivateState(bid1SecretKey, BID1_AMOUNT, bid1Salt);
-  const bid2PrivState = createAuctionPrivateState(bid2SecretKey, BID2_AMOUNT, bid2Salt);
+  // Auctioneer never bids, so no bids record is needed. Bidders' private
+  // state can't be keyed by auctionId until createAuction() returns one,
+  // so their private state is built further down once auctionId is known.
+  const aucPrivState = createAuctionPrivateState(aucSecretKey);
 
   const txHashes: Record<string, string> = {};
 
@@ -108,16 +109,27 @@ async function main() {
 
   // createAuction uses main providers (public RPC)
   const aucContractMain = await api.joinAs(providers, contractAddress, AUCTIONEER_STATE_ID, aucPrivState);
-  const createTx = await api.withStatus('createAuction("Vintage Watch")', () =>
+  const createResult = await api.withStatus('createAuction("Vintage Watch")', () =>
     api.createAuction(aucContractMain, 'Vintage Watch'),
   );
-  txHashes['createAuction'] = createTx.txId;
-  printTxHash('createAuction', createTx);
+  const auctionId = createResult.auctionId;
+  txHashes['createAuction'] = createResult.txData.txId;
+  printTxHash('createAuction', createResult.txData);
+  console.log(`  auctionId : ${auctionId}`);
+
+  // Now that auctionId is known, build each bidder's private state with
+  // their bid keyed by that auctionId.
+  const bid1PrivState = createAuctionPrivateState(bid1SecretKey, {
+    [auctionId.toString()]: { bidAmount: BID1_AMOUNT, bidSalt: bid1Salt },
+  });
+  const bid2PrivState = createAuctionPrivateState(bid2SecretKey, {
+    [auctionId.toString()]: { bidAmount: BID2_AMOUNT, bidSalt: bid2Salt },
+  });
 
   // ── Step 2: Bidder1 places sealed bid ───────────────────────────────────────
   printStep(2, 'Bidder1 places sealed bid (amount: 100 — hidden on-chain)');
   const bid1Contract = await api.joinAs(providers, contractAddress, BIDDER1_STATE_ID, bid1PrivState);
-  const bid1Tx = await api.withStatus('placeBid() as Bidder1', () => api.placeBid(bid1Contract));
+  const bid1Tx = await api.withStatus('placeBid() as Bidder1', () => api.placeBid(bid1Contract, auctionId));
   txHashes['placeBid_bidder1'] = bid1Tx.txId;
   printTxHash('placeBid (Bidder1)', bid1Tx);
   console.log(`  On-chain: commitment hash only — amount 100 is NOT visible`);
@@ -125,7 +137,7 @@ async function main() {
   // ── Step 3: Bidder2 places sealed bid ───────────────────────────────────────
   printStep(3, 'Bidder2 places sealed bid (amount: 200 — hidden on-chain)');
   const bid2Contract = await api.joinAs(providers, contractAddress, BIDDER2_STATE_ID, bid2PrivState);
-  const bid2Tx = await api.withStatus('placeBid() as Bidder2', () => api.placeBid(bid2Contract));
+  const bid2Tx = await api.withStatus('placeBid() as Bidder2', () => api.placeBid(bid2Contract, auctionId));
   txHashes['placeBid_bidder2'] = bid2Tx.txId;
   printTxHash('placeBid (Bidder2)', bid2Tx);
   console.log(`  On-chain: commitment hash only — amount 200 is NOT visible`);
@@ -133,14 +145,14 @@ async function main() {
   // ── Step 4: Close auction ────────────────────────────────────────────────────
   printStep(4, 'Auctioneer closes bidding phase');
   const aucContract2 = await api.joinAs(providers, contractAddress, AUCTIONEER_STATE_ID, aucPrivState);
-  const closeTx = await api.withStatus('closeAuction()', () => api.closeAuction(aucContract2));
+  const closeTx = await api.withStatus('closeAuction()', () => api.closeAuction(aucContract2, auctionId));
   txHashes['closeAuction'] = closeTx.txId;
   printTxHash('closeAuction', closeTx);
 
   // ── Step 5: Bidder1 reveals ──────────────────────────────────────────────────
   printStep(5, 'Bidder1 reveals bid (100)');
   const reveal1Tx = await api.withStatus('revealBid(100, salt1) as Bidder1', () =>
-    api.revealBid(bid1Contract, BID1_AMOUNT, bid1Salt),
+    api.revealBid(bid1Contract, auctionId, BID1_AMOUNT, bid1Salt),
   );
   txHashes['revealBid_bidder1'] = reveal1Tx.txId;
   printTxHash('revealBid (Bidder1)', reveal1Tx);
@@ -149,7 +161,7 @@ async function main() {
   // ── Step 6: Bidder2 reveals ──────────────────────────────────────────────────
   printStep(6, 'Bidder2 reveals bid (200) — overtakes Bidder1');
   const reveal2Tx = await api.withStatus('revealBid(200, salt2) as Bidder2', () =>
-    api.revealBid(bid2Contract, BID2_AMOUNT, bid2Salt),
+    api.revealBid(bid2Contract, auctionId, BID2_AMOUNT, bid2Salt),
   );
   txHashes['revealBid_bidder2'] = reveal2Tx.txId;
   printTxHash('revealBid (Bidder2)', reveal2Tx);
@@ -157,7 +169,7 @@ async function main() {
 
   // ── Step 7: Bidder2 claims item ──────────────────────────────────────────────
   printStep(7, 'Bidder2 claims item (winner)');
-  const claimTx = await api.withStatus('claimItem() as Bidder2', () => api.claimItem(bid2Contract));
+  const claimTx = await api.withStatus('claimItem() as Bidder2', () => api.claimItem(bid2Contract, auctionId));
   txHashes['claimItem'] = claimTx.txId;
   printTxHash('claimItem (Bidder2)', claimTx);
 
@@ -170,11 +182,11 @@ async function main() {
   console.log('  Auction Complete — Final State');
   console.log(DIVIDER);
   if (finalState) {
-    console.log(`  item      : ${finalState.itemName}`);
+    console.log(`  item      : ${finalState.itemName.lookup(auctionId)}`);
     console.log(`  phase     : CLOSED`);
-    console.log(`  highestBid: ${finalState.highestBid}`);
-    console.log(`  bidCount  : ${finalState.bidCount}`);
-    console.log(`  claimed   : ${finalState.itemClaimed}`);
+    console.log(`  highestBid: ${finalState.highestBid.lookup(auctionId)}`);
+    console.log(`  bidCount  : ${finalState.bidCount.lookup(auctionId).read()}`);
+    console.log(`  claimed   : ${finalState.itemClaimed.lookup(auctionId)}`);
   }
 
   console.log(`\n${DIVIDER}`);
