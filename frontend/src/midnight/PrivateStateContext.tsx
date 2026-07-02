@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react'
+import type { PrivateStateProvider } from '@midnight-ntwrk/midnight-js-types'
 import { browserPrivateStateProvider } from './browserPrivateStateProvider'
 import { useWallet } from './WalletContext'
 
@@ -9,6 +10,9 @@ interface PrivateStateContextType {
   // false if they cancelled the prompt. Callers should skip the private-state
   // operation when this resolves false.
   ensureUnlocked: () => Promise<boolean>
+  // The underlying provider, exposed so callers can pass it into buildAuctionProviders()
+  // once unlocked. Null before the wallet is connected.
+  provider: PrivateStateProvider | null
 }
 
 const PrivateStateContext = createContext<PrivateStateContextType | null>(null)
@@ -67,7 +71,7 @@ export function PrivateStateProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <PrivateStateContext.Provider value={{ isUnlocked: unlocked, lock, ensureUnlocked }}>
+    <PrivateStateContext.Provider value={{ isUnlocked: unlocked, lock, ensureUnlocked, provider }}>
       {children}
       {modalOpen && <UnlockModal onSubmit={handleSubmit} onCancel={handleCancel} error={error} />}
     </PrivateStateContext.Provider>

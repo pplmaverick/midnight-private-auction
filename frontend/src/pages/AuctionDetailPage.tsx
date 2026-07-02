@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar'
 import PhaseIndicator from '../components/PhaseIndicator'
 import BidInput from '../components/BidInput'
 import { usePrivateState } from '../midnight/PrivateStateContext'
+import { useWallet } from '../midnight/WalletContext'
+import { buildAuctionProviders } from '../midnight/auctionProviders'
 
 interface AuctionDetailPageProps {
   onNavigateToZK: () => void
@@ -10,13 +12,34 @@ interface AuctionDetailPageProps {
 
 export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageProps) {
   const [time, setTime] = useState({ h: 4, m: 21, s: 58 })
-  const { ensureUnlocked } = usePrivateState()
+  const { ensureUnlocked, provider } = usePrivateState()
+  const { walletState } = useWallet()
+  const [bidError, setBidError] = useState<string | null>(null)
 
   const handleSealSubmit = async () => {
+    setBidError(null)
+
     // Sealing a bid reads/writes the browser private-state store — make sure it's
     // unlocked first; ensureUnlocked() shows the password modal if needed.
     const unlocked = await ensureUnlocked()
-    if (unlocked) onNavigateToZK()
+    if (!unlocked) return
+
+    if (walletState.status !== 'connected' || !provider) {
+      setBidError('Wallet not connected — connect a wallet before placing a bid.')
+      return
+    }
+
+    try {
+      const providers = await buildAuctionProviders(walletState.api, provider)
+      // Contract call wiring (findDeployedContract + callTx.placeBid) is not in the
+      // frontend yet — no contract package/address wired in. Confirm the providers
+      // assemble correctly for now; real tx build + submit is next session's work.
+      console.log('[AuctionDetailPage] AuctionProviders built successfully:', providers)
+      console.log('[AuctionDetailPage] placeBid tx build + submit deferred to next session')
+      onNavigateToZK()
+    } catch (err) {
+      setBidError(err instanceof Error ? err.message : 'Failed to build providers for bid submission')
+    }
   }
 
   useEffect(() => {
@@ -131,6 +154,12 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
                 </div>
               </div>
               <div className="h-px bg-outline-variant/30"></div>
+
+              {bidError && (
+                <p className="text-error text-sm font-label-mono" role="alert">
+                  {bidError}
+                </p>
+              )}
 
               <BidInput onSealSubmit={handleSealSubmit} />
             </div>
