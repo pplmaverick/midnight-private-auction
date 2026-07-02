@@ -5,6 +5,7 @@ import BidInput from '../components/BidInput'
 import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
+import { ProvingNotSupportedError } from '../midnight/proofProvider'
 
 interface AuctionDetailPageProps {
   onNavigateToZK: () => void
@@ -15,9 +16,11 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
   const { ensureUnlocked, provider } = usePrivateState()
   const { walletState } = useWallet()
   const [bidError, setBidError] = useState<string | null>(null)
+  const [provingUnsupported, setProvingUnsupported] = useState(false)
 
   const handleSealSubmit = async () => {
     setBidError(null)
+    setProvingUnsupported(false)
 
     // Sealing a bid reads/writes the browser private-state store — make sure it's
     // unlocked first; ensureUnlocked() shows the password modal if needed.
@@ -38,6 +41,10 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
       console.log('[AuctionDetailPage] placeBid tx build + submit deferred to next session')
       onNavigateToZK()
     } catch (err) {
+      if (err instanceof ProvingNotSupportedError) {
+        setProvingUnsupported(true)
+        return
+      }
       setBidError(err instanceof Error ? err.message : 'Failed to build providers for bid submission')
     }
   }
@@ -154,6 +161,21 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
                 </div>
               </div>
               <div className="h-px bg-outline-variant/30"></div>
+
+              {provingUnsupported && (
+                <div
+                  className="flex gap-3 p-4 rounded-lg border border-error/50 bg-error/10"
+                  role="alert"
+                >
+                  <span className="material-symbols-outlined text-error shrink-0" data-weight="fill">
+                    error
+                  </span>
+                  <p className="font-body-md text-sm text-error leading-relaxed">
+                    Your wallet does not support ZK proof generation. Please use 1AM wallet, or configure
+                    a local proof server at Settings → Proving Server (e.g. http://127.0.0.1:6300).
+                  </p>
+                </div>
+              )}
 
               {bidError && (
                 <p className="text-error text-sm font-label-mono" role="alert">
