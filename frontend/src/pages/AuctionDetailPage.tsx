@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import PhaseIndicator from '../components/PhaseIndicator'
 import BidInput from '../components/BidInput'
+import { usePrivateState } from '../midnight/PrivateStateContext'
 
 interface AuctionDetailPageProps {
   onNavigateToZK: () => void
@@ -9,6 +10,14 @@ interface AuctionDetailPageProps {
 
 export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageProps) {
   const [time, setTime] = useState({ h: 4, m: 21, s: 58 })
+  const { ensureUnlocked } = usePrivateState()
+
+  const handleSealSubmit = async () => {
+    // Sealing a bid reads/writes the browser private-state store — make sure it's
+    // unlocked first; ensureUnlocked() shows the password modal if needed.
+    const unlocked = await ensureUnlocked()
+    if (unlocked) onNavigateToZK()
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -123,7 +132,7 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
               </div>
               <div className="h-px bg-outline-variant/30"></div>
 
-              <BidInput onSealSubmit={onNavigateToZK} />
+              <BidInput onSealSubmit={handleSealSubmit} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
