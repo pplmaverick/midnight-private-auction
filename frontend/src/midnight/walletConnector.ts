@@ -21,6 +21,20 @@ export interface WalletInfo {
   icon: string
 }
 
+// DUST 的最小單位是 SPECK；1 DUST = 10^15 SPECK
+// (見 midnight-ledger spec/dust.md: "The atomic unit of Dust is the Speck, with 1 Dust = 10^15 Specks")
+const SPECKS_PER_DUST = 1_000_000_000_000_000n
+
+// 將 getDustBalance() 回傳的原始 SPECK bigint 轉成可讀的 DUST 字串（用 BigInt 運算避免大數精度誤差）
+export function formatDustBalance(specks: bigint, maxDecimals = 6): string {
+  const whole = specks / SPECKS_PER_DUST
+  const remainder = specks % SPECKS_PER_DUST
+  if (remainder === 0n) return whole.toString()
+
+  const fraction = remainder.toString().padStart(15, '0').slice(0, maxDecimals).replace(/0+$/, '')
+  return fraction ? `${whole}.${fraction}` : whole.toString()
+}
+
 // 偵測可用的 wallet providers
 export function detectWallets(): WalletInfo[] {
   if (typeof window === 'undefined' || !window.midnight) return []
@@ -73,7 +87,7 @@ export async function connectWallet(
   let balance = '-- DUST'
   try {
     const dust = await api.getDustBalance()
-    balance = `${dust.balance.toString()} DUST`
+    balance = `${formatDustBalance(dust.balance)} DUST`
   } catch {
     balance = '-- DUST'
   }
