@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 interface BidInputProps {
-  onSealSubmit: () => void
+  onSealSubmit: (amount: string) => void
 }
 
 export default function BidInput({ onSealSubmit }: BidInputProps) {
@@ -35,7 +35,7 @@ export default function BidInput({ onSealSubmit }: BidInputProps) {
       </div>
       <button
         type="button"
-        onClick={() => onSealSubmit()}
+        onClick={() => onSealSubmit(amount)}
         className="w-full bg-primary-container text-on-primary-container py-5 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all active:scale-[0.98] flex items-center justify-center gap-3"
       >
         <span className="material-symbols-outlined">key_visualizer</span>

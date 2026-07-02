@@ -20,4 +20,13 @@ export default defineConfig({
   // rollup, so `rollup` isn't installed and the plugin fails to load. Not needed here anyway —
   // the ledger-v8 wasm-bindgen glue doesn't use top-level await.
   plugins: [react(), tailwindcss(), wasm()],
+  // Vite auto-detects its workspace root by walking up for a lockfile; since both
+  // frontend/ and the repo root have a package-lock.json, it stops at frontend/ and
+  // blocks dev-server requests for ../contract/* (outside the default fs.allow list).
+  // We import the compiled contract from ../contract/src, so widen fs.allow to the repo root.
+  server: {
+    fs: {
+      allow: ['..'],
+    },
+  },
 })

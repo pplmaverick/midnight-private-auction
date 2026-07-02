@@ -6,6 +6,16 @@ import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
 import { ProvingNotSupportedError } from '../midnight/proofProvider'
+import {
+  getDeployedAuction,
+  createAuctionPrivateState,
+  BIDDER1_STATE_ID,
+  type AuctionCircuits,
+  type AuctionRoleId,
+  type AuctionPrivateState,
+} from '../midnight/contract'
+
+const MAX_BID_AMOUNT = 4294967295
 
 interface AuctionDetailPageProps {
   onNavigateToZK: () => void
@@ -15,12 +25,24 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
   const [time, setTime] = useState({ h: 4, m: 21, s: 58 })
   const { ensureUnlocked, provider } = usePrivateState()
   const { walletState } = useWallet()
+  const [bidderKey, setBidderKey] = useState<Uint8Array | null>(null)
   const [bidError, setBidError] = useState<string | null>(null)
+  const [bidResult, setBidResult] = useState<string | null>(null)
   const [provingUnsupported, setProvingUnsupported] = useState(false)
 
-  const handleSealSubmit = async () => {
+  const handleSealSubmit = async (amount: string) => {
     setBidError(null)
+    setBidResult(null)
     setProvingUnsupported(false)
+
+    // amount is a raw integer bid unit (same semantics as src/index.ts's e2e test bids,
+    // e.g. 100n/200n) — the contract's bidAmount field is Uint<0..4294967296>, not a
+    // DUST/speck-scaled value, and has no fractional support.
+    const parsedAmount = Number(amount)
+    if (!Number.isInteger(parsedAmount) || parsedAmount <= 0 || parsedAmount > MAX_BID_AMOUNT) {
+      setBidError(`Enter a whole number between 1 and ${MAX_BID_AMOUNT}.`)
+      return
+    }
 
     // Sealing a bid reads/writes the browser private-state store — make sure it's
     // unlocked first; ensureUnlocked() shows the password modal if needed.
@@ -33,19 +55,30 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
     }
 
     try {
-      const providers = await buildAuctionProviders(walletState.api, provider)
-      // Contract call wiring (findDeployedContract + callTx.placeBid) is not in the
-      // frontend yet — no contract package/address wired in. Confirm the providers
-      // assemble correctly for now; real tx build + submit is next session's work.
-      console.log('[AuctionDetailPage] AuctionProviders built successfully:', providers)
-      console.log('[AuctionDetailPage] placeBid tx build + submit deferred to next session')
+      // Reuse the same bidder secretKey across calls within a session (mirrors
+      // HomePage's auctioneer key reuse) — bidSalt is generated fresh per placeBid call.
+      const secretKey = bidderKey ?? crypto.getRandomValues(new Uint8Array(32))
+      if (!bidderKey) setBidderKey(secretKey)
+      const bidSalt = crypto.getRandomValues(new Uint8Array(32))
+
+      const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
+        walletState.api,
+        provider,
+      )
+      const contract = await getDeployedAuction(
+        providers,
+        BIDDER1_STATE_ID,
+        createAuctionPrivateState(secretKey, BigInt(parsedAmount), bidSalt),
+      )
+      await contract.callTx.placeBid()
+      setBidResult('Bid sealed and submitted.')
       onNavigateToZK()
     } catch (err) {
       if (err instanceof ProvingNotSupportedError) {
         setProvingUnsupported(true)
         return
       }
-      setBidError(err instanceof Error ? err.message : 'Failed to build providers for bid submission')
+      setBidError(err instanceof Error ? err.message : 'Failed to submit bid')
     }
   }
 
@@ -180,6 +213,12 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
               {bidError && (
                 <p className="text-error text-sm font-label-mono" role="alert">
                   {bidError}
+                </p>
+              )}
+
+              {bidResult && (
+                <p className="text-success text-sm font-label-mono" role="status">
+                  {bidResult}
                 </p>
               )}
 

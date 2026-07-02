@@ -1,6 +1,17 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import AuctionCard from '../components/AuctionCard'
+import { usePrivateState } from '../midnight/PrivateStateContext'
+import { useWallet } from '../midnight/WalletContext'
+import { buildAuctionProviders } from '../midnight/auctionProviders'
+import {
+  getDeployedAuction,
+  createAuctionPrivateState,
+  AUCTIONEER_STATE_ID,
+  type AuctionCircuits,
+  type AuctionRoleId,
+  type AuctionPrivateState,
+} from '../midnight/contract'
 
 const auctions = [
   {
@@ -38,6 +49,51 @@ interface HomePageProps {
 
 export default function HomePage({ onNavigateToDetail }: HomePageProps) {
   const particlesRef = useRef<HTMLDivElement>(null)
+  const { ensureUnlocked, provider } = usePrivateState()
+  const { walletState } = useWallet()
+
+  const [auctioneerKey, setAuctioneerKey] = useState<Uint8Array | null>(null)
+  const [itemName, setItemName] = useState('')
+  const [creating, setCreating] = useState(false)
+  const [createResult, setCreateResult] = useState<string | null>(null)
+
+  const handleCreateAuction = async () => {
+    setCreating(true)
+    setCreateResult(null)
+    try {
+      const unlocked = await ensureUnlocked()
+      if (!unlocked) {
+        setCreateResult('Private state locked — unlock to continue.')
+        return
+      }
+      if (walletState.status !== 'connected' || !provider) {
+        setCreateResult('Wallet not connected — connect a wallet before creating an auction.')
+        return
+      }
+
+      // Reuse the same auctioneer secretKey across calls within a session (mirrors
+      // src/index.ts's aucPrivState, which is reused for both createAuction and
+      // closeAuction — the auctioneer identity must stay stable within a session).
+      const secretKey = auctioneerKey ?? crypto.getRandomValues(new Uint8Array(32))
+      if (!auctioneerKey) setAuctioneerKey(secretKey)
+
+      const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
+        walletState.api,
+        provider,
+      )
+      const contract = await getDeployedAuction(
+        providers,
+        AUCTIONEER_STATE_ID,
+        createAuctionPrivateState(secretKey, 0n, new Uint8Array(32)),
+      )
+      await contract.callTx.createAuction(itemName)
+      setCreateResult('createAuction tx submitted')
+    } catch (err) {
+      setCreateResult(err instanceof Error ? err.message : 'Failed to create auction')
+    } finally {
+      setCreating(false)
+    }
+  }
 
   useEffect(() => {
     const container = particlesRef.current
@@ -148,6 +204,29 @@ export default function HomePage({ onNavigateToDetail }: HomePageProps) {
               View All Live Auctions <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
           </div>
+        </section>
+
+        <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-24">
+          <h2 className="font-headline-md text-headline-md text-text-primary mb-stack-md">
+            Create Auction (Auctioneer)
+          </h2>
+          <div className="flex flex-col md:flex-row gap-gutter items-start md:items-center">
+            <input
+              value={itemName}
+              onChange={(e) => setItemName(e.target.value)}
+              placeholder="Item name"
+              className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
+            />
+            <button
+              type="button"
+              onClick={handleCreateAuction}
+              disabled={creating}
+              className="bg-[#7C3AED] text-[#F8F8FF] px-8 py-2 rounded-lg font-bold hover:shadow-[0_0_25px_rgba(124,58,237,0.5)] transition-all active:scale-95 disabled:opacity-50"
+            >
+              {creating ? 'Submitting...' : 'Create Auction'}
+            </button>
+          </div>
+          {createResult && <p className="mt-stack-sm font-label-mono text-sm text-on-surface-variant">{createResult}</p>}
         </section>
       </main>
 
