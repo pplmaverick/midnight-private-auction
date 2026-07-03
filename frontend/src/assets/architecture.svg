@@ -1,4 +1,4 @@
-<svg width="100%" viewBox="0 0 680 640" role="img">
+<svg width="100%" viewBox="0 0 680 640" role="img" xmlns="http://www.w3.org/2000/svg">
 <title>Midnight Private Auction — Architecture Diagram v3</title>
 <desc>Two-phase ZK auction flow with corrected persistentHash parameters and sk privacy annotation.</desc>
 <defs>
