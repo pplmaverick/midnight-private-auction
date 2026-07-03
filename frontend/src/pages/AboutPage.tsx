@@ -25,32 +25,55 @@ function GitHubIcon() {
 }
 
 const SOCIAL_LINK_CLASS =
-  'w-full h-[52px] px-6 rounded-full font-semibold flex items-center gap-3 transition-all duration-300 ease-in-out active:scale-95'
+  'flex-1 min-w-[140px] h-[52px] px-4 rounded-full font-semibold flex items-center justify-center gap-3 transition-all duration-300 ease-in-out active:scale-95'
+
+const STAT_CARD_CLASS = 'rounded-xl border border-[rgba(139,92,246,0.4)] bg-[#1a1035] p-6 flex flex-col gap-1'
 
 export default function AboutPage({ onNavigateHome, onNavigateHowItWorks }: AboutPageProps) {
   return (
     <div className="bg-[#0A0A0F] text-[#e4e1e9] font-body-md text-body-md selection:bg-primary/30 min-h-screen">
       <Navbar activePage="about" onNavigateHome={onNavigateHome} onNavigateHowItWorks={onNavigateHowItWorks} />
       <main className="pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center">
           <h1 className="font-display-xl text-display-xl-mobile md:text-display-xl text-text-primary mb-stack-lg">
             About
           </h1>
 
-          <div className="glass-panel rounded-xl p-8 md:p-12 text-left flex flex-col gap-stack-md">
-            <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-              Midnight Private Auction is an open-source sealed-bid auction protocol built natively on the Midnight
-              blockchain.
-            </p>
-            <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-              Privacy is not an add-on — it is the base layer. Bids are shielded at the protocol level using
-              Midnight's zero-knowledge private state, making this the first auction system where neither the
-              auctioneer nor other participants can observe competing bids before reveal.
-            </p>
-            <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-              Built by an independent developer as part of Midnight's early mainnet developer community. Deployed
-              within 3 months of mainnet launch.
-            </p>
+          <div className="glass-panel rounded-xl p-8 md:p-12 text-left grid grid-cols-1 md:grid-cols-3 gap-gutter">
+            <div className="md:col-span-2 flex flex-col gap-stack-md">
+              <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                Midnight Private Auction is an open-source{' '}
+                <span className="text-[#a78bfa] font-semibold">sealed-bid auction protocol</span> built natively on
+                the Midnight blockchain.
+              </p>
+              <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                <span className="text-[#a78bfa] font-semibold text-xl">Privacy is not an add-on</span> — it is the
+                base layer. Bids are shielded at the protocol level using Midnight's{' '}
+                <span className="text-[#a78bfa] font-semibold">zero-knowledge private state</span>, making this the
+                first auction system where neither the auctioneer nor other participants can observe competing bids
+                before reveal.
+              </p>
+              <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                Built by an independent developer as part of Midnight's early mainnet developer community. Deployed
+                within 3 months of mainnet launch.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-stack-md">
+              <div className={STAT_CARD_CLASS}>
+                <span className="font-display-xl text-4xl font-bold text-[#a78bfa] leading-none">3</span>
+                <span className="font-label-caps text-label-caps text-text-secondary uppercase mt-1">Months</span>
+                <p className="font-body-md text-sm text-on-surface-variant mt-2 leading-snug">
+                  Deployed within 3M of Mainnet Launch
+                </p>
+              </div>
+              <div className={STAT_CARD_CLASS}>
+                <span className="font-display-xl text-4xl font-bold text-[#a78bfa] leading-none">100%</span>
+                <p className="font-body-md text-sm text-on-surface-variant mt-2 leading-snug">
+                  Open-Source &amp; Client-Side Secure
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="mt-stack-lg rounded-2xl border border-[rgba(139,92,246,0.3)] bg-[#1a1a2e] p-6 md:p-8 text-left flex flex-col gap-stack-lg">
@@ -68,7 +91,7 @@ export default function AboutPage({ onNavigateHome, onNavigateHowItWorks }: Abou
                 <span className="font-label-caps text-label-caps text-text-secondary uppercase">Official Links</span>
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-row flex-wrap gap-2">
                 <a
                   href="https://x.com/SmsmSmsm87"
                   target="_blank"
