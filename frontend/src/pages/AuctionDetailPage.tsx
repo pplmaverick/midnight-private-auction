@@ -19,9 +19,17 @@ const MAX_BID_AMOUNT = 4294967295
 
 interface AuctionDetailPageProps {
   onNavigateToZK: () => void
+  onNavigateHome: () => void
+  onNavigateHowItWorks: () => void
+  onNavigateAbout: () => void
 }
 
-export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageProps) {
+export default function AuctionDetailPage({
+  onNavigateToZK,
+  onNavigateHome,
+  onNavigateHowItWorks,
+  onNavigateAbout,
+}: AuctionDetailPageProps) {
   const [time, setTime] = useState({ h: 4, m: 21, s: 58 })
   const { ensureUnlocked, provider } = usePrivateState()
   const { walletState } = useWallet()
@@ -126,7 +134,11 @@ export default function AuctionDetailPage({ onNavigateToZK }: AuctionDetailPageP
 
   return (
     <div className="bg-[#131318] text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen">
-      <Navbar />
+      <Navbar
+        onNavigateHome={onNavigateHome}
+        onNavigateHowItWorks={onNavigateHowItWorks}
+        onNavigateAbout={onNavigateAbout}
+      />
       <main className="pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <PhaseIndicator />
 

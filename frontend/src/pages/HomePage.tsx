@@ -45,9 +45,11 @@ const auctions = [
 
 interface HomePageProps {
   onNavigateToDetail: () => void
+  onNavigateHowItWorks: () => void
+  onNavigateAbout: () => void
 }
 
-export default function HomePage({ onNavigateToDetail }: HomePageProps) {
+export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onNavigateAbout }: HomePageProps) {
   const particlesRef = useRef<HTMLDivElement>(null)
   const { ensureUnlocked, provider } = usePrivateState()
   const { walletState } = useWallet()
@@ -138,7 +140,7 @@ export default function HomePage({ onNavigateToDetail }: HomePageProps) {
 
   return (
     <div className="bg-[#0A0A0F] text-[#e4e1e9] font-body-md text-body-md selection:bg-primary/30 min-h-screen">
-      <Navbar />
+      <Navbar onNavigateHowItWorks={onNavigateHowItWorks} onNavigateAbout={onNavigateAbout} />
       <main className="pt-20">
         <section className="relative min-h-[819px] flex flex-col items-center justify-center text-center px-margin-mobile md:px-margin-desktop overflow-hidden">
           <div className="absolute inset-0 z-0 pointer-events-none opacity-40">

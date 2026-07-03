@@ -6,7 +6,13 @@ import { truncateAddress, detectWallets, type WalletInfo } from '../midnight/wal
 const PROVING_NOT_SUPPORTED_MESSAGE =
   '此錢包尚未支援自動證明功能,請改用 1AM 錢包連線,或在本機啟動 Midnight proof server 並於錢包設定中指定位址'
 
-export default function Navbar() {
+interface NavbarProps {
+  onNavigateHome?: () => void
+  onNavigateHowItWorks?: () => void
+  onNavigateAbout?: () => void
+}
+
+export default function Navbar({ onNavigateHome, onNavigateHowItWorks, onNavigateAbout }: NavbarProps) {
   const { walletState, connect, disconnect } = useWallet()
   const { isUnlocked, lock } = usePrivateState()
   const [walletChoices, setWalletChoices] = useState<WalletInfo[] | null>(null)
@@ -31,12 +37,19 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-20 bg-background/80 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_20px_rgba(124,58,237,0.1)]">
       <div className="flex items-center gap-stack-md">
-        <span className="font-display-xl text-headline-md font-bold text-primary tracking-tight">MIDNIGHT</span>
+        <button
+          type="button"
+          onClick={() => onNavigateHome?.()}
+          className="font-display-xl text-headline-md font-bold text-primary tracking-tight"
+        >
+          MIDNIGHT
+        </button>
       </div>
       <nav className="hidden md:flex items-center gap-stack-lg">
         <a
           className="font-label-mono text-label-mono text-primary font-bold border-b-2 border-primary pb-1"
           href="#auctions"
+          onClick={() => onNavigateHome?.()}
         >
           Auctions
         </a>
@@ -45,7 +58,7 @@ export default function Navbar() {
           href="#"
           onClick={(e) => {
             e.preventDefault()
-            alert('Coming soon')
+            onNavigateHowItWorks?.()
           }}
         >
           How It Works
@@ -55,7 +68,7 @@ export default function Navbar() {
           href="#"
           onClick={(e) => {
             e.preventDefault()
-            alert('Coming soon')
+            onNavigateAbout?.()
           }}
         >
           About
