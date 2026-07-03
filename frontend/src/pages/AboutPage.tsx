@@ -24,8 +24,8 @@ function GitHubIcon() {
   )
 }
 
-const SOCIAL_LINK_BASE_CLASS =
-  'px-5 py-3.5 rounded-full font-bold flex items-center gap-3 transition-all duration-300 ease-in-out active:scale-95'
+const SOCIAL_LINK_CLASS =
+  'w-full h-[52px] px-6 rounded-full font-semibold flex items-center gap-3 transition-all duration-300 ease-in-out active:scale-95'
 
 export default function AboutPage({ onNavigateHome, onNavigateHowItWorks }: AboutPageProps) {
   return (
@@ -53,51 +53,43 @@ export default function AboutPage({ onNavigateHome, onNavigateHowItWorks }: Abou
             </p>
           </div>
 
-          <div className="mt-stack-lg relative rounded-2xl border border-outline-variant/50 bg-surface-container-lowest overflow-hidden text-left">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_0%,rgba(124,58,237,0.18),transparent_55%)] pointer-events-none" />
-            <div className="relative p-6 md:p-8 flex flex-col gap-stack-lg">
-              <div className="flex items-center gap-4">
-                <span className="material-symbols-outlined text-primary text-3xl">code</span>
-                <div>
-                  <span className="font-label-caps text-label-caps text-text-secondary uppercase block">
-                    Developer
-                  </span>
-                  <span className="font-label-mono text-label-mono text-text-primary">pplmaverick · Taiwan</span>
-                </div>
+          <div className="mt-stack-lg rounded-2xl border border-[rgba(139,92,246,0.3)] bg-[#1a1a2e] p-6 md:p-8 text-left flex flex-col gap-stack-lg">
+            <div className="flex items-center gap-4">
+              <span className="material-symbols-outlined text-primary text-3xl">code</span>
+              <div>
+                <span className="font-label-caps text-label-caps text-text-secondary uppercase block">Developer</span>
+                <span className="font-label-mono text-label-mono text-text-primary">pplmaverick · Taiwan</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-stack-sm">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-lg">link</span>
+                <span className="font-label-caps text-label-caps text-text-secondary uppercase">Official Links</span>
               </div>
 
-              <div className="flex flex-col gap-stack-sm">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-lg">link</span>
-                  <span className="font-label-mono text-label-mono text-on-surface-variant font-bold uppercase tracking-wide text-xs">
-                    Official Links
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-stack-sm">
-                  <a
-                    href="https://x.com/SmsmSmsm87"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${SOCIAL_LINK_BASE_CLASS} bg-black text-white border border-white/10 hover:bg-neutral-900`}
-                  >
-                    <XIcon />
-                    X (Twitter)
-                  </a>
-                  <a
-                    href="mailto:chiu69tw@gmail.com"
-                    className={`${SOCIAL_LINK_BASE_CLASS} bg-white text-black border border-black/5 hover:bg-gray-100`}
-                  >
-                    <span className="material-symbols-outlined text-xl text-[#EA4335]">mail</span>
-                    chiu69tw@gmail.com
-                  </a>
-                </div>
-
+              <div className="flex flex-col gap-2">
                 <a
-                  href="https://github.com/pplmaverick"
+                  href="https://x.com/SmsmSmsm87"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${SOCIAL_LINK_BASE_CLASS} w-full bg-white/5 text-on-surface-variant border border-outline-variant hover:bg-white/10`}
+                  className={`${SOCIAL_LINK_CLASS} bg-black text-white hover:bg-neutral-900`}
+                >
+                  <XIcon />
+                  X (Twitter)
+                </a>
+                <a
+                  href="mailto:chiu69tw@gmail.com"
+                  className={`${SOCIAL_LINK_CLASS} bg-white text-[#111111] hover:bg-gray-100`}
+                >
+                  <span className="material-symbols-outlined text-xl text-[#EA4335]">mail</span>
+                  chiu69tw@gmail.com
+                </a>
+                <a
+                  href="https://github.com/pplmaverick/midnight-private-auction"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${SOCIAL_LINK_CLASS} bg-[#7c3aed] text-white hover:bg-[#6d28d9]`}
                 >
                   <GitHubIcon />
                   GitHub
