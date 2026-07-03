@@ -103,10 +103,16 @@ export default function HowItWorksPage({ onNavigateHome, onNavigateAbout }: HowI
                 key={primitive.name}
                 className="glass-card rounded-lg p-6 flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
               >
-                <span className="font-label-mono text-label-mono text-primary font-bold shrink-0 md:w-64">
+                <span className="font-label-mono font-mono text-label-mono text-primary font-bold shrink-0 md:w-64">
                   {primitive.name}
                 </span>
-                <span className="font-body-md text-body-md text-on-surface-variant">{primitive.body}</span>
+                <span
+                  className={`font-body-md text-body-md text-on-surface-variant ${
+                    primitive.name === 'persistentHash' ? 'font-mono' : ''
+                  }`}
+                >
+                  {primitive.body}
+                </span>
               </li>
             ))}
           </ul>
