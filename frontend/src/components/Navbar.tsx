@@ -54,7 +54,9 @@ export default function Navbar({
           onClick={() => onNavigateHome?.()}
           className="font-display-xl text-headline-md font-bold text-primary tracking-tight"
         >
-          MIDNIGHT
+          <span className="font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500">
+            MIDNIGHT
+          </span>
         </button>
       </div>
       <nav className="hidden md:flex items-center gap-stack-lg">
