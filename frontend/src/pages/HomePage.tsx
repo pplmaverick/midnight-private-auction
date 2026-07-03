@@ -21,7 +21,7 @@ const auctions = [
     sealedBids: 14,
     title: 'Obsidian Core #042',
     endingIn: '04h 22m 11s',
-    reserve: '12.5 ETH',
+    reserve: '12.5 DUST',
   },
   {
     imageSrc:
@@ -30,7 +30,7 @@ const auctions = [
     sealedBids: 8,
     title: 'Vortex Prism',
     endingIn: '1d 02h 45m',
-    reserve: '8.0 ETH',
+    reserve: '8.0 DUST',
   },
   {
     imageSrc:
@@ -39,7 +39,7 @@ const auctions = [
     sealedBids: 32,
     title: 'Ethereal Cycle',
     endingIn: '00h 48m 52s',
-    reserve: '25.0 ETH',
+    reserve: '25.0 DUST',
   },
 ]
 
