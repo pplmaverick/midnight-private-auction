@@ -53,7 +53,7 @@ interface HowItWorksPageProps {
 export default function HowItWorksPage({ onNavigateHome, onNavigateAbout }: HowItWorksPageProps) {
   return (
     <div className="bg-[#0A0A0F] text-[#e4e1e9] font-body-md text-body-md selection:bg-primary/30 min-h-screen">
-      <Navbar onNavigateHome={onNavigateHome} onNavigateAbout={onNavigateAbout} />
+      <Navbar activePage="how-it-works" onNavigateHome={onNavigateHome} onNavigateAbout={onNavigateAbout} />
       <main className="pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-24">
           <h1 className="font-display-xl text-display-xl-mobile md:text-display-xl text-text-primary mb-stack-md">

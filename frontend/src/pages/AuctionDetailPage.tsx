@@ -135,6 +135,7 @@ export default function AuctionDetailPage({
   return (
     <div className="bg-[#131318] text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen">
       <Navbar
+        activePage="home"
         onNavigateHome={onNavigateHome}
         onNavigateHowItWorks={onNavigateHowItWorks}
         onNavigateAbout={onNavigateAbout}

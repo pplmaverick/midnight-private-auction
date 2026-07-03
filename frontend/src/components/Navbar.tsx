@@ -6,13 +6,25 @@ import { truncateAddress, detectWallets, type WalletInfo } from '../midnight/wal
 const PROVING_NOT_SUPPORTED_MESSAGE =
   '此錢包尚未支援自動證明功能,請改用 1AM 錢包連線,或在本機啟動 Midnight proof server 並於錢包設定中指定位址'
 
+type NavPage = 'home' | 'how-it-works' | 'about'
+
 interface NavbarProps {
+  activePage?: NavPage
   onNavigateHome?: () => void
   onNavigateHowItWorks?: () => void
   onNavigateAbout?: () => void
 }
 
-export default function Navbar({ onNavigateHome, onNavigateHowItWorks, onNavigateAbout }: NavbarProps) {
+const ACTIVE_LINK_CLASS = 'font-label-mono text-label-mono text-primary font-bold border-b-2 border-primary pb-1'
+const INACTIVE_LINK_CLASS =
+  'font-label-mono text-label-mono text-on-surface-variant font-medium hover:text-primary transition-colors'
+
+export default function Navbar({
+  activePage = 'home',
+  onNavigateHome,
+  onNavigateHowItWorks,
+  onNavigateAbout,
+}: NavbarProps) {
   const { walletState, connect, disconnect } = useWallet()
   const { isUnlocked, lock } = usePrivateState()
   const [walletChoices, setWalletChoices] = useState<WalletInfo[] | null>(null)
@@ -47,14 +59,14 @@ export default function Navbar({ onNavigateHome, onNavigateHowItWorks, onNavigat
       </div>
       <nav className="hidden md:flex items-center gap-stack-lg">
         <a
-          className="font-label-mono text-label-mono text-primary font-bold border-b-2 border-primary pb-1"
+          className={activePage === 'home' ? ACTIVE_LINK_CLASS : INACTIVE_LINK_CLASS}
           href="#auctions"
           onClick={() => onNavigateHome?.()}
         >
           Auctions
         </a>
         <a
-          className="font-label-mono text-label-mono text-on-surface-variant font-medium hover:text-primary transition-colors"
+          className={activePage === 'how-it-works' ? ACTIVE_LINK_CLASS : INACTIVE_LINK_CLASS}
           href="#"
           onClick={(e) => {
             e.preventDefault()
@@ -64,7 +76,7 @@ export default function Navbar({ onNavigateHome, onNavigateHowItWorks, onNavigat
           How It Works
         </a>
         <a
-          className="font-label-mono text-label-mono text-on-surface-variant font-medium hover:text-primary transition-colors"
+          className={activePage === 'about' ? ACTIVE_LINK_CLASS : INACTIVE_LINK_CLASS}
           href="#"
           onClick={(e) => {
             e.preventDefault()
