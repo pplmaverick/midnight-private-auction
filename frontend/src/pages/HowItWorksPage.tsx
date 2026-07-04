@@ -40,8 +40,8 @@ const primitives = [
     body: 'single contract supports concurrent independent auctions with isolated state per auctionId',
   },
   {
-    name: '1AM wallet SDK',
-    body: "transaction signing and DUST transfer via Midnight's native wallet",
+    name: '@midnight-ntwrk/dapp-connector-api',
+    body: 'connects to whichever wallet extension is installed (e.g. 1AM) via the CAIP-372 window.midnight provider, for transaction signing and DUST transfers',
   },
 ]
 

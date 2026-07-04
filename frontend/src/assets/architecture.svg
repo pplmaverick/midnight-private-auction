@@ -93,7 +93,7 @@
 <rect x="160" y="578" width="150" height="24" rx="5" fill="#1a1035" stroke="#534AB7" stroke-width="0.5"/>
 <text class="ts" x="235" y="594" text-anchor="middle" style="fill:#AFA9EC">persistentHash (built-in)</text>
 <rect x="318" y="578" width="232" height="24" rx="5" fill="#1a1035" stroke="#534AB7" stroke-width="0.5"/>
-<text class="ts" x="434" y="594" text-anchor="middle" style="fill:#AFA9EC">@midnight-ntwrk/wallet-sdk-facade</text>
+<text class="ts" x="434" y="594" text-anchor="middle" style="fill:#AFA9EC">@midnight-ntwrk/dapp-connector-api</text>
 <rect x="558" y="578" width="64" height="24" rx="5" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
 <text class="ts" x="590" y="594" text-anchor="middle" style="fill:#5DCAA5">Mainnet ✓</text>
 </svg>
