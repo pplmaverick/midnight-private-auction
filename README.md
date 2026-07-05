@@ -21,7 +21,17 @@ Contract deployed and full e2e verified on Midnight mainnet (2026-06-30).
 
 **Verified Transaction Hashes**
 
-_Pending — the M1 contract's 7-step e2e verification table lived here, but those hashes belong to the previous single-auction contract address and no longer apply to the M2 contract above. Will be replaced once the M2 multi-auction e2e flow is verified._
+M2 multi-auction e2e flow, verified against the contract address above:
+
+| Step | Tx Hash | Block |
+|------|---------|-------|
+| createAuction | `007678e121afb7d0f7ec5559a67c513eafb1d01f7d48fb5d5488bb11be0e770a56` | 1,559,374 |
+| placeBid | `00b5b503498af9356d9fc7d7ea8dd8ea6203047a73dd4023ecac81469d5e32b2b4` | 1,559,378 |
+| closeAuction | `0078907635e72a201edf0e08304d007676ed9aec74e4b3fbb91d07a03f8c9962c6` | 1,559,381 |
+| revealBid | `006270fdcb5383600b5a84de9aa6e3c6c1e8e9b4c0755b975bddaf155347caee57` | 1,559,385 |
+| claimItem | `00bb62e5d1863884db547f0ac561e1244a3899bd3fd12dcd81ddc9e996d9f5adb3` | 1,559,389 |
+
+Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = true
 
 > **Hash format note:** The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version prefix byte). The public indexer stores 64-character Substrate extrinsic hashes (32 bytes). These are different encodings of the same transaction. Block height is the authoritative cross-reference.
 
