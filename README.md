@@ -154,14 +154,14 @@ Checkpoints are saved to `.wallet-state/` (git-ignored). Subsequent runs go stra
 ```
 // Pure circuits (no state change)
 bidderPublicKey(sk: Bytes<32>): Bytes<32>
-computeCommitment(sk: Bytes<32>, amount: Uint<32>, salt: Bytes<32>): Bytes<32>
+computeCommitment(sk: Bytes<32>, auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): Bytes<32>
 
 // Impure circuits (change ledger state)
-createAuction(item: Opaque<"string">): []   — auctioneer only
-placeBid(): []                              — any bidder, BIDDING phase
-closeAuction(): []                          — auctioneer only
-revealBid(amount: Uint<32>, salt: Bytes<32>): []   — any bidder, CLOSED phase
-claimItem(): []                             — highest bidder only
+createAuction(item: Opaque<"string">): Uint<32>                    — auctioneer only
+placeBid(auctionId: Uint<32>): []                                  — any bidder, BIDDING phase
+closeAuction(auctionId: Uint<32>): []                              — auctioneer only
+revealBid(auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): []   — any bidder, CLOSED phase
+claimItem(auctionId: Uint<32>): []                                 — highest bidder only
 ```
 
 **Auction phase transitions**
@@ -196,6 +196,7 @@ Compare with an equivalent EVM contract: `placeBid(uint256 amount, bytes32 salt)
 - **Auctioneer auth:** `closeAuction()` asserts `auctioneerPK == bidderPublicKey(localSecretKey())` inside the ZK circuit — no external role system needed
 - **Claim guard:** `claimItem()` asserts the caller's derived public key equals `highestBidderPK` and `highestBid > 0` and `!itemClaimed`
 - **No private key on-chain:** all secret material stays in Compact `witness` — never serialised into any transaction
+- **Single bid enforcement:** `placeBid()` asserts the caller has not previously submitted a sealed bid for this auction — each bidder may place exactly one bid per auction, enforced on-circuit
 
 ---
 
