@@ -137,6 +137,7 @@ export circuit placeBid(auctionId: Uint<32>): [] {
   assert(phase.lookup(id) == AuctionPhase.BIDDING, "Auction is not in bidding phase");
 
   const myPK = bidderPublicKey(localSecretKey());
+  assert(!sealedBids.lookup(id).member(disclose(myPK)), "Already placed a bid in this auction");
   const myCommitment = computeCommitment(localSecretKey(), auctionId, myBidAmount(auctionId), myBidSalt(auctionId));
   sealedBids.lookup(id).insert(disclose(myPK), disclose(myCommitment));
   bidCount.lookup(id).increment(1);

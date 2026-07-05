@@ -198,14 +198,14 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('closeAuction',
                                      'argument 1 (as invoked from Typescript)',
-                                     'auction.compact line 147 char 1',
+                                     'auction.compact line 148 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(auctionId_0) === 'bigint' && auctionId_0 >= 0n && auctionId_0 <= 4294967295n)) {
           __compactRuntime.typeError('closeAuction',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'auction.compact line 147 char 1',
+                                     'auction.compact line 148 char 1',
                                      'Uint<0..4294967296>',
                                      auctionId_0)
         }
@@ -236,28 +236,28 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('revealBid',
                                      'argument 1 (as invoked from Typescript)',
-                                     'auction.compact line 164 char 1',
+                                     'auction.compact line 165 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(auctionId_0) === 'bigint' && auctionId_0 >= 0n && auctionId_0 <= 4294967295n)) {
           __compactRuntime.typeError('revealBid',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'auction.compact line 164 char 1',
+                                     'auction.compact line 165 char 1',
                                      'Uint<0..4294967296>',
                                      auctionId_0)
         }
         if (!(typeof(amount_0) === 'bigint' && amount_0 >= 0n && amount_0 <= 4294967295n)) {
           __compactRuntime.typeError('revealBid',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'auction.compact line 164 char 1',
+                                     'auction.compact line 165 char 1',
                                      'Uint<0..4294967296>',
                                      amount_0)
         }
         if (!(salt_0.buffer instanceof ArrayBuffer && salt_0.BYTES_PER_ELEMENT === 1 && salt_0.length === 32)) {
           __compactRuntime.typeError('revealBid',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'auction.compact line 164 char 1',
+                                     'auction.compact line 165 char 1',
                                      'Bytes<32>',
                                      salt_0)
         }
@@ -288,14 +288,14 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('claimItem',
                                      'argument 1 (as invoked from Typescript)',
-                                     'auction.compact line 182 char 1',
+                                     'auction.compact line 183 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(auctionId_0) === 'bigint' && auctionId_0 >= 0n && auctionId_0 <= 4294967295n)) {
           __compactRuntime.typeError('claimItem',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'auction.compact line 182 char 1',
+                                     'auction.compact line 183 char 1',
                                      'Uint<0..4294967296>',
                                      auctionId_0)
         }
@@ -768,6 +768,26 @@ export class Contract {
                             'Auction is not in bidding phase');
     const myPK_0 = this._bidderPublicKey_0(this._localSecretKey_0(context,
                                                                   partialProofData));
+    __compactRuntime.assert(!_descriptor_1.fromValue(__compactRuntime.queryLedgerState(context,
+                                                                                       partialProofData,
+                                                                                       [
+                                                                                        { dup: { n: 0 } },
+                                                                                        { idx: { cached: false,
+                                                                                                 pushPath: false,
+                                                                                                 path: [
+                                                                                                        { tag: 'value',
+                                                                                                          value: { value: _descriptor_14.toValue(4n),
+                                                                                                                   alignment: _descriptor_14.alignment() } },
+                                                                                                        { tag: 'value',
+                                                                                                          value: { value: _descriptor_0.toValue(id_0),
+                                                                                                                   alignment: _descriptor_0.alignment() } }] } },
+                                                                                        { push: { storage: false,
+                                                                                                  value: __compactRuntime.StateValue.newCell({ value: _descriptor_3.toValue(myPK_0),
+                                                                                                                                               alignment: _descriptor_3.alignment() }).encode() } },
+                                                                                        'member',
+                                                                                        { popeq: { cached: true,
+                                                                                                   result: undefined } }]).value),
+                            'Already placed a bid in this auction');
     const myCommitment_0 = this._computeCommitment_0(this._localSecretKey_0(context,
                                                                             partialProofData),
                                                      auctionId_0,
