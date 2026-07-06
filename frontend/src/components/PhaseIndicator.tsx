@@ -1,40 +1,57 @@
-export default function PhaseIndicator() {
+import { Auction } from '../midnight/contract'
+
+type PhaseIndicatorProps = {
+  phase: Auction.AuctionPhase | null
+}
+
+const STEPS = [
+  { id: 1, label: 'Create' },
+  { id: 2, label: 'Bidding' },
+  { id: 3, label: 'Sealed' },
+  { id: 4, label: 'Reveal' },
+  { id: 5, label: 'Complete' },
+]
+
+export default function PhaseIndicator({ phase }: PhaseIndicatorProps) {
+  const activeStep = phase === Auction.AuctionPhase.CLOSED ? 3 : 2
+
   return (
     <div className="mb-stack-lg flex items-center justify-between max-w-3xl mx-auto">
-      <div className="flex flex-col items-center gap-2">
-        <div className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-mono text-xs">
-          01
+      {STEPS.map((step, index) => (
+        <div key={step.id} className="contents">
+          {index > 0 && (
+            <div className={`stepper-line mx-4 ${step.id <= activeStep ? 'active' : ''}`}></div>
+          )}
+          {step.id === activeStep ? (
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-10 h-10 rounded-full border-2 border-primary bg-background flex items-center justify-center text-primary font-label-mono font-bold shadow-[0_0_15px_rgba(124,58,237,0.3)]">
+                {String(step.id).padStart(2, '0')}
+              </div>
+              <span className="font-label-mono text-[10px] text-primary font-bold uppercase tracking-widest">
+                {step.label}
+              </span>
+            </div>
+          ) : step.id < activeStep ? (
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-mono text-xs">
+                {String(step.id).padStart(2, '0')}
+              </div>
+              <span className="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">
+                {step.label}
+              </span>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-2 opacity-40">
+              <div className="w-8 h-8 rounded-full border border-outline flex items-center justify-center text-on-surface-variant font-label-mono text-xs">
+                {String(step.id).padStart(2, '0')}
+              </div>
+              <span className="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">
+                {step.label}
+              </span>
+            </div>
+          )}
         </div>
-        <span className="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Create</span>
-      </div>
-      <div className="stepper-line active mx-4"></div>
-      <div className="flex flex-col items-center gap-2">
-        <div className="w-10 h-10 rounded-full border-2 border-primary bg-background flex items-center justify-center text-primary font-label-mono font-bold shadow-[0_0_15px_rgba(124,58,237,0.3)]">
-          02
-        </div>
-        <span className="font-label-mono text-[10px] text-primary font-bold uppercase tracking-widest">Bidding</span>
-      </div>
-      <div className="stepper-line mx-4"></div>
-      <div className="flex flex-col items-center gap-2 opacity-40">
-        <div className="w-8 h-8 rounded-full border border-outline flex items-center justify-center text-on-surface-variant font-label-mono text-xs">
-          03
-        </div>
-        <span className="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Sealed</span>
-      </div>
-      <div className="stepper-line mx-4"></div>
-      <div className="flex flex-col items-center gap-2 opacity-40">
-        <div className="w-8 h-8 rounded-full border border-outline flex items-center justify-center text-on-surface-variant font-label-mono text-xs">
-          04
-        </div>
-        <span className="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Reveal</span>
-      </div>
-      <div className="stepper-line mx-4"></div>
-      <div className="flex flex-col items-center gap-2 opacity-40">
-        <div className="w-8 h-8 rounded-full border border-outline flex items-center justify-center text-on-surface-variant font-label-mono text-xs">
-          05
-        </div>
-        <span className="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Complete</span>
-      </div>
+      ))}
     </div>
   )
 }

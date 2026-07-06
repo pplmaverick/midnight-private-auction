@@ -391,7 +391,7 @@ export default function AuctionDetailPage({
         onNavigateAbout={onNavigateAbout}
       />
       <main className="pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        <PhaseIndicator />
+        <PhaseIndicator phase={auctionStatus.phase} />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-start">
           {/* Left Column: Item Detail */}
@@ -467,27 +467,36 @@ export default function AuctionDetailPage({
                   <span className="font-label-mono text-xs">{String(auctionStatus.bidCount)} Sealed Bids</span>
                 </div>
               </div>
-              <div className="space-y-2">
-                <span className="font-label-caps text-label-caps text-text-secondary uppercase">
-                  Time Remaining
-                </span>
-                <div className="flex gap-4 font-display-xl text-headline-lg text-text-primary">
-                  <div>
-                    {String(timeLeft.h).padStart(2, '0')}
-                    <span className="text-sm font-label-mono ml-1 text-on-surface-variant">h</span>
-                  </div>
-                  <div className="text-primary-container">:</div>
-                  <div>
-                    {String(timeLeft.m).padStart(2, '0')}
-                    <span className="text-sm font-label-mono ml-1 text-on-surface-variant">m</span>
-                  </div>
-                  <div className="text-primary-container">:</div>
-                  <div>
-                    {String(timeLeft.s).padStart(2, '0')}
-                    <span className="text-sm font-label-mono ml-1 text-on-surface-variant">s</span>
+              {auctionStatus.phase === Auction.AuctionPhase.BIDDING ? (
+                <div className="space-y-2">
+                  <span className="font-label-caps text-label-caps text-text-secondary uppercase">
+                    Time Remaining
+                  </span>
+                  <div className="flex gap-4 font-display-xl text-headline-lg text-text-primary">
+                    <div>
+                      {String(timeLeft.h).padStart(2, '0')}
+                      <span className="text-sm font-label-mono ml-1 text-on-surface-variant">h</span>
+                    </div>
+                    <div className="text-primary-container">:</div>
+                    <div>
+                      {String(timeLeft.m).padStart(2, '0')}
+                      <span className="text-sm font-label-mono ml-1 text-on-surface-variant">m</span>
+                    </div>
+                    <div className="text-primary-container">:</div>
+                    <div>
+                      {String(timeLeft.s).padStart(2, '0')}
+                      <span className="text-sm font-label-mono ml-1 text-on-surface-variant">s</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-2">
+                  <span className="font-label-caps text-label-caps text-text-secondary uppercase">
+                    Status
+                  </span>
+                  <div className="font-label-mono text-lg text-primary">Reveal Phase — Submit your bid amount</div>
+                </div>
+              )}
               <div className="h-px bg-outline-variant/30"></div>
 
               {provingUnsupported && (
@@ -517,7 +526,11 @@ export default function AuctionDetailPage({
                 </p>
               )}
 
-              <BidInput onSealSubmit={handleSealSubmit} />
+              {auctionStatus.phase === Auction.AuctionPhase.BIDDING && (
+                <div>
+                  <BidInput onSealSubmit={handleSealSubmit} />
+                </div>
+              )}
             </div>
 
             {(showCloseButton || showRevealButton || showClaimButton || roleUnknown) && (
