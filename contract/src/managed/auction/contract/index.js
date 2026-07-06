@@ -1202,12 +1202,15 @@ export class Contract {
   }
 }
 export function ledger(stateOrChargedState) {
+  const __wasmClassNames = ['ContractOperation','ContractMaintenanceAuthority','ContractState','QueryContext','CostModel','QueryResults','StateBoundedMerkleTree','StateMap','ChargedState','StateValue','VmResults','VmStack'];
+  const __matches = __wasmClassNames.filter((name) => __compactRuntime[name] && stateOrChargedState instanceof __compactRuntime[name]);
   console.log(
     '[ledger-debug] stateOrChargedState:', stateOrChargedState,
-    'instanceof StateValue:', stateOrChargedState instanceof __compactRuntime.StateValue,
-    'instanceof ChargedState:', stateOrChargedState instanceof __compactRuntime.ChargedState,
+    'matches wasm classes:', __matches,
     'constructor:', stateOrChargedState?.constructor?.name,
     'typeof:', typeof stateOrChargedState,
+    'own keys:', stateOrChargedState && Object.keys(stateOrChargedState),
+    'proto own props:', stateOrChargedState && Object.getOwnPropertyNames(Object.getPrototypeOf(stateOrChargedState)),
   )
   const state = stateOrChargedState instanceof __compactRuntime.StateValue ? stateOrChargedState : stateOrChargedState.state;
   const chargedState = stateOrChargedState instanceof __compactRuntime.StateValue ? new __compactRuntime.ChargedState(stateOrChargedState) : stateOrChargedState;
