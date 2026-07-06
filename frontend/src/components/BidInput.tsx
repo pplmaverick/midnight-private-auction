@@ -42,7 +42,7 @@ export default function BidInput({ onSealSubmit }: BidInputProps) {
         Seal &amp; Submit Bid
       </button>
       <p className="text-center font-label-mono text-[10px] text-on-surface-variant/60">
-        Minimum Increment: 0.05 DUST • Network Fee: ~0.0002 DUST
+        Network Fee: ~0.0002 DUST
       </p>
     </div>
   )

@@ -447,12 +447,21 @@ export default function AuctionDetailPage({
           <div className="sticky top-28 space-y-stack-lg">
             <div className="glass-panel p-8 rounded-xl space-y-6">
               <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2 px-3 py-1 bg-success/10 rounded-full">
-                  <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
-                  <span className="font-label-mono text-xs text-success font-bold tracking-widest uppercase">
-                    Live Auction
-                  </span>
-                </div>
+                {auctionStatus.phase === Auction.AuctionPhase.BIDDING && (
+                  <div className="flex items-center gap-2 px-3 py-1 bg-success/10 rounded-full">
+                    <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
+                    <span className="font-label-mono text-xs text-success font-bold tracking-widest uppercase">
+                      Live Auction
+                    </span>
+                  </div>
+                )}
+                {auctionStatus.phase === Auction.AuctionPhase.CLOSED && (
+                  <div className="flex items-center gap-2 px-3 py-1 bg-on-surface-variant/10 rounded-full">
+                    <span className="font-label-mono text-xs text-on-surface-variant font-bold tracking-widest uppercase">
+                      Closed
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-on-surface-variant">
                   <span className="material-symbols-outlined text-sm">lock</span>
                   <span className="font-label-mono text-xs">{String(auctionStatus.bidCount)} Sealed Bids</span>
@@ -604,11 +613,11 @@ export default function AuctionDetailPage({
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-panel p-4 rounded-lg flex flex-col gap-1">
                 <span className="font-label-caps text-[10px] text-text-secondary uppercase">Protocol</span>
-                <span className="font-label-mono text-sm">ZK-SNARKS v2</span>
+                <span className="font-label-mono text-sm">ZK-SNARKs (Compact)</span>
               </div>
               <div className="glass-panel p-4 rounded-lg flex flex-col gap-1">
                 <span className="font-label-caps text-[10px] text-text-secondary uppercase">Standard</span>
-                <span className="font-label-mono text-sm">ERC-721P</span>
+                <span className="font-label-mono text-sm">Midnight Protocol</span>
               </div>
             </div>
           </div>
