@@ -38,6 +38,24 @@ Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = tru
 
 > **Hash format note:** The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version prefix byte). The public indexer stores 64-character Substrate extrinsic hashes (32 bytes). These are different encodings of the same transaction. Block height is the authoritative cross-reference.
 
+## M3 Frontend e2e — Verified Transaction Hashes
+Full createAuction → placeBid (×2) → closeAuction → revealBid (×2) → claimItem flow,
+run through the deployed frontend UI (1AM wallet, two bidders, real mainnet transactions) on 2026-07-06.
+
+Contract Address: 4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5
+
+| Step | TX Hash | 
+|------|---------|
+| createAuction | dabade00ee816a914d5d36e0b22b890b7745f553300cf9dda25c9c8e574124e1 |
+| placeBid (bidder 1) | fdfc3aeac994171a2b79f8a2183957393d8d9e542e2bc7de3afc6d07f5e589d7 |
+| placeBid (bidder 2) | 0af01384b366749130626a085601a0bdd3d3bc744ae6c7b416b8d3808a7a69c7 |
+| closeAuction | a10611ead44bfe3d21a6df07e22cd7d22e9869f104e4f92c675112c20179110e |
+| revealBid (bidder 1) | 10f1a54398468e8e395bcf06c60f233e1147c8dae0b61030ab0bdb546678d35b |
+| revealBid (bidder 2) | 03510138677d4bf13f75ce232bcc7e185e39c50515ca641167ee95c8a3a1053d |
+| claimItem | b228976211ee63b0f3e3ae7b6a871afc6de9dd066a64c8ed5770be58549fd19b |
+
+Final state: item = "Midnight Genesis #001", highestBid = 130, bidCount = 2, claimed = true
+
 ---
 
 **Mainnet Deployment — M2 (Deprecated)**
