@@ -246,6 +246,22 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
               Real auctions on Midnight mainnet — sealed bids, zero-knowledge verified.
             </p>
           </div>
+          <div className="grid grid-cols-3 gap-6 mb-12">
+            <div className="glass-panel p-6 rounded-xl text-center">
+              <div className="font-display-xl text-3xl text-primary font-bold">{auctionList.length}</div>
+              <div className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest mt-1">Total Auctions</div>
+            </div>
+            <div className="glass-panel p-6 rounded-xl text-center">
+              <div className="font-display-xl text-3xl text-primary font-bold">
+                {auctionList.reduce((sum, a) => sum + a.bidCount, 0n).toString()}
+              </div>
+              <div className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest mt-1">Total Sealed Bids</div>
+            </div>
+            <div className="glass-panel p-6 rounded-xl text-center">
+              <div className="font-label-mono text-xs text-primary truncate">{AUCTION_CONTRACT_ADDRESS.slice(0, 8)}...{AUCTION_CONTRACT_ADDRESS.slice(-6)}</div>
+              <div className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest mt-1">Contract</div>
+            </div>
+          </div>
           {loadingAuctions ? (
             <p className="font-label-mono text-sm text-on-surface-variant">Loading auctions from chain…</p>
           ) : auctionList.length === 0 ? (
@@ -264,6 +280,7 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
                   description={auction.description}
                   startingPrice={auction.startingPrice}
                   endTime={auction.endTime}
+                  auctionId={auction.auctionId}
                 />
               ))}
             </div>
@@ -294,24 +311,30 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
               className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
             />
             <div className="flex flex-col md:flex-row gap-gutter items-start md:items-center w-full">
-              <select
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
-              >
-                <option value="1">1 Hour</option>
-                <option value="6">6 Hours</option>
-                <option value="24">24 Hours</option>
-                <option value="72">72 Hours</option>
-              </select>
-              <input
-                type="number"
-                value={startingPrice}
-                onChange={(e) => setStartingPrice(e.target.value)}
-                placeholder="Starting price in DUST (0 = no reserve)"
-                min="0"
-                className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
-              />
+              <div className="flex flex-col gap-1">
+                <label className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest">Auction Duration</label>
+                <select
+                  value={duration}
+                  onChange={(e) => setDuration(e.target.value)}
+                  className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
+                >
+                  <option value="1">1 Hour</option>
+                  <option value="6">6 Hours</option>
+                  <option value="24">24 Hours</option>
+                  <option value="72">72 Hours</option>
+                </select>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest">Reserve Price (DUST)</label>
+                <input
+                  type="number"
+                  value={startingPrice}
+                  onChange={(e) => setStartingPrice(e.target.value)}
+                  placeholder="Starting price in DUST (0 = no reserve)"
+                  min="0"
+                  className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
+                />
+              </div>
               <button
                 type="button"
                 onClick={handleCreateAuction}

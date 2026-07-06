@@ -19,6 +19,14 @@ import {
   type AuctionPrivateState,
 } from '../midnight/contract'
 
+const AUCTION_IMAGES = [
+  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80',
+  'https://images.unsplash.com/photo-1633177317976-3f9bc45e1d1d?w=800&q=80',
+  'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=800&q=80',
+  'https://images.unsplash.com/photo-1604076913837-52ab5629fde9?w=800&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+]
+
 const MAX_BID_AMOUNT = 4294967295
 
 // Bytes<32> equality — plain value comparison, no ordering/timing sensitivity needed
@@ -391,8 +399,8 @@ export default function AuctionDetailPage({
             <div className="luxury-frame group overflow-hidden relative">
               <img
                 className="w-full aspect-[4/5] object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
-                alt="A mesmerizing piece of digital abstract art with flowing deep violet and midnight blue nebulae."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_E9PKWN_hy7HexwhqwIoNPfb_ZngaGMvhsw1D25WvBi4c7kfv_uKrBIrQLd_PXDjWmUGFSek-M9EvNhGKfPfazIAiZK6DiFLcFuKvfd92Cu83hEenhQOX_xbPNwexDsEL5aU0Hjx03UGF8yx7d1-ysJ4_5rkTaw5Nj27tlBHvMT6sdp1M2OdFRMrPcfffJcN_d3SuDKS5kI8hzIvMOcIe7qBL1a48rKCX19MiqMcj7KH3bRTOGiUMjA1uiTHxuapEoZEvS12vrlhX"
+                alt={auctionStatus.itemName || `Auction #${auctionId}`}
+                src={AUCTION_IMAGES[Number(auctionId) % AUCTION_IMAGES.length]}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none"></div>
             </div>

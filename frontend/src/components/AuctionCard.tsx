@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react'
 
+const AUCTION_IMAGES = [
+  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80',
+  'https://images.unsplash.com/photo-1633177317976-3f9bc45e1d1d?w=600&q=80',
+  'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=600&q=80',
+  'https://images.unsplash.com/photo-1604076913837-52ab5629fde9?w=600&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+]
+
 interface AuctionCardProps {
   itemName: string
   phaseLabel: string
@@ -8,6 +16,7 @@ interface AuctionCardProps {
   description: string
   startingPrice: bigint
   endTime: bigint
+  auctionId: bigint
 }
 
 export default function AuctionCard({
@@ -18,8 +27,10 @@ export default function AuctionCard({
   description,
   startingPrice,
   endTime,
+  auctionId,
 }: AuctionCardProps) {
   const isBidding = phaseLabel === 'BIDDING'
+  const isClosed = phaseLabel === 'CLOSED'
 
   const [timeLeft, setTimeLeft] = useState({ h: 0, m: 0, s: 0 })
   useEffect(() => {
@@ -39,16 +50,15 @@ export default function AuctionCard({
   return (
     <div className="glass-card rounded-xl overflow-hidden group cursor-pointer" onClick={onSelect}>
       <div className="relative h-52 overflow-hidden bg-gradient-to-br from-[#1a1025] via-[#120c1e] to-[#08060d] flex items-center justify-center">
-        <div className="absolute inset-0 zk-hex-grid opacity-20 bg-[radial-gradient(circle_at_center,_rgba(124,58,237,0.4)_0%,_transparent_70%)]"></div>
-        <div className="relative flex items-center justify-center w-24 h-24 rounded-full bg-primary-container/10 border border-primary-container/30 shadow-[0_0_40px_rgba(124,58,237,0.25)] group-hover:shadow-[0_0_55px_rgba(124,58,237,0.4)] transition-shadow duration-500">
-          <span className="material-symbols-outlined text-5xl text-primary" data-weight="fill">
-            lock
-          </span>
-        </div>
+        <img
+          src={AUCTION_IMAGES[Number(auctionId) % AUCTION_IMAGES.length]}
+          alt={itemName}
+          className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-700"
+        />
         <div className="absolute top-4 left-4 flex gap-stack-sm">
           <span
             className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg ${
-              isBidding ? 'bg-success text-white' : 'bg-black/80 text-white border border-white/20'
+              isBidding ? 'bg-success text-white' : isClosed ? 'bg-black/80 text-white border border-white/20' : ''
             }`}
           >
             {isBidding && <span className="w-2 h-2 bg-white rounded-full status-pulse"></span>}
