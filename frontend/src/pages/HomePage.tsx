@@ -93,6 +93,7 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
       const auctionId = result.private.result
       setCreateResult(`createAuction tx submitted — auctionId: ${auctionId}`)
     } catch (err) {
+      console.error('[createAuction error]', err)
       setCreateResult(err instanceof Error ? err.message : 'Failed to create auction')
     } finally {
       setCreating(false)
