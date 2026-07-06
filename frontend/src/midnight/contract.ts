@@ -5,8 +5,20 @@ import { findDeployedContract, type DeployedContract, type FoundContract } from 
 import { assertIsContractAddress } from '@midnight-ntwrk/midnight-js/utils'
 import { setNetworkId } from '@midnight-ntwrk/midnight-js/network-id'
 import { Auction, witnesses, createAuctionPrivateState, type AuctionPrivateState } from '../../../contract/src/index.js'
+import * as CompactRuntime from '@midnight-ntwrk/compact-runtime'
+import * as OnchainRuntime from '@midnight-ntwrk/onchain-runtime-v3'
 
 export { createAuctionPrivateState, type AuctionPrivateState }
+
+// Temporary diagnostic: check whether compact-runtime and onchain-runtime-v3 resolve to
+// the same class instances in the browser bundle, or whether bundling produced two
+// separate WASM module instantiations (which would make instanceof checks fail across
+// the boundary, surfacing as "expected instance of X" inside the compiled contract's
+// ledger() helper).
+console.log('[class-identity-check] ChargedState identical:', CompactRuntime.ChargedState === OnchainRuntime.ChargedState)
+console.log('[class-identity-check] QueryContext identical:', CompactRuntime.QueryContext === OnchainRuntime.QueryContext)
+console.log('[class-identity-check] StateValue identical:', CompactRuntime.StateValue === OnchainRuntime.StateValue)
+console.log('[class-identity-check] ContractState identical:', CompactRuntime.ContractState === OnchainRuntime.ContractState)
 
 // Mirrors src/config.ts's MainnetConfig constructor, which calls setNetworkId('mainnet')
 // before any wallet/provider operation. midnight-js-contracts (findDeployedContract,
