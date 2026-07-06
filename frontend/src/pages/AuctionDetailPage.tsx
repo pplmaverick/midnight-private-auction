@@ -20,11 +20,11 @@ import {
 } from '../midnight/contract'
 
 const AUCTION_IMAGES = [
+  'https://images.unsplash.com/photo-1634017839464-5c339ebe3604?w=800&q=80',
   'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80',
-  'https://images.unsplash.com/photo-1633177317976-3f9bc45e1d1d?w=800&q=80',
-  'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=800&q=80',
-  'https://images.unsplash.com/photo-1604076913837-52ab5629fde9?w=800&q=80',
+  'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&q=80',
   'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+  'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80',
 ]
 
 const MAX_BID_AMOUNT = 4294967295
