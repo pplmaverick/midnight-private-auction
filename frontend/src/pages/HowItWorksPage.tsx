@@ -18,7 +18,7 @@ const steps = [
     number: '03',
     icon: 'verified',
     title: 'Reveal & Claim',
-    body: 'When the auction closes, submit your reveal to prove your bid. The contract verifies the ZK proof submitted by your browser to update the ledger state safely. The highest verified bid wins; losers are refunded automatically.',
+    body: "When the auction closes, submit your reveal to prove your bid. The contract verifies the ZK proof submitted by your browser to update the ledger state safely. The highest verified bid wins. Losers' bids remain private — no amounts are ever revealed on-chain.",
   },
 ]
 
