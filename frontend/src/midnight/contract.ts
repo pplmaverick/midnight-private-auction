@@ -20,6 +20,14 @@ console.log('[class-identity-check] QueryContext identical:', CompactRuntime.Que
 console.log('[class-identity-check] StateValue identical:', CompactRuntime.StateValue === OnchainRuntime.StateValue)
 console.log('[class-identity-check] ContractState identical:', CompactRuntime.ContractState === OnchainRuntime.ContractState)
 
+// Expose this file's own resolved compact-runtime module globally so the compiled
+// contract's ledger() function (a different module, importing the same bare specifier)
+// can compare its own __compactRuntime against this one — checking whether the two
+// files' imports of '@midnight-ntwrk/compact-runtime' are the same module instance.
+if (typeof window !== 'undefined') {
+  ;(window as unknown as { __CR_FROM_CONTRACT_TS__: unknown }).__CR_FROM_CONTRACT_TS__ = CompactRuntime
+}
+
 // Mirrors src/config.ts's MainnetConfig constructor, which calls setNetworkId('mainnet')
 // before any wallet/provider operation. midnight-js-contracts (findDeployedContract,
 // callTx.*) reads this as global module state via getNetworkId() — never set anywhere in
