@@ -35,6 +35,20 @@ Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = tru
 
 > **Hash format note:** The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version prefix byte). The public indexer stores 64-character Substrate extrinsic hashes (32 bytes). These are different encodings of the same transaction. Block height is the authoritative cross-reference.
 
+**Frontend Manual Test**
+
+Full createAuction → placeBid → closeAuction → revealBid → claimItem flow, run manually through the deployed frontend UI (1AM wallet, real mainnet transactions) against the contract address above:
+
+| Step | Tx Hash | Block |
+|------|---------|-------|
+| createAuction (frontend) | `d4f907409759a8472806b7e5a4b13e4f7e20c82fd3fba3ae05448cdd7615a4b7` | 1,565,665 |
+| placeBid (frontend) | `e82cf747d6b60866998bc7a21ca9860c671f3ec0a2f5ca6958857a7b46c35b77` | 1,566,708 |
+| closeAuction (frontend) | `10f9f13c218ea4a69c24a506adf6297bd4742cd761adeb85e7c1326f151f5fbb` | 1,566,989 |
+| revealBid (frontend) | `509368f756b5abf6c1859f6bc8b116142b2c716e2355a287c43620d9b8ebf74e` | 1,567,004 |
+| claimItem (frontend) | `5bdf4fbf9fb99832f4bcd2b7adeea2e87625e042b35eababcbaf1fbe135f3f61` | 1,567,021 |
+
+These hashes are in the 64-character public-indexer format (see hash format note above).
+
 ---
 
 ## Why Midnight-Native
