@@ -49,6 +49,25 @@ Full createAuction → placeBid → closeAuction → revealBid → claimItem flo
 
 These hashes are in the 64-character public-indexer format (see hash format note above).
 
+**M3 e2e Verified Transaction Hashes**
+
+M3 upgrade (`description`, `startingPrice`, `endTime`, `revealDeadline`, `finalizeAuction`) full createAuction → placeBid → closeAuction → revealBid → claimItem flow, verified on 2026-07-06 against the new M3 contract:
+
+| | |
+|---|---|
+| Contract Address | [`4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5`](https://explorer.1am.xyz/contract/4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5) |
+| Network | Midnight Mainnet |
+
+| Step | Tx Hash | Block |
+|------|---------|-------|
+| createAuction | `0097eff61499d18c31a88c9295a560611ea3aebec7f7b7735b43aa56b0b2eb0048` | 1,569,783 |
+| placeBid | `00de38ac0c03a74f9d323c198eafd94f1a2e64d228793dc3623c28beff7c381fb2` | 1,569,787 |
+| closeAuction | `00e24633d0ad11acff800c9f65efe7ceb1a6d68f1ccd947df5eb0ffb284e1f6134` | 1,569,791 |
+| revealBid | `00b34740053629d82696eee3943928bb850706a6401088118c32d2b92b79e6bcde` | 1,569,795 |
+| claimItem | `00259968be1d8af35df4b8ce0f78399c808550429a566b7e719c31da2e59d2b4bf` | 1,569,799 |
+
+Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = true
+
 ---
 
 ## Why Midnight-Native

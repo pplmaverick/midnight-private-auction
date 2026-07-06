@@ -12,6 +12,8 @@
     "mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/index.ts",
     "deploy": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/deploy-only.ts",
     "deploy:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/deploy-only.ts",
+    "e2e:existing": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/e2e-existing.ts",
+    "e2e:existing:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/e2e-existing.ts",
     "derive-address": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/derive-address.ts",
     "derive-address:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/derive-address.ts"
   },
