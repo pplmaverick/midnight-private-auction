@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const GRADIENT_ANGLES = [0, 45, 135]
+const BG_IMAGE_COUNT = 6
 
 interface AuctionCardProps {
   itemName: string
@@ -25,6 +25,7 @@ export default function AuctionCard({
 }: AuctionCardProps) {
   const isBidding = phaseLabel === 'BIDDING'
   const isClosed = phaseLabel === 'CLOSED'
+  const bgImage = `/images/auction-bg-${Number(auctionId) % BG_IMAGE_COUNT}.avif`
 
   const [timeLeft, setTimeLeft] = useState({ h: 0, m: 0, s: 0 })
   useEffect(() => {
@@ -46,7 +47,9 @@ export default function AuctionCard({
       <div
         className="relative h-52 overflow-hidden flex items-center justify-center p-6"
         style={{
-          background: `linear-gradient(${GRADIENT_ANGLES[Number(auctionId) % GRADIENT_ANGLES.length]}deg, #1a0a2e, #3d1f6e)`,
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       >
         <h2 className="font-headline-md text-3xl text-white text-center font-bold px-4 group-hover:scale-105 transition-transform duration-700">
