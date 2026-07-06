@@ -42,7 +42,7 @@ Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = tru
 
 **Mainnet Deployment — M2 (Deprecated)**
 
-Contract deployed and full e2e verified on Midnight mainnet (2026-06-30). Superseded by M3 above on 2026-07-06.
+Contract deployed and full e2e verified on Midnight mainnet (2026-07-05). Superseded by M3 above on 2026-07-06.
 
 | | |
 |---|---|
