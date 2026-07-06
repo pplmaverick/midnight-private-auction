@@ -11,7 +11,12 @@ export type Witnesses<PS> = {
 }
 
 export type ImpureCircuits<PS> = {
-  createAuction(context: __compactRuntime.CircuitContext<PS>, item_0: string): __compactRuntime.CircuitResults<PS, bigint>;
+  createAuction(context: __compactRuntime.CircuitContext<PS>,
+                item_0: string,
+                desc_0: string,
+                startPrice_0: bigint,
+                auctionEndTime_0: bigint,
+                auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
   placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   closeAuction(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
@@ -19,10 +24,17 @@ export type ImpureCircuits<PS> = {
             amount_0: bigint,
             salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
   claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  finalizeAuction(context: __compactRuntime.CircuitContext<PS>,
+                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
 }
 
 export type ProvableCircuits<PS> = {
-  createAuction(context: __compactRuntime.CircuitContext<PS>, item_0: string): __compactRuntime.CircuitResults<PS, bigint>;
+  createAuction(context: __compactRuntime.CircuitContext<PS>,
+                item_0: string,
+                desc_0: string,
+                startPrice_0: bigint,
+                auctionEndTime_0: bigint,
+                auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
   placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   closeAuction(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
@@ -30,6 +42,8 @@ export type ProvableCircuits<PS> = {
             amount_0: bigint,
             salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
   claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  finalizeAuction(context: __compactRuntime.CircuitContext<PS>,
+                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
 }
 
 export type PureCircuits = {
@@ -47,7 +61,12 @@ export type Circuits<PS> = {
                     auctionId_0: bigint,
                     amount_0: bigint,
                     salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, Uint8Array>;
-  createAuction(context: __compactRuntime.CircuitContext<PS>, item_0: string): __compactRuntime.CircuitResults<PS, bigint>;
+  createAuction(context: __compactRuntime.CircuitContext<PS>,
+                item_0: string,
+                desc_0: string,
+                startPrice_0: bigint,
+                auctionEndTime_0: bigint,
+                auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
   placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   closeAuction(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
@@ -55,6 +74,8 @@ export type Circuits<PS> = {
             amount_0: bigint,
             salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
   claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  finalizeAuction(context: __compactRuntime.CircuitContext<PS>,
+                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
 }
 
 export type Ledger = {
@@ -118,6 +139,34 @@ export type Ledger = {
     member(key_0: bigint): boolean;
     lookup(key_0: bigint): boolean;
     [Symbol.iterator](): Iterator<[bigint, boolean]>
+  };
+  description: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: bigint): boolean;
+    lookup(key_0: bigint): string;
+    [Symbol.iterator](): Iterator<[bigint, string]>
+  };
+  startingPrice: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: bigint): boolean;
+    lookup(key_0: bigint): bigint;
+    [Symbol.iterator](): Iterator<[bigint, bigint]>
+  };
+  endTime: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: bigint): boolean;
+    lookup(key_0: bigint): bigint;
+    [Symbol.iterator](): Iterator<[bigint, bigint]>
+  };
+  revealDeadline: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: bigint): boolean;
+    lookup(key_0: bigint): bigint;
+    [Symbol.iterator](): Iterator<[bigint, bigint]>
   };
 }
 

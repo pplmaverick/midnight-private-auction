@@ -581,8 +581,12 @@ export const joinAs = async (
 export const createAuction = async (
   contract: DeployedAuctionContract,
   itemName: string,
+  description: string,
+  startingPrice: bigint,
+  endTime: bigint,
+  revealDeadline: bigint,
 ): Promise<{ txData: FinalizedTxData; auctionId: bigint }> => {
-  const result = await contract.callTx.createAuction(itemName);
+  const result = await contract.callTx.createAuction(itemName, description, startingPrice, endTime, revealDeadline);
   return { txData: result.public, auctionId: result.private.result };
 };
 

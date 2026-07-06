@@ -55,6 +55,10 @@ export ledger bidCount: Map<Uint<32>, Counter>;
 export ledger highestBidderPK: Map<Uint<32>, Bytes<32>>;
 export ledger highestBid: Map<Uint<32>, Uint<32>>;
 export ledger itemClaimed: Map<Uint<32>, Boolean>;
+export ledger description: Map<Uint<32>, Opaque<"string">>;
+export ledger startingPrice: Map<Uint<32>, Uint<32>>;
+export ledger endTime: Map<Uint<32>, Uint<64>>;
+export ledger revealDeadline: Map<Uint<32>, Uint<64>>;
 
 // --- Private state (witness) — lives only in the prover's local state ---
 
@@ -111,7 +115,7 @@ constructor() {
 // increments it) so callers never choose or collide on IDs.
 // Caller's public key (derived from their localSecretKey) becomes the
 // auctioneer for this auctionId.
-export circuit createAuction(item: Opaque<"string">): Uint<32> {
+export circuit createAuction(item: Opaque<"string">, desc: Opaque<"string">, startPrice: Uint<32>, auctionEndTime: Uint<64>, auctionRevealDeadline: Uint<64>): Uint<32> {
   const auctionId = disclose(nextAuctionId.read() as Uint<32>);
   nextAuctionId.increment(1);
 
@@ -123,6 +127,10 @@ export circuit createAuction(item: Opaque<"string">): Uint<32> {
   itemClaimed.insert(auctionId, false);
   bidCount.insert(auctionId, default<Counter>);
   sealedBids.insert(auctionId, default<Map<Bytes<32>, Bytes<32>>>);
+  description.insert(auctionId, disclose(desc));
+  startingPrice.insert(auctionId, disclose(startPrice));
+  endTime.insert(auctionId, disclose(auctionEndTime));
+  revealDeadline.insert(auctionId, disclose(auctionRevealDeadline));
 
   return auctionId;
 }
@@ -171,6 +179,7 @@ export circuit revealBid(auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>)
   assert(sealedBids.lookup(id).member(myPK), "No sealed bid found for this address");
   const expectedCommitment = computeCommitment(localSecretKey(), auctionId, amount, salt);
   assert(sealedBids.lookup(id).lookup(myPK) == expectedCommitment, "Bid commitment verification failed");
+  assert(disclose(amount) >= startingPrice.lookup(id), "Bid below starting price");
 
   const pubAmount = disclose(amount);
   if (pubAmount > highestBid.lookup(id)) {
@@ -190,4 +199,16 @@ export circuit claimItem(auctionId: Uint<32>): [] {
   const claimerPK = disclose(bidderPublicKey(localSecretKey()));
   assert(claimerPK == highestBidderPK.lookup(id), "Only the highest bidder can claim");
   itemClaimed.insert(id, disclose(true));
+}
+
+// Auctioneer reclaims the item if no valid bids were revealed by the reveal
+// deadline, for a specific auction.
+export circuit finalizeAuction(auctionId: Uint<32>): [] {
+  const id = disclose(auctionId);
+  assert(phase.member(id), "Auction does not exist");
+  assert(phase.lookup(id) == AuctionPhase.CLOSED, "Auction must be closed");
+  assert(auctioneerPK.lookup(id) == bidderPublicKey(localSecretKey()), "Only the auctioneer can finalize");
+  if (highestBid.lookup(id) == 0) {
+    itemClaimed.insert(id, disclose(true));
+  }
 }

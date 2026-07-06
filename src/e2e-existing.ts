@@ -74,7 +74,14 @@ async function main() {
   printStep(1, 'createAuction — join existing contract as auctioneer');
   const aucContract = await api.joinAs(providers, CONTRACT_ADDRESS, AUCTIONEER_STATE_ID, aucPrivState);
   const createResult = await api.withStatus('createAuction("M2 e2e Item")', () =>
-    api.createAuction(aucContract, 'M2 e2e Item'),
+    api.createAuction(
+      aucContract,
+      'M2 e2e Item',
+      'M3 test item',
+      0n,
+      BigInt(Math.floor(Date.now() / 1000)) + BigInt(86400),
+      BigInt(Math.floor(Date.now() / 1000)) + BigInt(86400 + 21600),
+    ),
   );
   const auctionId = createResult.auctionId;
   txHashes['createAuction'] = createResult.txData.txId;

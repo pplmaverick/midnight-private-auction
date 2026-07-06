@@ -110,7 +110,14 @@ async function main() {
   // createAuction uses main providers (public RPC)
   const aucContractMain = await api.joinAs(providers, contractAddress, AUCTIONEER_STATE_ID, aucPrivState);
   const createResult = await api.withStatus('createAuction("Vintage Watch")', () =>
-    api.createAuction(aucContractMain, 'Vintage Watch'),
+    api.createAuction(
+      aucContractMain,
+      'Vintage Watch',
+      'M3 test item',
+      0n,
+      BigInt(Math.floor(Date.now() / 1000)) + BigInt(86400),
+      BigInt(Math.floor(Date.now() / 1000)) + BigInt(86400 + 21600),
+    ),
   );
   const auctionId = createResult.auctionId;
   txHashes['createAuction'] = createResult.txData.txId;

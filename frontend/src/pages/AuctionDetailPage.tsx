@@ -38,6 +38,12 @@ interface AuctionStatus {
   readonly highestBidderPK: Uint8Array | null
   readonly itemClaimed: boolean
   readonly highestBid: bigint
+  readonly description: string
+  readonly startingPrice: bigint
+  readonly endTime: bigint
+  readonly revealDeadline: bigint
+  readonly itemName: string
+  readonly bidCount: bigint
 }
 
 const EMPTY_AUCTION_STATUS: AuctionStatus = {
@@ -47,9 +53,16 @@ const EMPTY_AUCTION_STATUS: AuctionStatus = {
   highestBidderPK: null,
   itemClaimed: false,
   highestBid: 0n,
+  description: '',
+  startingPrice: 0n,
+  endTime: 0n,
+  revealDeadline: 0n,
+  itemName: '',
+  bidCount: 0n,
 }
 
 interface AuctionDetailPageProps {
+  auctionId: bigint
   onNavigateToZK: () => void
   onNavigateHome: () => void
   onNavigateHowItWorks: () => void
@@ -57,24 +70,21 @@ interface AuctionDetailPageProps {
 }
 
 export default function AuctionDetailPage({
+  auctionId,
   onNavigateToZK,
   onNavigateHome,
   onNavigateHowItWorks,
   onNavigateAbout,
 }: AuctionDetailPageProps) {
-  const [time, setTime] = useState({ h: 4, m: 21, s: 58 })
+  const [timeLeft, setTimeLeft] = useState({ h: 0, m: 0, s: 0 })
   const { ensureUnlocked, provider, isUnlocked } = usePrivateState()
   const { walletState } = useWallet()
   const [bidderKey, setBidderKey] = useState<Uint8Array | null>(null)
   const [bidError, setBidError] = useState<string | null>(null)
   const [bidResult, setBidResult] = useState<string | null>(null)
   const [provingUnsupported, setProvingUnsupported] = useState(false)
-  // Which auction (by ID) this page is bidding on. The app doesn't have
-  // per-auction routing yet, so this is a plain input defaulting to the
-  // first auction (id 0) rather than a value threaded in from navigation.
-  const [auctionIdInput, setAuctionIdInput] = useState('0')
 
-  // Live on-chain phase/role data for the auctionId currently entered above —
+  // Live on-chain phase/role data for the auctionId passed in —
   // drives which of the close/reveal/claim actions are shown below.
   const [auctionStatus, setAuctionStatus] = useState<AuctionStatus>(EMPTY_AUCTION_STATUS)
   // Derived from whichever secretKey is already stored locally for this contract
@@ -103,18 +113,6 @@ export default function AuctionDetailPage({
   // stored auctioneer/bidder identities, so the action buttons below reflect
   // reality instead of always being visible.
   const refreshAuctionStatus = useCallback(async () => {
-    let auctionId: bigint
-    try {
-      auctionId = BigInt(auctionIdInput)
-    } catch {
-      setAuctionStatus(EMPTY_AUCTION_STATUS)
-      return
-    }
-    if (auctionId < 0n) {
-      setAuctionStatus(EMPTY_AUCTION_STATUS)
-      return
-    }
-
     try {
       const state = await publicDataProvider.queryContractState(AUCTION_CONTRACT_ADDRESS)
       if (!state) {
@@ -137,6 +135,12 @@ export default function AuctionDetailPage({
         highestBidderPK: ledger.highestBidderPK.lookup(auctionId),
         itemClaimed: ledger.itemClaimed.lookup(auctionId),
         highestBid: ledger.highestBid.lookup(auctionId),
+        description: ledger.description.member(auctionId) ? String(ledger.description.lookup(auctionId)) : '',
+        startingPrice: ledger.startingPrice.member(auctionId) ? BigInt(ledger.startingPrice.lookup(auctionId)) : 0n,
+        endTime: ledger.endTime.member(auctionId) ? BigInt(ledger.endTime.lookup(auctionId)) : 0n,
+        revealDeadline: ledger.revealDeadline.member(auctionId) ? BigInt(ledger.revealDeadline.lookup(auctionId)) : 0n,
+        itemName: ledger.itemName.member(auctionId) ? String(ledger.itemName.lookup(auctionId)) : '',
+        bidCount: ledger.bidCount.member(auctionId) ? BigInt(ledger.bidCount.lookup(auctionId).read()) : 0n,
       })
 
       if (provider && isUnlocked) {
@@ -156,11 +160,32 @@ export default function AuctionDetailPage({
     } catch {
       setAuctionStatus(EMPTY_AUCTION_STATUS)
     }
-  }, [auctionIdInput, provider, isUnlocked])
+  }, [auctionId, provider, isUnlocked])
 
   useEffect(() => {
     refreshAuctionStatus()
   }, [refreshAuctionStatus])
+
+  useEffect(() => {
+    if (!auctionStatus.endTime) return
+    const calc = () => {
+      const now = BigInt(Math.floor(Date.now() / 1000))
+      const diff = auctionStatus.endTime - now
+      if (diff <= 0n) {
+        setTimeLeft({ h: 0, m: 0, s: 0 })
+        return
+      }
+      const total = Number(diff)
+      setTimeLeft({
+        h: Math.floor(total / 3600),
+        m: Math.floor((total % 3600) / 60),
+        s: total % 60,
+      })
+    }
+    calc()
+    const interval = setInterval(calc, 1000)
+    return () => clearInterval(interval)
+  }, [auctionStatus.endTime])
 
   const isAuctioneer = auctionStatus.exists && bytesEqual(myAuctioneerPK, auctionStatus.auctioneerPK)
   const isWinner = auctionStatus.exists && bytesEqual(myBidderPK, auctionStatus.highestBidderPK)
@@ -185,18 +210,6 @@ export default function AuctionDetailPage({
     const parsedAmount = Number(amount)
     if (!Number.isInteger(parsedAmount) || parsedAmount <= 0 || parsedAmount > MAX_BID_AMOUNT) {
       setBidError(`Enter a whole number between 1 and ${MAX_BID_AMOUNT}.`)
-      return
-    }
-
-    let auctionId: bigint
-    try {
-      auctionId = BigInt(auctionIdInput)
-    } catch {
-      setBidError('Auction ID must be a whole number.')
-      return
-    }
-    if (auctionId < 0n) {
-      setBidError('Auction ID must be a whole number.')
       return
     }
 
@@ -245,14 +258,6 @@ export default function AuctionDetailPage({
     setCloseError(null)
     setCloseResult(null)
 
-    let auctionId: bigint
-    try {
-      auctionId = BigInt(auctionIdInput)
-    } catch {
-      setCloseError('Auction ID must be a whole number.')
-      return
-    }
-
     const unlocked = await ensureUnlocked()
     if (!unlocked) return
     if (walletState.status !== 'connected' || !provider) {
@@ -293,14 +298,6 @@ export default function AuctionDetailPage({
   const handleRevealBid = async () => {
     setRevealError(null)
     setRevealResult(null)
-
-    let auctionId: bigint
-    try {
-      auctionId = BigInt(auctionIdInput)
-    } catch {
-      setRevealError('Auction ID must be a whole number.')
-      return
-    }
 
     const unlocked = await ensureUnlocked()
     if (!unlocked) return
@@ -343,14 +340,6 @@ export default function AuctionDetailPage({
     setClaimError(null)
     setClaimResult(null)
 
-    let auctionId: bigint
-    try {
-      auctionId = BigInt(auctionIdInput)
-    } catch {
-      setClaimError('Auction ID must be a whole number.')
-      return
-    }
-
     const unlocked = await ensureUnlocked()
     if (!unlocked) return
     if (walletState.status !== 'connected' || !provider) {
@@ -385,30 +374,6 @@ export default function AuctionDetailPage({
     }
   }
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prev) => {
-        let { h, m, s } = prev
-        s -= 1
-        if (s < 0) {
-          s = 59
-          m -= 1
-        }
-        if (m < 0) {
-          m = 59
-          h -= 1
-        }
-        if (h < 0) {
-          h = 0
-          m = 0
-          s = 0
-        }
-        return { h, m, s }
-      })
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
   return (
     <div className="bg-[#131318] text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen">
       <Navbar
@@ -433,20 +398,25 @@ export default function AuctionDetailPage({
             </div>
             <div className="space-y-stack-md">
               <h1 className="font-headline-lg text-headline-lg text-text-primary tracking-tight">
-                Nebula Prism #042
+                {auctionStatus.itemName || `Auction #${auctionId}`}
               </h1>
               <div className="flex items-center gap-3">
                 <span className="font-label-mono text-label-mono text-text-secondary">Seller:</span>
                 <span className="font-label-mono text-label-mono text-primary bg-primary-container/10 px-3 py-1 rounded">
-                  0x71C...4f92
+                  {auctionStatus.auctioneerPK
+                    ? Array.from(auctionStatus.auctioneerPK.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join('') + '...'
+                    : '—'}
                 </span>
               </div>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                A generative study of light refraction within a theoretical dark matter vacuum. This piece utilizes
-                Midnight's proprietary ZK-State to ensure that ownership history remains anonymous until the moment
-                of final settlement. The visual output is a high-fidelity 8K render with dynamic metadata
-                reactivity.
+                {auctionStatus.description || '—'}
               </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-label-mono text-label-mono text-text-secondary">Reserve Price:</span>
+              <span className="font-label-mono text-label-mono text-primary">
+                {auctionStatus.startingPrice > 0n ? `${auctionStatus.startingPrice} DUST` : 'No reserve'}
+              </span>
             </div>
             <div className="p-stack-md border border-primary-container/30 bg-primary-container/5 rounded-lg flex gap-4">
               <span className="material-symbols-outlined text-primary" data-weight="fill">
@@ -477,7 +447,7 @@ export default function AuctionDetailPage({
                 </div>
                 <div className="flex items-center gap-2 text-on-surface-variant">
                   <span className="material-symbols-outlined text-sm">lock</span>
-                  <span className="font-label-mono text-xs">12 Sealed Bids</span>
+                  <span className="font-label-mono text-xs">{String(auctionStatus.bidCount)} Sealed Bids</span>
                 </div>
               </div>
               <div className="space-y-2">
@@ -486,17 +456,17 @@ export default function AuctionDetailPage({
                 </span>
                 <div className="flex gap-4 font-display-xl text-headline-lg text-text-primary">
                   <div>
-                    {String(time.h).padStart(2, '0')}
+                    {String(timeLeft.h).padStart(2, '0')}
                     <span className="text-sm font-label-mono ml-1 text-on-surface-variant">h</span>
                   </div>
                   <div className="text-primary-container">:</div>
                   <div>
-                    {String(time.m).padStart(2, '0')}
+                    {String(timeLeft.m).padStart(2, '0')}
                     <span className="text-sm font-label-mono ml-1 text-on-surface-variant">m</span>
                   </div>
                   <div className="text-primary-container">:</div>
                   <div>
-                    {String(time.s).padStart(2, '0')}
+                    {String(timeLeft.s).padStart(2, '0')}
                     <span className="text-sm font-label-mono ml-1 text-on-surface-variant">s</span>
                   </div>
                 </div>
@@ -529,19 +499,6 @@ export default function AuctionDetailPage({
                   {bidResult}
                 </p>
               )}
-
-              <div className="space-y-2">
-                <label htmlFor="auction-id" className="font-label-caps text-label-caps text-text-secondary uppercase">
-                  Auction ID
-                </label>
-                <input
-                  id="auction-id"
-                  value={auctionIdInput}
-                  onChange={(e) => setAuctionIdInput(e.target.value)}
-                  placeholder="0"
-                  className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
-                />
-              </div>
 
               <BidInput onSealSubmit={handleSealSubmit} />
             </div>

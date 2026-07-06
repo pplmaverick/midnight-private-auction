@@ -9,12 +9,16 @@ type Page = 'home' | 'detail' | 'zk-modal' | 'how-it-works' | 'about'
 
 export default function App() {
   const [page, setPage] = useState<Page>('home')
+  const [selectedAuctionId, setSelectedAuctionId] = useState<bigint | null>(null)
 
   return (
     <>
       {page === 'home' && (
         <HomePage
-          onNavigateToDetail={() => setPage('detail')}
+          onNavigateToDetail={(auctionId) => {
+            setSelectedAuctionId(auctionId)
+            setPage('detail')
+          }}
           onNavigateHowItWorks={() => setPage('how-it-works')}
           onNavigateAbout={() => setPage('about')}
         />
@@ -28,9 +32,10 @@ export default function App() {
         <AboutPage onNavigateHome={() => setPage('home')} onNavigateHowItWorks={() => setPage('how-it-works')} />
       )}
 
-      {(page === 'detail' || page === 'zk-modal') && (
+      {(page === 'detail' || page === 'zk-modal') && selectedAuctionId !== null && (
         <div className={page === 'zk-modal' ? 'opacity-20 pointer-events-none transition-opacity duration-700' : ''}>
           <AuctionDetailPage
+            auctionId={selectedAuctionId}
             onNavigateToZK={() => setPage('zk-modal')}
             onNavigateHome={() => setPage('home')}
             onNavigateHowItWorks={() => setPage('how-it-works')}
