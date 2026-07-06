@@ -6,7 +6,7 @@ import { assertIsContractAddress } from '@midnight-ntwrk/midnight-js/utils'
 import { setNetworkId } from '@midnight-ntwrk/midnight-js/network-id'
 import { Auction, witnesses, createAuctionPrivateState, type AuctionPrivateState } from '../../../contract/src/index.js'
 
-export { createAuctionPrivateState, type AuctionPrivateState }
+export { createAuctionPrivateState, type AuctionPrivateState, Auction }
 
 // Mirrors src/config.ts's MainnetConfig constructor, which calls setNetworkId('mainnet')
 // before any wallet/provider operation. midnight-js-contracts (findDeployedContract,

@@ -1,21 +1,53 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import PhaseIndicator from '../components/PhaseIndicator'
 import BidInput from '../components/BidInput'
 import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
+import { publicDataProvider } from '../midnight/publicDataProvider'
 import { ProvingNotSupportedError } from '../midnight/proofProvider'
 import {
   getDeployedAuction,
   createAuctionPrivateState,
+  AUCTIONEER_STATE_ID,
   BIDDER1_STATE_ID,
+  AUCTION_CONTRACT_ADDRESS,
+  Auction,
   type AuctionCircuits,
   type AuctionRoleId,
   type AuctionPrivateState,
 } from '../midnight/contract'
 
 const MAX_BID_AMOUNT = 4294967295
+
+// Bytes<32> equality — plain value comparison, no ordering/timing sensitivity needed
+// since these are already-public on-chain keys, not secrets being compared.
+const bytesEqual = (a: Uint8Array | null | undefined, b: Uint8Array | null | undefined): boolean => {
+  if (!a || !b || a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false
+  }
+  return true
+}
+
+interface AuctionStatus {
+  readonly exists: boolean
+  readonly phase: Auction.AuctionPhase | null
+  readonly auctioneerPK: Uint8Array | null
+  readonly highestBidderPK: Uint8Array | null
+  readonly itemClaimed: boolean
+  readonly highestBid: bigint
+}
+
+const EMPTY_AUCTION_STATUS: AuctionStatus = {
+  exists: false,
+  phase: null,
+  auctioneerPK: null,
+  highestBidderPK: null,
+  itemClaimed: false,
+  highestBid: 0n,
+}
 
 interface AuctionDetailPageProps {
   onNavigateToZK: () => void
@@ -31,7 +63,7 @@ export default function AuctionDetailPage({
   onNavigateAbout,
 }: AuctionDetailPageProps) {
   const [time, setTime] = useState({ h: 4, m: 21, s: 58 })
-  const { ensureUnlocked, provider } = usePrivateState()
+  const { ensureUnlocked, provider, isUnlocked } = usePrivateState()
   const { walletState } = useWallet()
   const [bidderKey, setBidderKey] = useState<Uint8Array | null>(null)
   const [bidError, setBidError] = useState<string | null>(null)
@@ -41,6 +73,106 @@ export default function AuctionDetailPage({
   // per-auction routing yet, so this is a plain input defaulting to the
   // first auction (id 0) rather than a value threaded in from navigation.
   const [auctionIdInput, setAuctionIdInput] = useState('0')
+
+  // Live on-chain phase/role data for the auctionId currently entered above —
+  // drives which of the close/reveal/claim actions are shown below.
+  const [auctionStatus, setAuctionStatus] = useState<AuctionStatus>(EMPTY_AUCTION_STATUS)
+  // Derived from whichever secretKey is already stored locally for this contract
+  // (never freshly generated here — only createAuction/placeBid establish new
+  // identities; close/reveal/claim always act as whoever you already are).
+  // Left null (role unknown) whenever private state is locked, so we don't force
+  // an unlock prompt just to decide whether to show a button.
+  const [myAuctioneerPK, setMyAuctioneerPK] = useState<Uint8Array | null>(null)
+  const [myBidderPK, setMyBidderPK] = useState<Uint8Array | null>(null)
+  const [hasSealedBid, setHasSealedBid] = useState(false)
+
+  const [closing, setClosing] = useState(false)
+  const [closeError, setCloseError] = useState<string | null>(null)
+  const [closeResult, setCloseResult] = useState<string | null>(null)
+
+  const [revealing, setRevealing] = useState(false)
+  const [revealError, setRevealError] = useState<string | null>(null)
+  const [revealResult, setRevealResult] = useState<string | null>(null)
+
+  const [claiming, setClaiming] = useState(false)
+  const [claimError, setClaimError] = useState<string | null>(null)
+  const [claimResult, setClaimResult] = useState<string | null>(null)
+
+  // Re-reads public ledger state for auctionIdInput, plus (only if private state
+  // is already unlocked — never forces the password prompt) this browser's own
+  // stored auctioneer/bidder identities, so the action buttons below reflect
+  // reality instead of always being visible.
+  const refreshAuctionStatus = useCallback(async () => {
+    let auctionId: bigint
+    try {
+      auctionId = BigInt(auctionIdInput)
+    } catch {
+      setAuctionStatus(EMPTY_AUCTION_STATUS)
+      return
+    }
+    if (auctionId < 0n) {
+      setAuctionStatus(EMPTY_AUCTION_STATUS)
+      return
+    }
+
+    try {
+      const state = await publicDataProvider.queryContractState(AUCTION_CONTRACT_ADDRESS)
+      if (!state) {
+        setAuctionStatus(EMPTY_AUCTION_STATUS)
+        return
+      }
+      const ledger = Auction.ledger(state.data)
+      if (!ledger.phase.member(auctionId)) {
+        setAuctionStatus(EMPTY_AUCTION_STATUS)
+        setMyAuctioneerPK(null)
+        setMyBidderPK(null)
+        setHasSealedBid(false)
+        return
+      }
+
+      setAuctionStatus({
+        exists: true,
+        phase: ledger.phase.lookup(auctionId),
+        auctioneerPK: ledger.auctioneerPK.lookup(auctionId),
+        highestBidderPK: ledger.highestBidderPK.lookup(auctionId),
+        itemClaimed: ledger.itemClaimed.lookup(auctionId),
+        highestBid: ledger.highestBid.lookup(auctionId),
+      })
+
+      if (provider && isUnlocked) {
+        provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
+        const storedAuctioneer = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
+        const storedBidder = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+        const auctioneerPK = storedAuctioneer ? Auction.pureCircuits.bidderPublicKey(storedAuctioneer.secretKey) : null
+        const bidderPK = storedBidder ? Auction.pureCircuits.bidderPublicKey(storedBidder.secretKey) : null
+        setMyAuctioneerPK(auctioneerPK)
+        setMyBidderPK(bidderPK)
+        setHasSealedBid(bidderPK !== null && ledger.sealedBids.lookup(auctionId).member(bidderPK))
+      } else {
+        setMyAuctioneerPK(null)
+        setMyBidderPK(null)
+        setHasSealedBid(false)
+      }
+    } catch {
+      setAuctionStatus(EMPTY_AUCTION_STATUS)
+    }
+  }, [auctionIdInput, provider, isUnlocked])
+
+  useEffect(() => {
+    refreshAuctionStatus()
+  }, [refreshAuctionStatus])
+
+  const isAuctioneer = auctionStatus.exists && bytesEqual(myAuctioneerPK, auctionStatus.auctioneerPK)
+  const isWinner = auctionStatus.exists && bytesEqual(myBidderPK, auctionStatus.highestBidderPK)
+  const showCloseButton = auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.BIDDING && isAuctioneer
+  const showRevealButton = auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.CLOSED && hasSealedBid
+  const showClaimButton =
+    auctionStatus.exists &&
+    auctionStatus.phase === Auction.AuctionPhase.CLOSED &&
+    !auctionStatus.itemClaimed &&
+    auctionStatus.highestBid > 0n &&
+    isWinner
+  const roleUnknown = !provider || !isUnlocked
 
   const handleSealSubmit = async (amount: string) => {
     setBidError(null)
@@ -98,6 +230,7 @@ export default function AuctionDetailPage({
       )
       await contract.callTx.placeBid(auctionId)
       setBidResult('Bid sealed and submitted.')
+      await refreshAuctionStatus()
       onNavigateToZK()
     } catch (err) {
       if (err instanceof ProvingNotSupportedError) {
@@ -105,6 +238,150 @@ export default function AuctionDetailPage({
         return
       }
       setBidError(err instanceof Error ? err.message : 'Failed to submit bid')
+    }
+  }
+
+  const handleCloseAuction = async () => {
+    setCloseError(null)
+    setCloseResult(null)
+
+    let auctionId: bigint
+    try {
+      auctionId = BigInt(auctionIdInput)
+    } catch {
+      setCloseError('Auction ID must be a whole number.')
+      return
+    }
+
+    const unlocked = await ensureUnlocked()
+    if (!unlocked) return
+    if (walletState.status !== 'connected' || !provider) {
+      setCloseError('Wallet not connected — connect a wallet before closing the auction.')
+      return
+    }
+
+    setClosing(true)
+    try {
+      // Never generate a fresh key here — closeAuction must act as the exact
+      // auctioneer identity that created this auction, which is whatever is
+      // already stored locally (if anything).
+      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
+      const stored = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
+      if (!stored) {
+        setCloseError('No auctioneer identity found in this browser for this auction.')
+        return
+      }
+      const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
+        walletState.api,
+        provider,
+      )
+      const contract = await getDeployedAuction(providers, AUCTIONEER_STATE_ID, stored)
+      const result = await contract.callTx.closeAuction(auctionId)
+      setCloseResult(`Auction closed — tx: ${result.public.txId}`)
+      await refreshAuctionStatus()
+    } catch (err) {
+      if (err instanceof ProvingNotSupportedError) {
+        setProvingUnsupported(true)
+      } else {
+        setCloseError(err instanceof Error ? err.message : 'Failed to close auction')
+      }
+    } finally {
+      setClosing(false)
+    }
+  }
+
+  const handleRevealBid = async () => {
+    setRevealError(null)
+    setRevealResult(null)
+
+    let auctionId: bigint
+    try {
+      auctionId = BigInt(auctionIdInput)
+    } catch {
+      setRevealError('Auction ID must be a whole number.')
+      return
+    }
+
+    const unlocked = await ensureUnlocked()
+    if (!unlocked) return
+    if (walletState.status !== 'connected' || !provider) {
+      setRevealError('Wallet not connected — connect a wallet before revealing your bid.')
+      return
+    }
+
+    setRevealing(true)
+    try {
+      // Must reuse the exact secretKey/bidAmount/bidSalt recorded at placeBid time —
+      // the commitment check on-chain only passes against those original values.
+      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
+      const stored = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+      const bid = stored?.bids[auctionId.toString()]
+      if (!stored || !bid) {
+        setRevealError('No sealed bid found in this browser for this auction ID.')
+        return
+      }
+      const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
+        walletState.api,
+        provider,
+      )
+      const contract = await getDeployedAuction(providers, BIDDER1_STATE_ID, stored)
+      const result = await contract.callTx.revealBid(auctionId, bid.bidAmount, bid.bidSalt)
+      setRevealResult(`Bid revealed — tx: ${result.public.txId}`)
+      await refreshAuctionStatus()
+    } catch (err) {
+      if (err instanceof ProvingNotSupportedError) {
+        setProvingUnsupported(true)
+      } else {
+        setRevealError(err instanceof Error ? err.message : 'Failed to reveal bid')
+      }
+    } finally {
+      setRevealing(false)
+    }
+  }
+
+  const handleClaimItem = async () => {
+    setClaimError(null)
+    setClaimResult(null)
+
+    let auctionId: bigint
+    try {
+      auctionId = BigInt(auctionIdInput)
+    } catch {
+      setClaimError('Auction ID must be a whole number.')
+      return
+    }
+
+    const unlocked = await ensureUnlocked()
+    if (!unlocked) return
+    if (walletState.status !== 'connected' || !provider) {
+      setClaimError('Wallet not connected — connect a wallet before claiming the item.')
+      return
+    }
+
+    setClaiming(true)
+    try {
+      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
+      const stored = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+      if (!stored) {
+        setClaimError('No bidder identity found in this browser for this auction.')
+        return
+      }
+      const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
+        walletState.api,
+        provider,
+      )
+      const contract = await getDeployedAuction(providers, BIDDER1_STATE_ID, stored)
+      const result = await contract.callTx.claimItem(auctionId)
+      setClaimResult(`Item claimed — tx: ${result.public.txId}`)
+      await refreshAuctionStatus()
+    } catch (err) {
+      if (err instanceof ProvingNotSupportedError) {
+        setProvingUnsupported(true)
+      } else {
+        setClaimError(err instanceof Error ? err.message : 'Failed to claim item')
+      }
+    } finally {
+      setClaiming(false)
     }
   }
 
@@ -268,6 +545,96 @@ export default function AuctionDetailPage({
 
               <BidInput onSealSubmit={handleSealSubmit} />
             </div>
+
+            {(showCloseButton || showRevealButton || showClaimButton || roleUnknown) && (
+              <div className="glass-panel p-8 rounded-xl space-y-6">
+                <span className="font-label-caps text-label-caps text-text-secondary uppercase">Auction Actions</span>
+
+                {roleUnknown && !showCloseButton && !showRevealButton && !showClaimButton && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-label-mono text-on-surface-variant">
+                      Unlock private state to check whether you can close, reveal, or claim this auction.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => ensureUnlocked()}
+                      className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface py-3 rounded-lg font-label-mono text-sm font-bold uppercase tracking-widest hover:border-primary-container transition-all"
+                    >
+                      Unlock
+                    </button>
+                  </div>
+                )}
+
+                {showCloseButton && (
+                  <div className="space-y-2">
+                    {closeError && (
+                      <p className="text-error text-sm font-label-mono" role="alert">
+                        {closeError}
+                      </p>
+                    )}
+                    {closeResult && (
+                      <p className="text-success text-sm font-label-mono break-all" role="status">
+                        {closeResult}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleCloseAuction}
+                      disabled={closing}
+                      className="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all active:scale-[0.98] disabled:opacity-50"
+                    >
+                      {closing ? 'Closing…' : 'Close Auction (Auctioneer)'}
+                    </button>
+                  </div>
+                )}
+
+                {showRevealButton && (
+                  <div className="space-y-2">
+                    {revealError && (
+                      <p className="text-error text-sm font-label-mono" role="alert">
+                        {revealError}
+                      </p>
+                    )}
+                    {revealResult && (
+                      <p className="text-success text-sm font-label-mono break-all" role="status">
+                        {revealResult}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleRevealBid}
+                      disabled={revealing}
+                      className="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all active:scale-[0.98] disabled:opacity-50"
+                    >
+                      {revealing ? 'Revealing…' : 'Reveal My Bid'}
+                    </button>
+                  </div>
+                )}
+
+                {showClaimButton && (
+                  <div className="space-y-2">
+                    {claimError && (
+                      <p className="text-error text-sm font-label-mono" role="alert">
+                        {claimError}
+                      </p>
+                    )}
+                    {claimResult && (
+                      <p className="text-success text-sm font-label-mono break-all" role="status">
+                        {claimResult}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleClaimItem}
+                      disabled={claiming}
+                      className="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all active:scale-[0.98] disabled:opacity-50"
+                    >
+                      {claiming ? 'Claiming…' : 'Claim Item (Winner)'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-panel p-4 rounded-lg flex flex-col gap-1">
