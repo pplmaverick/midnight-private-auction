@@ -1,5 +1,4 @@
 import * as __compactRuntime from '@midnight-ntwrk/compact-runtime';
-import * as __ledgerV8 from '@midnight-ntwrk/ledger-v8';
 __compactRuntime.checkRuntimeVersion('0.16.0');
 
 export var AuctionPhase;
@@ -1203,22 +1202,6 @@ export class Contract {
   }
 }
 export function ledger(stateOrChargedState) {
-  const __wasmClassNames = ['ContractOperation','ContractMaintenanceAuthority','ContractState','QueryContext','CostModel','QueryResults','StateBoundedMerkleTree','StateMap','ChargedState','StateValue','VmResults','VmStack'];
-  const __matches = __wasmClassNames.filter((name) => __compactRuntime[name] && stateOrChargedState instanceof __compactRuntime[name]);
-  const __ledgerMatches = __wasmClassNames.filter((name) => __ledgerV8[name] && stateOrChargedState instanceof __ledgerV8[name]);
-  const __crFromContractTs = typeof window !== 'undefined' ? window.__CR_FROM_CONTRACT_TS__ : undefined;
-  console.log(
-    '[ledger-debug] stateOrChargedState:', stateOrChargedState,
-    'matches onchain-runtime-v3 classes:', __matches,
-    'matches ledger-v8 classes:', __ledgerMatches,
-    'constructor:', stateOrChargedState?.constructor?.name,
-    'typeof:', typeof stateOrChargedState,
-    'own keys:', stateOrChargedState && Object.keys(stateOrChargedState),
-    'proto own props:', stateOrChargedState && Object.getOwnPropertyNames(Object.getPrototypeOf(stateOrChargedState)),
-    '__compactRuntime === window.__CR_FROM_CONTRACT_TS__:', __compactRuntime === __crFromContractTs,
-    '__compactRuntime.ChargedState === contract.ts ChargedState:', __crFromContractTs && __compactRuntime.ChargedState === __crFromContractTs.ChargedState,
-    'matches contract.ts ChargedState:', __crFromContractTs && stateOrChargedState instanceof __crFromContractTs.ChargedState,
-  )
   const state = stateOrChargedState instanceof __compactRuntime.StateValue ? stateOrChargedState : stateOrChargedState.state;
   const chargedState = stateOrChargedState instanceof __compactRuntime.StateValue ? new __compactRuntime.ChargedState(stateOrChargedState) : stateOrChargedState;
   const context = {

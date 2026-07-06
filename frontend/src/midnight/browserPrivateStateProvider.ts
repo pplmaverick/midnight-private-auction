@@ -270,14 +270,6 @@ export const browserPrivateStateProvider = <PSI extends PrivateStateId, PS = unk
       const stored = await idbGet<EncryptedRecord>(PRIVATE_STATE_STORE, storageKey)
       if (stored === undefined) return null
       const value = await decryptValue<PS>(stored, key)
-      const secretKey = (value as { secretKey?: unknown } | undefined)?.secretKey
-      console.log(
-        '[privateStateProvider.get] secretKey type:',
-        Object.prototype.toString.call(secretKey),
-        'instanceof Uint8Array:', secretKey instanceof Uint8Array,
-        'constructor:', (secretKey as { constructor?: { name?: string } } | undefined)?.constructor?.name,
-        'value:', secretKey,
-      )
       return value === undefined ? null : value
     },
 
