@@ -3,6 +3,8 @@
 ## 🌐 Live Demo
 https://midnight-private-auction.vercel.app
 
+> Current Contract: 4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5
+
 ![CI](https://github.com/pplmaverick/midnight-private-auction/actions/workflows/test.yml/badge.svg)
 ![Network](https://img.shields.io/badge/Midnight_Network-Preprod%20%7C%20Mainnet-blue)
 ![Compact](https://img.shields.io/badge/Compact-0.20-purple)
@@ -10,16 +12,45 @@ https://midnight-private-auction.vercel.app
 
 Sealed-bid auction on Midnight Network. During the bidding phase, bid amounts and bidder identities are hidden by ZK proofs — chain observers can see that a `placeBid()` call occurred, but not who made it or how much they bid. The amount only appears on-chain when the bidder voluntarily calls `revealBid()`. Purpose-built for Midnight's Compact language, not a port from EVM.
 
-**Mainnet Deployment**
+**Mainnet Deployment — M3 (Current)**
 
-Contract deployed and full e2e verified on Midnight mainnet (2026-06-30).
+Contract deployed and full e2e verified on Midnight mainnet (2026-07-06). Adds `description`, `startingPrice`, `endTime`, `revealDeadline`, and the `finalizeAuction` circuit.
+
+| | |
+|---|---|
+| Contract Address | [`4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5`](https://explorer.1am.xyz/contract/4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5) |
+| Network | Midnight Mainnet |
+| Status | ✅ Current |
+
+**Verified Transaction Hashes (M3)**
+
+Full createAuction → placeBid → closeAuction → revealBid → claimItem flow, verified against the contract address above:
+
+| Step | Tx Hash | Block |
+|------|---------|-------|
+| createAuction | `0097eff61499d18c31a88c9295a560611ea3aebec7f7b7735b43aa56b0b2eb0048` | 1,569,783 |
+| placeBid | `00de38ac0c03a74f9d323c198eafd94f1a2e64d228793dc3623c28beff7c381fb2` | 1,569,787 |
+| closeAuction | `00e24633d0ad11acff800c9f65efe7ceb1a6d68f1ccd947df5eb0ffb284e1f6134` | 1,569,791 |
+| revealBid | `00b34740053629d82696eee3943928bb850706a6401088118c32d2b92b79e6bcde` | 1,569,795 |
+| claimItem | `00259968be1d8af35df4b8ce0f78399c808550429a566b7e719c31da2e59d2b4bf` | 1,569,799 |
+
+Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = true
+
+> **Hash format note:** The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version prefix byte). The public indexer stores 64-character Substrate extrinsic hashes (32 bytes). These are different encodings of the same transaction. Block height is the authoritative cross-reference.
+
+---
+
+**Mainnet Deployment — M2 (Deprecated)**
+
+Contract deployed and full e2e verified on Midnight mainnet (2026-06-30). Superseded by M3 above on 2026-07-06.
 
 | | |
 |---|---|
 | Contract Address | [`19a01a461b85d71985aebac12d14f1a392a5797bb0013be87958f072f6cc5f80`](https://explorer.1am.xyz/contract/19a01a461b85d71985aebac12d14f1a392a5797bb0013be87958f072f6cc5f80) |
 | Network | Midnight Mainnet |
+| Status | ⚠️ Deprecated — superseded by M3 |
 
-**Verified Transaction Hashes**
+**Verified Transaction Hashes (M2)**
 
 M2 multi-auction e2e flow, verified against the contract address above:
 
@@ -33,11 +64,9 @@ M2 multi-auction e2e flow, verified against the contract address above:
 
 Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = true
 
-> **Hash format note:** The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version prefix byte). The public indexer stores 64-character Substrate extrinsic hashes (32 bytes). These are different encodings of the same transaction. Block height is the authoritative cross-reference.
+**Frontend Manual Test (M2)**
 
-**Frontend Manual Test**
-
-Full createAuction → placeBid → closeAuction → revealBid → claimItem flow, run manually through the deployed frontend UI (1AM wallet, real mainnet transactions) against the contract address above:
+Full createAuction → placeBid → closeAuction → revealBid → claimItem flow, run manually through the deployed frontend UI (1AM wallet, real mainnet transactions) against the M2 contract address above:
 
 | Step | Tx Hash | Block |
 |------|---------|-------|
@@ -48,25 +77,6 @@ Full createAuction → placeBid → closeAuction → revealBid → claimItem flo
 | claimItem (frontend) | `5bdf4fbf9fb99832f4bcd2b7adeea2e87625e042b35eababcbaf1fbe135f3f61` | 1,567,021 |
 
 These hashes are in the 64-character public-indexer format (see hash format note above).
-
-**M3 e2e Verified Transaction Hashes**
-
-M3 upgrade (`description`, `startingPrice`, `endTime`, `revealDeadline`, `finalizeAuction`) full createAuction → placeBid → closeAuction → revealBid → claimItem flow, verified on 2026-07-06 against the new M3 contract:
-
-| | |
-|---|---|
-| Contract Address | [`4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5`](https://explorer.1am.xyz/contract/4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5) |
-| Network | Midnight Mainnet |
-
-| Step | Tx Hash | Block |
-|------|---------|-------|
-| createAuction | `0097eff61499d18c31a88c9295a560611ea3aebec7f7b7735b43aa56b0b2eb0048` | 1,569,783 |
-| placeBid | `00de38ac0c03a74f9d323c198eafd94f1a2e64d228793dc3623c28beff7c381fb2` | 1,569,787 |
-| closeAuction | `00e24633d0ad11acff800c9f65efe7ceb1a6d68f1ccd947df5eb0ffb284e1f6134` | 1,569,791 |
-| revealBid | `00b34740053629d82696eee3943928bb850706a6401088118c32d2b92b79e6bcde` | 1,569,795 |
-| claimItem | `00259968be1d8af35df4b8ce0f78399c808550429a566b7e719c31da2e59d2b4bf` | 1,569,799 |
-
-Final state: item = "M2 e2e Item", highestBid = 100, bidCount = 1, claimed = true
 
 ---
 
@@ -282,19 +292,28 @@ The wallet SDK's `balanceUnboundTransaction` does not automatically apply the un
 
 ## Roadmap
 
-**✅ M1 — Sealed-bid demo, fully verified on mainnet (2026-06-30)**
+**✅ M3 — Item descriptions, reserve price, timed auctions — Current (2026-07-06)**
+- Added `description`, `startingPrice`, `endTime`, `revealDeadline` ledger fields, keyed per auction
+- Added `finalizeAuction` circuit — auctioneer reclaims the item if no valid bids were revealed by the reveal deadline
+- `revealBid` now enforces that revealed bids meet the auction's starting price
+- Contract: [`4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5`](https://explorer.1am.xyz/contract/4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5)
+- Status: **Current**
+
+**✅ M2 — Multi-auction contract redesign — Deprecated (2026-07-05)**
+- Redesigned from single-auction to multi-auction architecture
+- Each auction identified by auto-incremented auctionId (no ID collision)
+- Single bid enforcement per bidder per auction (on-circuit assertion)
+- Contract: [`19a01a461b85d71985aebac12d14f1a392a5797bb0013be87958f072f6cc5f80`](https://explorer.1am.xyz/contract/19a01a461b85d71985aebac12d14f1a392a5797bb0013be87958f072f6cc5f80)
+- Status: **Deprecated** — superseded by M3
+
+**✅ M1 — Sealed-bid demo, fully verified on mainnet — Deprecated (2026-06-30)**
 - Compact contract with ZK commit-reveal privacy model
 - Full 7-step e2e verified on Midnight mainnet: deploy → bid (×2) → close → reveal (×2) → claim
 - Contract: [`872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b`](https://explorer.1am.xyz/contract/872becfbc9d3142273c5dc5b7b1df5dae0fd0ee467c8857ea4e97f9a0408c21b)
 - 3-phase wallet sync with checkpoint persistence
 - WASM memory guard
 - `MIDNIGHT_DEPLOY_NODE` routing: deploy via authorised RPC, all other steps via public RPC
-
-**✅ M2 — Multi-auction contract redesign, deployed to mainnet (2026-07-05)**
-- Redesigned from single-auction to multi-auction architecture
-- Each auction identified by auto-incremented auctionId (no ID collision)
-- Single bid enforcement per bidder per auction (on-circuit assertion)
-- Contract: [`19a01a461b85d71985aebac12d14f1a392a5797bb0013be87958f072f6cc5f80`](https://explorer.1am.xyz/contract/19a01a461b85d71985aebac12d14f1a392a5797bb0013be87958f072f6cc5f80)
+- Status: **Deprecated** — superseded by M2
 
 ---
 
