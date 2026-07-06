@@ -330,7 +330,7 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
                   type="number"
                   value={startingPrice}
                   onChange={(e) => setStartingPrice(e.target.value)}
-                  placeholder="Starting price in DUST (0 = no reserve)"
+                  placeholder="0 = no reserve"
                   min="0"
                   className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-label-mono text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
                 />
