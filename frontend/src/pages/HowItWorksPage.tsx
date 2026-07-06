@@ -37,7 +37,7 @@ const primitives = [
   },
   {
     name: 'Multi-auction architecture',
-    body: 'single contract supports concurrent independent auctions with isolated state per auctionId',
+    body: 'single contract supports concurrent independent auctions; bidCount / highestBid / highestBidderPK are independent per auctionId',
   },
   {
     name: '@midnight-ntwrk/dapp-connector-api',
