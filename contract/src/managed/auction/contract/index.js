@@ -1,4 +1,5 @@
 import * as __compactRuntime from '@midnight-ntwrk/compact-runtime';
+import * as __ledgerV8 from '@midnight-ntwrk/ledger-v8';
 __compactRuntime.checkRuntimeVersion('0.16.0');
 
 export var AuctionPhase;
@@ -1204,9 +1205,11 @@ export class Contract {
 export function ledger(stateOrChargedState) {
   const __wasmClassNames = ['ContractOperation','ContractMaintenanceAuthority','ContractState','QueryContext','CostModel','QueryResults','StateBoundedMerkleTree','StateMap','ChargedState','StateValue','VmResults','VmStack'];
   const __matches = __wasmClassNames.filter((name) => __compactRuntime[name] && stateOrChargedState instanceof __compactRuntime[name]);
+  const __ledgerMatches = __wasmClassNames.filter((name) => __ledgerV8[name] && stateOrChargedState instanceof __ledgerV8[name]);
   console.log(
     '[ledger-debug] stateOrChargedState:', stateOrChargedState,
-    'matches wasm classes:', __matches,
+    'matches onchain-runtime-v3 classes:', __matches,
+    'matches ledger-v8 classes:', __ledgerMatches,
     'constructor:', stateOrChargedState?.constructor?.name,
     'typeof:', typeof stateOrChargedState,
     'own keys:', stateOrChargedState && Object.keys(stateOrChargedState),
