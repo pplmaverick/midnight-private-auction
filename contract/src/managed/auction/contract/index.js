@@ -1202,6 +1202,13 @@ export class Contract {
   }
 }
 export function ledger(stateOrChargedState) {
+  console.log(
+    '[ledger-debug] stateOrChargedState:', stateOrChargedState,
+    'instanceof StateValue:', stateOrChargedState instanceof __compactRuntime.StateValue,
+    'instanceof ChargedState:', stateOrChargedState instanceof __compactRuntime.ChargedState,
+    'constructor:', stateOrChargedState?.constructor?.name,
+    'typeof:', typeof stateOrChargedState,
+  )
   const state = stateOrChargedState instanceof __compactRuntime.StateValue ? stateOrChargedState : stateOrChargedState.state;
   const chargedState = stateOrChargedState instanceof __compactRuntime.StateValue ? new __compactRuntime.ChargedState(stateOrChargedState) : stateOrChargedState;
   const context = {
