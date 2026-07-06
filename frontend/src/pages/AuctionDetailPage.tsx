@@ -32,6 +32,9 @@ const AUCTION_IMAGES = [
 
 const MAX_BID_AMOUNT = 4294967295
 
+// endTime/revealDeadline are Unix seconds on-chain — render as a readable local timestamp.
+const formatTimestamp = (ts: bigint): string => (ts > 0n ? new Date(Number(ts) * 1000).toLocaleString() : '—')
+
 // Bytes<32> equality — plain value comparison, no ordering/timing sensitivity needed
 // since these are already-public on-chain keys, not secrets being compared.
 const bytesEqual = (a: Uint8Array | null | undefined, b: Uint8Array | null | undefined): boolean => {
@@ -427,6 +430,18 @@ export default function AuctionDetailPage({
               <span className="font-label-mono text-label-mono text-text-secondary">Reserve Price:</span>
               <span className="font-label-mono text-label-mono text-primary">
                 {auctionStatus.startingPrice > 0n ? `${auctionStatus.startingPrice} DUST` : 'No reserve'}
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-label-mono text-label-mono text-text-secondary">Bidding Ends:</span>
+              <span className="font-label-mono text-label-mono text-primary">
+                {formatTimestamp(auctionStatus.endTime)}
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-label-mono text-label-mono text-text-secondary">Reveal Deadline:</span>
+              <span className="font-label-mono text-label-mono text-primary">
+                {formatTimestamp(auctionStatus.revealDeadline)}
               </span>
             </div>
             <div className="p-stack-md border border-primary-container/30 bg-primary-container/5 rounded-lg flex gap-4">
