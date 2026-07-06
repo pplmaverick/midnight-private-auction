@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const AUCTION_IMAGES = [
-  'https://picsum.photos/seed/midnight1/600/400',
-  'https://picsum.photos/seed/midnight2/600/400',
-  'https://picsum.photos/seed/midnight3/600/400',
-  'https://picsum.photos/seed/midnight4/600/400',
-  'https://picsum.photos/seed/midnight5/600/400',
-  'https://picsum.photos/seed/midnight6/600/400',
-  'https://picsum.photos/seed/midnight7/600/400',
-  'https://picsum.photos/seed/midnight8/600/400',
-]
+const GRADIENT_ANGLES = [0, 45, 135]
 
 interface AuctionCardProps {
   itemName: string
@@ -52,12 +43,15 @@ export default function AuctionCard({
 
   return (
     <div className="glass-card rounded-xl overflow-hidden group cursor-pointer" onClick={onSelect}>
-      <div className="relative h-52 overflow-hidden bg-gradient-to-br from-[#1a1025] via-[#120c1e] to-[#08060d] flex items-center justify-center">
-        <img
-          src={AUCTION_IMAGES[Number(auctionId) % AUCTION_IMAGES.length]}
-          alt={itemName}
-          className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-700"
-        />
+      <div
+        className="relative h-52 overflow-hidden flex items-center justify-center p-6"
+        style={{
+          background: `linear-gradient(${GRADIENT_ANGLES[Number(auctionId) % GRADIENT_ANGLES.length]}deg, #1a0a2e, #3d1f6e)`,
+        }}
+      >
+        <h2 className="font-headline-md text-3xl text-white text-center font-bold px-4 group-hover:scale-105 transition-transform duration-700">
+          {itemName}
+        </h2>
         <div className="absolute top-4 left-4 flex gap-stack-sm">
           <span
             className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg ${
