@@ -19,16 +19,7 @@ import {
   type AuctionPrivateState,
 } from '../midnight/contract'
 
-const AUCTION_IMAGES = [
-  'https://picsum.photos/seed/midnight1/800/600',
-  'https://picsum.photos/seed/midnight2/800/600',
-  'https://picsum.photos/seed/midnight3/800/600',
-  'https://picsum.photos/seed/midnight4/800/600',
-  'https://picsum.photos/seed/midnight5/800/600',
-  'https://picsum.photos/seed/midnight6/800/600',
-  'https://picsum.photos/seed/midnight7/800/600',
-  'https://picsum.photos/seed/midnight8/800/600',
-]
+const BG_IMAGE_COUNT = 6
 
 const MAX_BID_AMOUNT = 4294967295
 
@@ -406,7 +397,7 @@ export default function AuctionDetailPage({
               <img
                 className="w-full aspect-[4/5] object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
                 alt={auctionStatus.itemName || `Auction #${auctionId}`}
-                src={AUCTION_IMAGES[Number(auctionId) % AUCTION_IMAGES.length]}
+                src={`/images/auction-bg-${Number(auctionId) % BG_IMAGE_COUNT}.avif`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none"></div>
             </div>
