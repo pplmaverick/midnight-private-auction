@@ -24,7 +24,7 @@ const BG_IMAGE_COUNT = 6
 const MAX_BID_AMOUNT = 4294967295
 
 // endTime/revealDeadline are Unix seconds on-chain — render as a readable local timestamp.
-const formatTimestamp = (ts: bigint): string => (ts > 0n ? new Date(Number(ts) * 1000).toLocaleString() : '—')
+const formatTimestamp = (ts: bigint): string => (ts > 0n ? new Date(Number(ts) * 1000).toLocaleString('en-US') : '—')
 
 // Bytes<32> equality — plain value comparison, no ordering/timing sensitivity needed
 // since these are already-public on-chain keys, not secrets being compared.
