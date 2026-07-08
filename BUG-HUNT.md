@@ -29,7 +29,7 @@ Findings from a walkthrough of the contract, TypeScript SDK layer, and frontend,
 | 5 | Deploy 交易過大被公開 RPC 以 `1016 Immediately Dropped` 拒絕 | 高 | midnightntwrk/midnight-js、midnight-node | 部分相關（midnight-node#1150，非完全符合） | 🆕 提交新 Issue（"contractDeploy transaction exceeds public RPC size limit → 1016 Immediately Dropped, with no actionable error"） |
 | 6 | `balanceUnboundTransaction` 部分 SDK 版本不自動簽署 unshielded intent | 中高 | midnightntwrk/midnight-js | 無重複 | 🆕 提交新 Issue（"balanceUnboundTransaction does not sign unshielded offer intents in some SDK versions"） |
 | 7 | Compact 缺乏可安全使用的 on-chain 時間斷言 | 高 | midnightntwrk/compact | **有，`#20`（open）**「`kernel.blockTimeLessThan` bricks deployed contract」——Compact 其實有時間原語，但用了會讓合約損毀 | 💬 補充留言到既有 Issue（https://github.com/midnightntwrk/compact/issues/20） |
-| 8 | Lace 宣告支援 `getProvingProvider` 但執行期丟 `TypeError` | 高 | midnightntwrk/midnight-js | 無重複（`#763` 背景相關但非重複） | 🆕 提交新 Issue（"getProvingProvider() throws TypeError at runtime for wallets that declare support but don't implement it (e.g. Lace)"） |
+| 8 | Lace 宣告支援 `getProvingProvider` 但執行期丟 `TypeError` | 高 | midnightntwrk/midnight-js | 無重複（`#763` 背景相關但非重複） | ✅ 已提交（https://github.com/midnightntwrk/midnight-js/issues/1066） |
 | 10 | `dapp-connector-api` 的 `balanceUnsealedTransaction` 沒有 `ttl` 參數 | 低 | midnightntwrk/midnight-js | 無重複 | 🆕 提交新 Issue（"ConnectedAPI.balanceUnsealedTransaction has no ttl parameter — caller-supplied TTL is silently dropped"） |
 
 ### 搜尋方法備註
