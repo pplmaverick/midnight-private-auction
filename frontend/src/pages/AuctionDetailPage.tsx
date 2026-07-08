@@ -212,6 +212,15 @@ export default function AuctionDetailPage({
     auctionStatus.highestBid > 0n &&
     isWinner
   const roleUnknown = !provider || !isUnlocked
+  const nowSec = BigInt(Math.floor(Date.now() / 1000))
+  const revealExpired = auctionStatus.revealDeadline > 0n && nowSec > auctionStatus.revealDeadline
+  const showFinalizeButton =
+    auctionStatus.exists &&
+    auctionStatus.phase === Auction.AuctionPhase.CLOSED &&
+    !auctionStatus.itemClaimed &&
+    auctionStatus.highestBid === 0n &&
+    revealExpired &&
+    isAuctioneer
 
   const handleSealSubmit = async (amount: string) => {
     setBidError(null)
@@ -388,6 +397,44 @@ export default function AuctionDetailPage({
     }
   }
 
+  const handleFinalizeAuction = async () => {
+    setCloseError(null)
+    setCloseResult(null)
+
+    const unlocked = await ensureUnlocked()
+    if (!unlocked) return
+    if (walletState.status !== 'connected' || !provider) {
+      setCloseError('Wallet not connected.')
+      return
+    }
+
+    setClosing(true)
+    try {
+      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
+      const stored = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
+      if (!stored) {
+        setCloseError('No auctioneer identity found in this browser for this auction.')
+        return
+      }
+      const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
+        walletState.api,
+        provider,
+      )
+      const contract = await getDeployedAuction(providers, AUCTIONEER_STATE_ID, stored)
+      const result = await contract.callTx.finalizeAuction(auctionId)
+      setCloseResult(`Auction finalized (no sale) — tx: ${result.public.txId}`)
+      await refreshAuctionStatus()
+    } catch (err) {
+      if (err instanceof ProvingNotSupportedError) {
+        setProvingUnsupported(true)
+      } else {
+        setCloseError(err instanceof Error ? err.message : 'Failed to finalize auction')
+      }
+    } finally {
+      setClosing(false)
+    }
+  }
+
   return (
     <div className="bg-[#131318] text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen">
       <Navbar
@@ -552,7 +599,17 @@ export default function AuctionDetailPage({
                   <span className="font-label-caps text-label-caps text-text-secondary uppercase">
                     Status
                   </span>
-                  <div className="font-label-mono text-lg text-primary">Reveal Phase — Submit your bid amount</div>
+                  <div className="font-label-mono text-lg text-primary">
+                    {auctionStatus.itemClaimed && auctionStatus.highestBid === 0n
+                      ? 'No Sale — Auction Finalized'
+                      : auctionStatus.itemClaimed && auctionStatus.highestBid > 0n
+                      ? 'Item Claimed — Auction Complete'
+                      : !auctionStatus.itemClaimed && auctionStatus.highestBid > 0n
+                      ? 'Reveal Complete — Winner May Claim Item'
+                      : !auctionStatus.itemClaimed && revealExpired
+                      ? 'Reveal Deadline Passed — Awaiting Auctioneer Finalization'
+                      : 'Reveal Phase — Submit your bid amount'}
+                  </div>
                 </div>
               )}
               <div className="h-px bg-outline-variant/30"></div>
@@ -591,7 +648,7 @@ export default function AuctionDetailPage({
               )}
             </div>
 
-            {(showCloseButton || showRevealButton || showClaimButton || roleUnknown) && (
+            {(showCloseButton || showRevealButton || showClaimButton || showFinalizeButton || roleUnknown) && (
               <div className="glass-panel p-8 rounded-xl space-y-6">
                 <span className="font-label-caps text-label-caps text-text-secondary uppercase">Auction Actions</span>
 
@@ -675,6 +732,29 @@ export default function AuctionDetailPage({
                       className="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all active:scale-[0.98] disabled:opacity-50"
                     >
                       {claiming ? 'Claiming…' : 'Claim Item (Winner)'}
+                    </button>
+                  </div>
+                )}
+
+                {showFinalizeButton && (
+                  <div className="space-y-2">
+                    {closeError && (
+                      <p className="text-error text-sm font-label-mono" role="alert">
+                        {closeError}
+                      </p>
+                    )}
+                    {closeResult && (
+                      <p className="text-success text-sm font-label-mono break-all" role="status">
+                        {closeResult}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleFinalizeAuction}
+                      disabled={closing}
+                      className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:border-primary-container transition-all active:scale-[0.98] disabled:opacity-50"
+                    >
+                      {closing ? 'Finalizing…' : 'Finalize Auction — No Sale (Auctioneer)'}
                     </button>
                   </div>
                 )}
