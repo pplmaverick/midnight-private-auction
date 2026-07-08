@@ -92,6 +92,12 @@ export default function AuctionDetailPage({
   // Live on-chain phase/role data for the auctionId passed in —
   // drives which of the close/reveal/claim actions are shown below.
   const [auctionStatus, setAuctionStatus] = useState<AuctionStatus>(EMPTY_AUCTION_STATUS)
+  // true until the first refreshAuctionStatus() call resolves (success or failure) —
+  // lets the UI tell "still fetching" apart from "fetched, auction doesn't exist".
+  const [isLoading, setIsLoading] = useState(true)
+  // Set only when refreshAuctionStatus itself throws (network/provider failure) — kept
+  // distinct from "auction doesn't exist" so a failed fetch isn't shown as a 404.
+  const [loadError, setLoadError] = useState<string | null>(null)
   // Derived from whichever secretKey is already stored locally for this contract
   // (never freshly generated here — only createAuction/placeBid establish new
   // identities; close/reveal/claim always act as whoever you already are).
@@ -119,6 +125,7 @@ export default function AuctionDetailPage({
   // reality instead of always being visible.
   const refreshAuctionStatus = useCallback(async () => {
     try {
+      setLoadError(null)
       const state = await publicDataProvider.queryContractState(AUCTION_CONTRACT_ADDRESS)
       if (!state) {
         setAuctionStatus(EMPTY_AUCTION_STATUS)
@@ -162,8 +169,10 @@ export default function AuctionDetailPage({
         setMyBidderPK(null)
         setHasSealedBid(false)
       }
-    } catch {
-      setAuctionStatus(EMPTY_AUCTION_STATUS)
+    } catch (err) {
+      setLoadError(err instanceof Error ? err.message : 'Failed to load auction data')
+    } finally {
+      setIsLoading(false)
     }
   }, [auctionId, provider, isUnlocked])
 
@@ -388,6 +397,46 @@ export default function AuctionDetailPage({
         onNavigateAbout={onNavigateAbout}
       />
       <main className="pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-4">
+            <div className="w-10 h-10 border-2 border-primary-container border-t-primary rounded-full animate-spin"></div>
+            <p className="font-label-mono text-sm text-on-surface-variant">Loading auction…</p>
+          </div>
+        ) : loadError ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-4 text-center">
+            <span className="material-symbols-outlined text-error text-4xl" data-weight="fill">
+              error
+            </span>
+            <h2 className="font-headline-lg text-headline-lg text-text-primary">Failed to load auction</h2>
+            <p className="font-body-md text-on-surface-variant max-w-md">{loadError}</p>
+            <button
+              type="button"
+              onClick={() => {
+                setIsLoading(true)
+                refreshAuctionStatus()
+              }}
+              className="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-mono text-sm font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all"
+            >
+              Retry
+            </button>
+          </div>
+        ) : !auctionStatus.exists ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-4 text-center">
+            <span className="material-symbols-outlined text-on-surface-variant text-4xl">search_off</span>
+            <h2 className="font-headline-lg text-headline-lg text-text-primary">Auction not found</h2>
+            <p className="font-body-md text-on-surface-variant max-w-md">
+              Auction #{auctionId.toString()} does not exist or has not been indexed yet.
+            </p>
+            <button
+              type="button"
+              onClick={onNavigateHome}
+              className="bg-surface-container-lowest border border-outline-variant text-on-surface px-6 py-3 rounded-lg font-label-mono text-sm font-bold uppercase tracking-widest hover:border-primary-container transition-all"
+            >
+              Back to Home
+            </button>
+          </div>
+        ) : (
+        <>
         <PhaseIndicator phase={auctionStatus.phase} />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-start">
@@ -644,6 +693,8 @@ export default function AuctionDetailPage({
             </div>
           </div>
         </div>
+        </>
+        )}
       </main>
 
       <footer className="w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface-container-lowest border-t border-outline-variant">

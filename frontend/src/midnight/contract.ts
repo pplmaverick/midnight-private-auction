@@ -48,7 +48,9 @@ const auctionCompiledContract = CompiledContract.make('auction', Auction.Contrac
 // findDeployedContract requires them whenever the contract's private state type isn't
 // `undefined` (Auction's isn't), and which role/state to use is a page-level decision:
 // HomePage's createAuction flow uses AUCTIONEER_STATE_ID, AuctionDetailPage's
-// placeBid/revealBid/claimItem flows use BIDDER1_STATE_ID/BIDDER2_STATE_ID.
+// placeBid/revealBid/claimItem flows use BIDDER1_STATE_ID. Currently only
+// BIDDER1_STATE_ID is used in the UI; BIDDER2_STATE_ID is reserved for future
+// multi-bidder support.
 export const getDeployedAuction = async (
   providers: AuctionProviders,
   roleId: AuctionRoleId,
