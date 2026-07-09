@@ -219,7 +219,6 @@ export default function AuctionDetailPage({
     auctionStatus.phase === Auction.AuctionPhase.CLOSED &&
     !auctionStatus.itemClaimed &&
     auctionStatus.highestBid === 0n &&
-    revealExpired &&
     isAuctioneer
 
   const handleSealSubmit = async (amount: string) => {
@@ -553,12 +552,20 @@ export default function AuctionDetailPage({
             <div className="glass-panel p-8 rounded-xl space-y-6">
               <div className="flex justify-between items-center">
                 {auctionStatus.phase === Auction.AuctionPhase.BIDDING && (
-                  <div className="flex items-center gap-2 px-3 py-1 bg-success/10 rounded-full">
-                    <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
-                    <span className="font-label-mono text-xs text-success font-bold tracking-widest uppercase">
-                      Live Auction
-                    </span>
-                  </div>
+                  nowSec > auctionStatus.endTime ? (
+                    <div className="flex items-center gap-2 px-3 py-1 bg-on-surface-variant/10 rounded-full">
+                      <span className="font-label-mono text-xs text-on-surface-variant font-bold tracking-widest uppercase">
+                        Ended
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 px-3 py-1 bg-success/10 rounded-full">
+                      <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
+                      <span className="font-label-mono text-xs text-success font-bold tracking-widest uppercase">
+                        Live Auction
+                      </span>
+                    </div>
+                  )
                 )}
                 {auctionStatus.phase === Auction.AuctionPhase.CLOSED && (
                   <div className="flex items-center gap-2 px-3 py-1 bg-on-surface-variant/10 rounded-full">
@@ -606,6 +613,8 @@ export default function AuctionDetailPage({
                       ? 'Item Claimed — Auction Complete'
                       : !auctionStatus.itemClaimed && auctionStatus.highestBid > 0n
                       ? 'Reveal Complete — Winner May Claim Item'
+                      : !auctionStatus.itemClaimed && auctionStatus.highestBid === 0n && !revealExpired && auctionStatus.bidCount === 0n
+                      ? 'No Bids — Awaiting Auctioneer Finalization'
                       : !auctionStatus.itemClaimed && revealExpired
                       ? 'Reveal Deadline Passed — Awaiting Auctioneer Finalization'
                       : 'Reveal Phase — Submit your bid amount'}
