@@ -42,9 +42,12 @@ import {
 // closing/reloading the tab drops them implicitly since they're plain module state.
 
 const DB_NAME = 'midnight-private-state'
-const DB_VERSION = 1
+const DB_VERSION = 2
 const PRIVATE_STATE_STORE = 'private-states'
 const SIGNING_KEY_STORE = 'signing-keys'
+const CANARY_STORE = 'canary'
+const CANARY_KEY = 'password_canary'
+const CANARY_VALUE = 'CANARY_CHECK'
 const ACCOUNT_HASH_LENGTH = 32
 const SALT_KEY_SUFFIX = '__salt__'
 
@@ -64,6 +67,7 @@ const openDb = (): Promise<IDBDatabase> =>
       const db = request.result
       if (!db.objectStoreNames.contains(PRIVATE_STATE_STORE)) db.createObjectStore(PRIVATE_STATE_STORE)
       if (!db.objectStoreNames.contains(SIGNING_KEY_STORE)) db.createObjectStore(SIGNING_KEY_STORE)
+      if (!db.objectStoreNames.contains(CANARY_STORE)) db.createObjectStore(CANARY_STORE)
     }
     request.onsuccess = () => resolve(request.result)
     request.onerror = () => reject(request.error)
@@ -194,6 +198,32 @@ interface SigningKeyPayload {
 
 const CURRENT_EXPORT_VERSION = 1
 
+// ─── Password canary ─────────────────────────────────────────────────────────
+// A known plaintext encrypted under the derived key, so unlock() can detect a wrong
+// password immediately instead of surfacing a confusing decrypt failure later on the
+// first real get()/getSigningKey() call.
+
+const hasCanary = async (accountHash: string): Promise<boolean> => {
+  const stored = await idbGet<EncryptedRecord>(CANARY_STORE, `${accountHash}:${CANARY_KEY}`)
+  return stored !== undefined
+}
+
+const writeCanary = async (accountHash: string, key: CryptoKey): Promise<void> => {
+  const encrypted = await encryptValue(CANARY_VALUE, key)
+  await idbPut(CANARY_STORE, `${accountHash}:${CANARY_KEY}`, encrypted)
+}
+
+const verifyCanary = async (accountHash: string, key: CryptoKey): Promise<boolean> => {
+  const stored = await idbGet<EncryptedRecord>(CANARY_STORE, `${accountHash}:${CANARY_KEY}`)
+  if (stored === undefined) return true // new user, canary not yet set
+  try {
+    const value = await decryptValue<string>(stored, key)
+    return value === CANARY_VALUE
+  } catch {
+    return false
+  }
+}
+
 // ─── Provider ────────────────────────────────────────────────────────────────
 
 export interface BrowserPrivateStateProviderConfig {
@@ -206,6 +236,8 @@ export const browserPrivateStateProvider = <PSI extends PrivateStateId, PS = unk
   unlock(password: string): Promise<void>
   lock(): void
   isUnlocked(): boolean
+  hasCanary(): Promise<boolean>
+  resetStorage(): Promise<void>
 } => {
   if (!config.accountId || config.accountId.trim().length === 0) {
     throw new Error('accountId is required to scope storage and prevent cross-account data access.')
@@ -239,19 +271,44 @@ export const browserPrivateStateProvider = <PSI extends PrivateStateId, PS = unk
   return {
     async unlock(password: string): Promise<void> {
       const accountHash = await accountHashPromise
-      const [privateStateSalt, signingKeySalt] = await Promise.all([
+      const [privateStateSalt, signingKeySalt, canarySalt] = await Promise.all([
         getOrCreateSalt(PRIVATE_STATE_STORE, accountHash),
         getOrCreateSalt(SIGNING_KEY_STORE, accountHash),
+        getOrCreateSalt(CANARY_STORE, accountHash),
       ])
-      const [derivedPrivateStateKey, derivedSigningKeyKey] = await Promise.all([
+      const [derivedPrivateStateKey, derivedSigningKeyKey, derivedCanaryKey] = await Promise.all([
         deriveAesKey(password, privateStateSalt),
         deriveAesKey(password, signingKeySalt),
+        deriveAesKey(password, canarySalt),
       ])
+
+      const isValid = await verifyCanary(accountHash, derivedCanaryKey)
+      if (!isValid) throw new Error('Incorrect password')
+
+      const isNew = !(await hasCanary(accountHash))
+      if (isNew) await writeCanary(accountHash, derivedCanaryKey)
+
       privateStateKey = derivedPrivateStateKey
       signingKeyKey = derivedSigningKeyKey
     },
 
+    async hasCanary(): Promise<boolean> {
+      const accountHash = await accountHashPromise
+      return hasCanary(accountHash)
+    },
+
     lock(): void {
+      privateStateKey = null
+      signingKeyKey = null
+    },
+
+    async resetStorage(): Promise<void> {
+      const accountHash = await accountHashPromise
+      await Promise.all([
+        idbDeleteByPrefix(PRIVATE_STATE_STORE, accountHash),
+        idbDeleteByPrefix(SIGNING_KEY_STORE, accountHash),
+        idbDeleteByPrefix(CANARY_STORE, accountHash),
+      ])
       privateStateKey = null
       signingKeyKey = null
     },
