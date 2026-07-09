@@ -761,7 +761,7 @@ export default function AuctionDetailPage({
                       type="button"
                       onClick={handleFinalizeAuction}
                       disabled={closing}
-                      className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:border-primary-container transition-all active:scale-[0.98] disabled:opacity-50"
+                      className="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all active:scale-[0.98] disabled:opacity-50"
                     >
                       {closing ? 'Finalizing…' : 'Finalize Auction — No Sale (Auctioneer)'}
                     </button>
