@@ -10,12 +10,18 @@ const steps = [
   },
   {
     number: '02',
+    icon: 'key',
+    title: 'Set Privacy Password',
+    body: 'On your first visit, set a site-specific password to encrypt your private bid records in this browser. This is separate from your 1AM wallet password. You will enter it once per session — all subsequent actions stay unlocked until you close the tab. If you forget your password, you can reset local storage and start over.',
+  },
+  {
+    number: '03',
     icon: 'lock',
     title: 'Place Private Bid',
     body: 'Enter your bid amount. Your bid is sealed client-side into a cryptographic commitment before it leaves your browser — other bidders and the contract owner see only a 32-byte hash, never the amount.',
   },
   {
-    number: '03',
+    number: '04',
     icon: 'verified',
     title: 'Reveal & Claim',
     body: "When the auction closes, submit your reveal to prove your bid. The contract verifies the ZK proof submitted by your browser to update the ledger state safely. The highest verified bid wins. Losers' bids remain private — no amounts are ever revealed on-chain.",
@@ -60,12 +66,12 @@ export default function HowItWorksPage({ onNavigateHome, onNavigateAbout }: HowI
             How It Works
           </h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant">
-            Three steps from wallet connection to a settled, privacy-preserving auction.
+            Four steps from wallet connection to a settled, privacy-preserving auction.
           </p>
         </div>
 
         <section className="mb-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter items-stretch">
             {steps.map((step, i) => (
               <div key={step.number} className="flex items-center">
                 <div className="glass-card rounded-xl p-8 flex flex-col gap-4 h-full">
