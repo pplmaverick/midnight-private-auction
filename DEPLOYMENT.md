@@ -59,6 +59,16 @@ Full `createAuction` → `placeBid` (×2) → `closeAuction` → `revealBid` (×
 
 Final state: `item = "Midnight Genesis #001"`, `highestBid = 130`, `bidCount = 2`, `claimed = true`
 
+## Zero-Bid Finalization Test (2026-07-09)
+
+Contract: `4fd31443...3282e5`
+
+| # | Operation | Block | Tx Hash |
+|---|-----------|-------|---------|
+| 1 | createAuction (Zero Bid Test) | 1,609,003 | `3d6cf2ee6d...f9d3c7` |
+| 2 | closeAuction | 1,609,655 | `a517822eea...c9e307` |
+| 3 | finalizeAuction (no sale) | 1,609,935 | `004cc47d35...91df50` |
+
 ---
 
 ### M2 (Deprecated) — deployed 2026-07-05, superseded 2026-07-06
