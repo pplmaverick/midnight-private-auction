@@ -483,7 +483,11 @@ export default function AuctionDetailPage({
           </div>
         ) : (
         <>
-        <PhaseIndicator phase={auctionStatus.phase} />
+        <PhaseIndicator
+          phase={auctionStatus.phase}
+          itemClaimed={auctionStatus.itemClaimed}
+          hasRevealedBids={auctionStatus.highestBid > 0n}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-start">
           {/* Left Column: Item Detail */}

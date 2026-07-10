@@ -2,6 +2,8 @@ import { Auction } from '../midnight/contract'
 
 type PhaseIndicatorProps = {
   phase: Auction.AuctionPhase | null
+  itemClaimed: boolean
+  hasRevealedBids: boolean
 }
 
 const STEPS = [
@@ -12,8 +14,19 @@ const STEPS = [
   { id: 5, label: 'Complete' },
 ]
 
-export default function PhaseIndicator({ phase }: PhaseIndicatorProps) {
-  const activeStep = phase === Auction.AuctionPhase.CLOSED ? 3 : 2
+export default function PhaseIndicator({ phase, itemClaimed, hasRevealedBids }: PhaseIndicatorProps) {
+  // itemClaimed wins outright — the auction is done regardless of on-chain phase.
+  // Otherwise CLOSED covers both the sealed-but-unrevealed and reveal-in-progress
+  // states, distinguished by whether any bid has actually been revealed yet.
+  const activeStep = itemClaimed
+    ? 5
+    : phase === Auction.AuctionPhase.CLOSED
+    ? hasRevealedBids
+      ? 4
+      : 3
+    : phase === Auction.AuctionPhase.BIDDING
+    ? 2
+    : 1
 
   return (
     <div className="mb-stack-lg flex items-center justify-between max-w-3xl mx-auto">
