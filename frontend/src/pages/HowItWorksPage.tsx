@@ -12,7 +12,7 @@ const steps = [
     number: '02',
     icon: 'key',
     title: 'Set Privacy Password',
-    body: 'On your first visit, set a site-specific password to encrypt your private bid records in this browser. This is separate from your 1AM wallet password. You will enter it once per session — all subsequent actions stay unlocked until you close the tab. If you forget your password, you can reset local storage and start over.',
+    body: 'On your first visit, set a site-specific password to encrypt your private bid records in this browser. This is separate from your 1AM wallet password. You will enter it once per session — all subsequent actions stay unlocked until you close the tab. If you forget your password, you can reset local storage and start over. Warning: If you reset your password before revealing an active bid, you will permanently lose access to that bid and cannot claim the item even if you placed the highest offer.',
   },
   {
     number: '03',
