@@ -16,6 +16,10 @@
     "e2e:existing:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/e2e-existing.ts",
     "create-and-bid": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/create-and-bid.ts",
     "create-and-bid:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/create-and-bid.ts",
+    "close-and-reveal": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-and-reveal.ts",
+    "close-and-reveal:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-and-reveal.ts",
+    "claim-item": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/claim-item.ts",
+    "claim-item:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/claim-item.ts",
     "derive-address": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/derive-address.ts",
     "derive-address:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/derive-address.ts"
   },

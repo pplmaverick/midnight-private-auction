@@ -69,6 +69,24 @@ Contract: `4fd31443...3282e5`
 | 2 | closeAuction | 1,609,655 | `a517822eea...c9e307` |
 | 3 | finalizeAuction (no sale) | 1,609,935 | `004cc47d35...91df50` |
 
+## Auction #4 — Step-by-Step Flow (2026-07-16)
+
+Contract: `4fd31443...3282e5`
+
+First run split across three separate scripted invocations (`scripts/create-and-bid.ts`, `scripts/close-and-reveal.ts`, `scripts/claim-item.ts`) instead of one continuous e2e process — createAuction/placeBid ran immediately, then closeAuction/revealBid/claimItem ran hours later after `endTime` had passed. Bidder (and, since, auctioneer) secret state is persisted to `logs/pending-reveals/<auctionId>.json` (git-ignored) so the later scripts can reconstruct the exact private state needed to close, reveal, and claim.
+
+`title = "Cardano Midnight Pioneer Badge #001"`, `startingPrice = 100`, `winningBid = 200`
+
+| Step | Tx Hash | Block |
+|------|---------|-------|
+| createAuction | `00d57bca3305157ebbf225e6c5da67669a93d2c077cd6459d8a3b0559a34c6d030` | 1,709,589 |
+| placeBid | `007ef91e8b77fb6f9d8ccfac68e8ca1e1ec9edcc82b9c50517d178f313261c14eb` | 1,709,593 |
+| closeAuction | `004d078d45b5bf08428306adc7a89843934c1f18734abab3e1820076a8a3ab548a` | 1,710,871 |
+| revealBid | `009a87a04d4c9c7d08c4d50dd2e072d296795d42227d5ab3a306e970da880144e1` | 1,710,875 |
+| claimItem | `0018ba0ead13ae1fb5537a482334eda024db21713cf9e089f55ca8d35f2811bf9c` | 1,710,917 |
+
+Final state: `item = "Cardano Midnight Pioneer Badge #001"`, `highestBid = 200`, `bidCount = 1`, `claimed = true`
+
 ---
 
 ### M2 (Deprecated) — deployed 2026-07-05, superseded 2026-07-06

@@ -578,6 +578,24 @@ export const joinAs = async (
   });
 };
 
+// Rejoins using whatever private state is already persisted at roleId, instead of
+// overwriting it. Omitting 'initialPrivateState' entirely (not just passing undefined)
+// is what makes findDeployedContract read the existing entry rather than replace it —
+// needed to recover a role's identity (e.g. the auctioneer) in a later process that
+// never generated that role's secretKey itself.
+export const joinExisting = async (
+  providers: AuctionProviders,
+  contractAddress: string,
+  roleId: AuctionRoleId,
+): Promise<DeployedAuctionContract> => {
+  assertIsContractAddress(contractAddress);
+  return findDeployedContract(providers, {
+    contractAddress,
+    compiledContract: auctionCompiledContract,
+    privateStateId: roleId,
+  });
+};
+
 export const createAuction = async (
   contract: DeployedAuctionContract,
   itemName: string,

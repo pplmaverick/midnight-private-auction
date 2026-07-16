@@ -7,11 +7,11 @@
  * closeAuction / revealBid / claimItem are NOT run — this is meant to be followed later
  * by a separate reveal + finalize script once endTime has passed.
  *
- * The bidder's secretKey, bidSalt and bidAmount are written to
- * logs/pending-reveals/<auctionId>.json (gitignored — logs/ is excluded) so a future
- * reveal can reconstruct the exact private state needed to open this commitment, even if
- * the shared 'bidder1' private-state-provider slot gets overwritten by another run
- * before then.
+ * The auctioneer's secretKey and the bidder's secretKey, bidSalt and bidAmount are all
+ * written to logs/pending-reveals/<auctionId>.json (gitignored — logs/ is excluded) so a
+ * future close/reveal/claim run can reconstruct the exact private state for both roles,
+ * even if the shared 'auctioneer' / 'bidder1' private-state-provider slots get
+ * overwritten by another run before then.
  *
  * Environment variables:
  *   WALLET_SEED           — hex seed (required)
@@ -119,6 +119,7 @@ async function main() {
     auctionId: auctionId.toString(),
     itemName: ITEM_NAME,
     startingPrice: STARTING_PRICE.toString(),
+    aucSecretKeyHex: toHex(aucSecretKey),
     bidAmount: BID_AMOUNT.toString(),
     bidSecretKeyHex: toHex(bidSecretKey),
     bidSaltHex: toHex(bidSalt),
