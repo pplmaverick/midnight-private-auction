@@ -17,8 +17,8 @@ export interface Config {
 
 export class PreprodConfig implements Config {
   logDir = path.resolve(currentDir, '..', 'logs', 'preprod');
-  indexer = 'https://indexer.preprod.midnight.network/api/v3/graphql';
-  indexerWS = 'wss://indexer.preprod.midnight.network/api/v3/graphql/ws';
+  indexer = 'https://indexer.preprod.midnight.network/api/v4/graphql';
+  indexerWS = 'wss://indexer.preprod.midnight.network/api/v4/graphql/ws';
   node = 'https://rpc.preprod.midnight.network';
   proofServer = process.env.MIDNIGHT_PROOF_SERVER ?? 'http://127.0.0.1:6300';
   constructor() {
