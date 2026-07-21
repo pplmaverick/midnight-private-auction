@@ -7,7 +7,7 @@ https://midnight-private-auction.vercel.app
 
 ![CI](https://github.com/pplmaverick/midnight-private-auction/actions/workflows/test.yml/badge.svg)
 ![Network](https://img.shields.io/badge/Midnight_Network-Preprod%20%7C%20Mainnet-blue)
-![Compact](https://img.shields.io/badge/Compact-0.20-purple)
+![Compact](https://img.shields.io/badge/Compact-0.23.0-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Overview
