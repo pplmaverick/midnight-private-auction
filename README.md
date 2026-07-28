@@ -1,5 +1,7 @@
 # Midnight Private Auction
 
+This project is built on the Midnight Network.
+
 ## 🌐 Live Demo
 https://midnight-private-auction.vercel.app
 
