@@ -32,3 +32,6 @@ jobs:
           test -f contract/src/managed/auction/compiler/contract-info.json || \
             (echo "contract-info.json missing" && exit 1)
           echo "Contract artifacts present"
+
+      - name: Run unit tests
+        run: npm test

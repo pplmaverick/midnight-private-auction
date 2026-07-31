@@ -7,6 +7,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
+    "test": "vitest run src/test",
     "compile": "compact compile contract/src/auction.compact contract/src/managed/auction",
     "preprod": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/index.ts",
     "mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm src/index.ts",
@@ -51,7 +52,8 @@
     "@types/node": "^25.5.0",
     "@types/ws": "^8.18.1",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.10"
   },
   "overrides": {
     "smoldot": "npm:@aspect-build/empty@0.0.0"
