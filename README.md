@@ -42,32 +42,7 @@ Midnight breaks that coupling. A **Compact** contract compiles to a ZK circuit; 
 
 Two things are true on Midnight at once: everyone can see the ledger, and no one but the bidder can see the bid. The diagram below shows what crosses that boundary and what never does.
 
-```
-BIDDING PHASE
-
-  Bidder local private state          Midnight ledger (public, on-chain)
-  ┌──────────────────────────┐        ┌─────────────────────────────────────┐
-  │ localSecretKey   (sk)    │─┐      │                                     │
-  │ myBidAmount   (amount)   │─┼─ZK──►│ sealedBids[auctionId][bidderPK]     │
-  │ myBidSalt       (salt)   │─┘ proof│   = H("auction:seal:", sk,          │
-  └──────────────────────────┘        │        auctionId, amount, salt)     │
-                                      │ bidCount[auctionId]++                │
-                                      └─────────────────────────────────────┘
-  Chain observers see: bidderPK + a 32-byte opaque hash
-  Chain observers cannot see: amount, salt, secretKey
-
-
-REVEAL PHASE  (after closeAuction)
-
-  Bidder discloses                    Midnight ledger verifies & updates
-  ┌──────────────────────────┐        ┌─────────────────────────────────────┐
-  │ amount = 200             │──ZK───►│ assert H(sk, auctionId, 200, salt)  │
-  │ salt   = 0xabc...        │  verify│   == sealedBids[auctionId][bidderPK]│
-  └──────────────────────────┘        │ if 200 > highestBid[auctionId]:     │
-                                      │   highestBid = 200                  │
-                                      │   highestBidderPK = bidderPK        │
-                                      └─────────────────────────────────────┘
-```
+![Midnight Private Auction — Technical Architecture](docs/architecture.svg)
 
 The circuit itself is compiled once from `contract/src/auction.compact` down to WASM-executable ZK IR (`.zkir` files) plus per-circuit prover/verifier key pairs, committed under `contract/src/managed/auction/`. Every `placeBid`, `revealBid`, etc. call runs its circuit's WASM through the local Proof Server to produce a proof, which is what actually gets submitted on-chain — the circuit logic never runs on a public node.
 
