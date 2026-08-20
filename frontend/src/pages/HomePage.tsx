@@ -5,6 +5,7 @@ import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
 import { publicDataProvider } from '../midnight/publicDataProvider'
+import { deriveWalletBoundSecretKey } from '../midnight/identity'
 import {
   getDeployedAuction,
   createAuctionPrivateState,
@@ -40,6 +41,14 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
   const { walletState } = useWallet()
 
   const [auctioneerKey, setAuctioneerKey] = useState<Uint8Array | null>(null)
+
+  // auctioneerKey is a derived cache of "wallet address -> secretKey" (see identity.ts) —
+  // drop it when the connected wallet changes so a later createAuction call re-derives
+  // from the newly connected address instead of reusing the previous wallet's identity.
+  const connectedAddress = walletState.status === 'connected' ? walletState.address : null
+  useEffect(() => {
+    setAuctioneerKey(null)
+  }, [connectedAddress])
   const [itemName, setItemName] = useState('')
   const [description, setDescription] = useState('')
   const [startingPrice, setStartingPrice] = useState('0')
@@ -103,10 +112,12 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
         return
       }
 
-      // Reuse the same auctioneer secretKey across calls within a session (mirrors
-      // src/index.ts's aucPrivState, which is reused for both createAuction and
-      // closeAuction — the auctioneer identity must stay stable within a session).
-      const secretKey = auctioneerKey ?? crypto.getRandomValues(new Uint8Array(32))
+      // Derived deterministically from the connected wallet address (see identity.ts),
+      // domain-separated from the bidder derivation so this wallet's auctioneer and
+      // bidder identities stay unlinkable to each other on-chain (mirrors src/index.ts's
+      // aucPrivState, which is reused for both createAuction and closeAuction — the
+      // auctioneer identity must stay stable across calls).
+      const secretKey = auctioneerKey ?? (await deriveWalletBoundSecretKey(walletState.address, AUCTIONEER_STATE_ID))
       if (!auctioneerKey) setAuctioneerKey(secretKey)
 
       const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(

@@ -7,6 +7,7 @@ import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
 import { publicDataProvider } from '../midnight/publicDataProvider'
 import { ProvingNotSupportedError } from '../midnight/proofProvider'
+import { deriveWalletBoundSecretKey } from '../midnight/identity'
 import {
   getDeployedAuction,
   createAuctionPrivateState,
@@ -34,6 +35,27 @@ const bytesEqual = (a: Uint8Array | null | undefined, b: Uint8Array | null | und
     if (a[i] !== b[i]) return false
   }
   return true
+}
+
+// Translates known placeBid failure modes (contract asserts in auction.compact, plus
+// the wallet-transport error the extension raises when a second signing request gets
+// queued on top of one still in flight) into messages that actually tell the bidder
+// what happened, instead of surfacing raw error.message text.
+const describeBidError = (err: unknown): string => {
+  const message = err instanceof Error ? err.message : ''
+  if (message.includes('Already placed a bid in this auction')) {
+    return "You've already placed a sealed bid in this auction with this identity — only one bid per bidder is allowed."
+  }
+  if (message.includes('Auction is not in bidding phase')) {
+    return 'This auction is no longer accepting bids.'
+  }
+  if (message.includes('Auction does not exist')) {
+    return 'This auction could not be found on-chain.'
+  }
+  if (message.includes('Wallet UI disconnected')) {
+    return 'Wallet connection was interrupted before the transaction could be signed. Please try again.'
+  }
+  return message || 'Failed to submit bid.'
 }
 
 interface AuctionStatus {
@@ -88,6 +110,16 @@ export default function AuctionDetailPage({
   const [bidError, setBidError] = useState<string | null>(null)
   const [bidResult, setBidResult] = useState<string | null>(null)
   const [provingUnsupported, setProvingUnsupported] = useState(false)
+  const [sealingBid, setSealingBid] = useState(false)
+
+  // bidderKey is a derived cache of "wallet address -> secretKey" (see identity.ts) —
+  // if the connected wallet changes mid-session, drop the cached key so the next bid
+  // re-derives from the newly connected address instead of silently reusing the
+  // previous wallet's identity.
+  const connectedAddress = walletState.status === 'connected' ? walletState.address : null
+  useEffect(() => {
+    setBidderKey(null)
+  }, [connectedAddress])
 
   // Live on-chain phase/role data for the auctionId passed in —
   // drives which of the close/reveal/claim actions are shown below.
@@ -222,6 +254,7 @@ export default function AuctionDetailPage({
     isAuctioneer
 
   const handleSealSubmit = async (amount: string) => {
+    if (sealingBid) return // already mid-flight — ignore a stray second click
     setBidError(null)
     setBidResult(null)
     setProvingUnsupported(false)
@@ -245,10 +278,20 @@ export default function AuctionDetailPage({
       return
     }
 
+    // Belt-and-suspenders: refreshAuctionStatus already hides the bid form once
+    // hasSealedBid is true, but re-check here too in case status is stale.
+    if (hasSealedBid) {
+      setBidError(describeBidError(new Error('Already placed a bid in this auction')))
+      return
+    }
+
+    setSealingBid(true)
     try {
-      // Reuse the same bidder secretKey across calls within a session (mirrors
-      // HomePage's auctioneer key reuse) — bidSalt is generated fresh per placeBid call.
-      const secretKey = bidderKey ?? crypto.getRandomValues(new Uint8Array(32))
+      // Derived deterministically from the connected wallet address (see identity.ts)
+      // so this identity — and therefore the contract's "already bid" check — survives
+      // clearing local browser storage. bidSalt is still generated fresh per placeBid
+      // call; it only needs to randomize the commitment, not identify the bidder.
+      const secretKey = bidderKey ?? (await deriveWalletBoundSecretKey(walletState.address, BIDDER1_STATE_ID))
       if (!bidderKey) setBidderKey(secretKey)
       const bidSalt = crypto.getRandomValues(new Uint8Array(32))
 
@@ -272,7 +315,9 @@ export default function AuctionDetailPage({
         setProvingUnsupported(true)
         return
       }
-      setBidError(err instanceof Error ? err.message : 'Failed to submit bid')
+      setBidError(describeBidError(err))
+    } finally {
+      setSealingBid(false)
     }
   }
 
@@ -654,11 +699,22 @@ export default function AuctionDetailPage({
                 </p>
               )}
 
-              {auctionStatus.phase === Auction.AuctionPhase.BIDDING && (
-                <div>
-                  <BidInput onSealSubmit={handleSealSubmit} />
-                </div>
-              )}
+              {auctionStatus.phase === Auction.AuctionPhase.BIDDING &&
+                (hasSealedBid ? (
+                  <div className="flex gap-3 p-4 rounded-lg border border-success/30 bg-success/10">
+                    <span className="material-symbols-outlined text-success shrink-0" data-weight="fill">
+                      check_circle
+                    </span>
+                    <p className="font-body-md text-sm text-on-surface-variant leading-relaxed">
+                      You've already sealed a bid in this auction with this identity. Only one sealed bid per
+                      bidder is allowed — come back after the auctioneer closes bidding to reveal it.
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <BidInput onSealSubmit={handleSealSubmit} submitting={sealingBid} />
+                  </div>
+                ))}
             </div>
 
             {(showCloseButton || showRevealButton || showClaimButton || showFinalizeButton || roleUnknown) && (
