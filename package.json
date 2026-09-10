@@ -22,7 +22,9 @@
     "claim-item": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/claim-item.ts",
     "claim-item:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/claim-item.ts",
     "derive-address": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/derive-address.ts",
-    "derive-address:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/derive-address.ts"
+    "derive-address:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/derive-address.ts",
+    "debug-commitment": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/debug-commitment.ts",
+    "debug-commitment:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/debug-commitment.ts"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",
