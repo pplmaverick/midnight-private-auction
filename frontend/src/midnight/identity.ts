@@ -1,6 +1,6 @@
 // Derives the 32-byte secret fed into the auction contract's localSecretKey witness
 // from the connected wallet's unshielded address, instead of generating it randomly.
-// bidderPublicKey(sk) is what the contract checks for "already bid in this auction"
+// bidderPublicKey(sk, auctionId) is what the contract checks for "already bid in this auction"
 // (auction.compact's placeBid) — a randomly generated sk can be discarded and
 // regenerated (e.g. by clearing browser storage) to appear as a brand-new identity
 // to that check. Deriving sk deterministically from the wallet address means the same

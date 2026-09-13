@@ -10,16 +10,30 @@ Midnight mainnet launched in 2026. As of block **1,498,136** (~3 months post-lau
 
 | | |
 |---|---|
-| Active contract | [`4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5`](https://explorer.1am.xyz/contract/4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5) |
+| Active contract | [`f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6`](https://explorer.1am.xyz/contract/f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6) |
 | Network | Midnight Mainnet |
-| Generation | M3 |
+| Generation | M4 |
 | Status | ✅ Current |
 
 ---
 
 ## Deployment History
 
-### M3 (Current) — deployed 2026-07-06
+### M4 (Current) — deployed 2026-09-13
+
+Self-audit fix: 8 logic gaps found and fixed — reveal-window enforcement was missing on `placeBid`/`revealBid`/`claimItem`/`finalizeAuction` (a bid could be revealed or an item claimed with no time bound on the reveal phase, and `finalizeAuction` could fire before the reveal window closed), `createAuction` did not validate `revealDeadline > endTime`, and `bidderPublicKey` produced the same output for a given secret key across every auction, letting an on-chain observer correlate one bidder's activity across unrelated auctions (`auctioneerPublicKey` is deliberately left cross-auction-correlatable as a lightweight seller-reputation mechanism). Full list, rationale, and accepted/rejected risk judgments: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). Independent Reference Model Testing of all 8 fixes (6,060 real-contract-output comparisons, all MATCH): [verification/REPORT.md](verification/REPORT.md).
+
+| | |
+|---|---|
+| Contract Address | [`f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6`](https://explorer.1am.xyz/contract/f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6) |
+| Deploy Tx Hash | `0061e95ebbfc0ab48be71d52808771b13b80081844b40028241528e733285f8f0c` |
+| Block Height | 2,560,089 |
+| Network | Midnight Mainnet |
+| Status | ✅ Current |
+
+---
+
+### M3 (Superseded) — deployed 2026-07-06, superseded 2026-09-13
 
 Adds `description`, `startingPrice`, `endTime`, `revealDeadline` ledger fields and the `finalizeAuction` circuit (auctioneer reclaims the item if no valid bids were revealed by the reveal deadline).
 
@@ -27,7 +41,7 @@ Adds `description`, `startingPrice`, `endTime`, `revealDeadline` ledger fields a
 |---|---|
 | Contract Address | [`4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5`](https://explorer.1am.xyz/contract/4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5) |
 | Network | Midnight Mainnet |
-| Status | ✅ Current |
+| Status | Superseded |
 
 **Verified transaction hashes (M3, scripted e2e)**
 

@@ -55,7 +55,7 @@ describe('Midnight Private Auction - closeAuction', () => {
   it('lets the auctioneer close the auction', () => {
     const sim = new AuctionSimulator(randomBytes(32));
     const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, 1000n, 2000n);
-    sim.closeAuction(auctionId);
+    sim.closeAuction(auctionId, 2000n);
     expect(sim.getLedger().phase.lookup(auctionId)).toEqual(AuctionPhase.CLOSED);
   });
 
@@ -63,7 +63,7 @@ describe('Midnight Private Auction - closeAuction', () => {
     const sim = new AuctionSimulator(randomBytes(32));
     const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, 1000n, 2000n);
     sim.switchUser(randomBytes(32));
-    expect(() => sim.closeAuction(auctionId)).toThrow('Only the auctioneer can close');
+    expect(() => sim.closeAuction(auctionId, 2000n)).toThrow('Only the auctioneer can close');
   });
 });
 
@@ -77,10 +77,10 @@ describe('Midnight Private Auction - revealBid', () => {
 
     sim.switchUser(bidderKey);
     sim.placeBid(auctionId, 150n, salt);
-    const bidderPK = sim.publicKey();
+    const bidderPK = sim.publicKey(auctionId);
 
     sim.switchUser(auctioneerKey);
-    sim.closeAuction(auctionId);
+    sim.closeAuction(auctionId, 2000n);
 
     sim.switchUser(bidderKey);
     sim.revealBid(auctionId, 150n, salt);
@@ -100,7 +100,7 @@ describe('Midnight Private Auction - revealBid', () => {
     sim.placeBid(auctionId, 50n, salt);
 
     sim.switchUser(auctioneerKey);
-    sim.closeAuction(auctionId);
+    sim.closeAuction(auctionId, 2000n);
 
     sim.switchUser(bidderKey);
     expect(() => sim.revealBid(auctionId, 50n, salt)).toThrow('Bid below starting price');
@@ -118,7 +118,7 @@ describe('Midnight Private Auction - revealBid', () => {
     sim.placeBid(auctionId, 150n, salt);
 
     sim.switchUser(auctioneerKey);
-    sim.closeAuction(auctionId);
+    sim.closeAuction(auctionId, 2000n);
 
     sim.switchUser(bidderKey);
     expect(() => sim.revealBid(auctionId, 150n, wrongSalt)).toThrow(
@@ -139,10 +139,12 @@ describe('Midnight Private Auction - claimItem', () => {
     sim.placeBid(auctionId, 150n, salt);
 
     sim.switchUser(auctioneerKey);
-    sim.closeAuction(auctionId);
+    sim.closeAuction(auctionId, 2000n);
 
     sim.switchUser(bidderKey);
     sim.revealBid(auctionId, 150n, salt);
+
+    sim.setBlockTime(2001n);
     sim.claimItem(auctionId);
 
     expect(sim.getLedger().itemClaimed.lookup(auctionId)).toEqual(true);
@@ -160,12 +162,13 @@ describe('Midnight Private Auction - claimItem', () => {
     sim.placeBid(auctionId, 150n, salt);
 
     sim.switchUser(auctioneerKey);
-    sim.closeAuction(auctionId);
+    sim.closeAuction(auctionId, 2000n);
 
     sim.switchUser(bidderKey);
     sim.revealBid(auctionId, 150n, salt);
 
     sim.switchUser(otherKey);
+    sim.setBlockTime(2001n);
     expect(() => sim.claimItem(auctionId)).toThrow('Only the highest bidder can claim');
   });
 });

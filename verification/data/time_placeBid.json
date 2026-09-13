@@ -1,0 +1,5602 @@
+[
+  {
+    "kind": "placeBid",
+    "endTime": "258928594",
+    "now": "257928594",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258928594",
+    "now": "258928592",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258928594",
+    "now": "258928593",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258928594",
+    "now": "258928594",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258928594",
+    "now": "258928595",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258928594",
+    "now": "258928596",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258928594",
+    "now": "259928594",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258390585",
+    "now": "257390585",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258390585",
+    "now": "258390583",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258390585",
+    "now": "258390584",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258390585",
+    "now": "258390585",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258390585",
+    "now": "258390586",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258390585",
+    "now": "258390587",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "258390585",
+    "now": "259390585",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883504998",
+    "now": "882504998",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883504998",
+    "now": "883504996",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883504998",
+    "now": "883504997",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883504998",
+    "now": "883504998",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883504998",
+    "now": "883504999",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883504998",
+    "now": "883505000",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883504998",
+    "now": "884504998",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "838578543",
+    "now": "837578543",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "838578543",
+    "now": "838578541",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "838578543",
+    "now": "838578542",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "838578543",
+    "now": "838578543",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "838578543",
+    "now": "838578544",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "838578543",
+    "now": "838578545",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "838578543",
+    "now": "839578543",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "26850868",
+    "now": "25850868",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "26850868",
+    "now": "26850866",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "26850868",
+    "now": "26850867",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "26850868",
+    "now": "26850868",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "26850868",
+    "now": "26850869",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "26850868",
+    "now": "26850870",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "26850868",
+    "now": "27850868",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "897554090",
+    "now": "896554090",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "897554090",
+    "now": "897554088",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "897554090",
+    "now": "897554089",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "897554090",
+    "now": "897554090",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "897554090",
+    "now": "897554091",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "897554090",
+    "now": "897554092",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "897554090",
+    "now": "898554090",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "394858687",
+    "now": "393858687",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "394858687",
+    "now": "394858685",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "394858687",
+    "now": "394858686",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "394858687",
+    "now": "394858687",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "394858687",
+    "now": "394858688",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "394858687",
+    "now": "394858689",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "394858687",
+    "now": "395858687",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "833977526",
+    "now": "832977526",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "833977526",
+    "now": "833977524",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "833977526",
+    "now": "833977525",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "833977526",
+    "now": "833977526",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "833977526",
+    "now": "833977527",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "833977526",
+    "now": "833977528",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "833977526",
+    "now": "834977526",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "899713462",
+    "now": "898713462",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "899713462",
+    "now": "899713460",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "899713462",
+    "now": "899713461",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "899713462",
+    "now": "899713462",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "899713462",
+    "now": "899713463",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "899713462",
+    "now": "899713464",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "899713462",
+    "now": "900713462",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "444822009",
+    "now": "443822009",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "444822009",
+    "now": "444822007",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "444822009",
+    "now": "444822008",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "444822009",
+    "now": "444822009",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "444822009",
+    "now": "444822010",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "444822009",
+    "now": "444822011",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "444822009",
+    "now": "445822009",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "551509059",
+    "now": "550509059",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "551509059",
+    "now": "551509057",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "551509059",
+    "now": "551509058",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "551509059",
+    "now": "551509059",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "551509059",
+    "now": "551509060",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "551509059",
+    "now": "551509061",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "551509059",
+    "now": "552509059",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "255637688",
+    "now": "254637688",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "255637688",
+    "now": "255637686",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "255637688",
+    "now": "255637687",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "255637688",
+    "now": "255637688",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "255637688",
+    "now": "255637689",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "255637688",
+    "now": "255637690",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "255637688",
+    "now": "256637688",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479342752",
+    "now": "478342752",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479342752",
+    "now": "479342750",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479342752",
+    "now": "479342751",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479342752",
+    "now": "479342752",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479342752",
+    "now": "479342753",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479342752",
+    "now": "479342754",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479342752",
+    "now": "480342752",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "230586793",
+    "now": "229586793",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "230586793",
+    "now": "230586791",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "230586793",
+    "now": "230586792",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "230586793",
+    "now": "230586793",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "230586793",
+    "now": "230586794",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "230586793",
+    "now": "230586795",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "230586793",
+    "now": "231586793",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "726877831",
+    "now": "725877831",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "726877831",
+    "now": "726877829",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "726877831",
+    "now": "726877830",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "726877831",
+    "now": "726877831",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "726877831",
+    "now": "726877832",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "726877831",
+    "now": "726877833",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "726877831",
+    "now": "727877831",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "361666332",
+    "now": "360666332",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "361666332",
+    "now": "361666330",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "361666332",
+    "now": "361666331",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "361666332",
+    "now": "361666332",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "361666332",
+    "now": "361666333",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "361666332",
+    "now": "361666334",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "361666332",
+    "now": "362666332",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "539359407",
+    "now": "538359407",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "539359407",
+    "now": "539359405",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "539359407",
+    "now": "539359406",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "539359407",
+    "now": "539359407",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "539359407",
+    "now": "539359408",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "539359407",
+    "now": "539359409",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "539359407",
+    "now": "540359407",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "344732013",
+    "now": "343732013",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "344732013",
+    "now": "344732011",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "344732013",
+    "now": "344732012",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "344732013",
+    "now": "344732013",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "344732013",
+    "now": "344732014",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "344732013",
+    "now": "344732015",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "344732013",
+    "now": "345732013",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "637339556",
+    "now": "636339556",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "637339556",
+    "now": "637339554",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "637339556",
+    "now": "637339555",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "637339556",
+    "now": "637339556",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "637339556",
+    "now": "637339557",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "637339556",
+    "now": "637339558",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "637339556",
+    "now": "638339556",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "970372584",
+    "now": "969372584",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "970372584",
+    "now": "970372582",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "970372584",
+    "now": "970372583",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "970372584",
+    "now": "970372584",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "970372584",
+    "now": "970372585",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "970372584",
+    "now": "970372586",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "970372584",
+    "now": "971372584",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "587177511",
+    "now": "586177511",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "587177511",
+    "now": "587177509",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "587177511",
+    "now": "587177510",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "587177511",
+    "now": "587177511",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "587177511",
+    "now": "587177512",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "587177511",
+    "now": "587177513",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "587177511",
+    "now": "588177511",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "849141710",
+    "now": "848141710",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "849141710",
+    "now": "849141708",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "849141710",
+    "now": "849141709",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "849141710",
+    "now": "849141710",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "849141710",
+    "now": "849141711",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "849141710",
+    "now": "849141712",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "849141710",
+    "now": "850141710",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "325902741",
+    "now": "324902741",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "325902741",
+    "now": "325902739",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "325902741",
+    "now": "325902740",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "325902741",
+    "now": "325902741",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "325902741",
+    "now": "325902742",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "325902741",
+    "now": "325902743",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "325902741",
+    "now": "326902741",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322112807",
+    "now": "321112807",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322112807",
+    "now": "322112805",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322112807",
+    "now": "322112806",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322112807",
+    "now": "322112807",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322112807",
+    "now": "322112808",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322112807",
+    "now": "322112809",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322112807",
+    "now": "323112807",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "290455997",
+    "now": "289455997",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "290455997",
+    "now": "290455995",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "290455997",
+    "now": "290455996",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "290455997",
+    "now": "290455997",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "290455997",
+    "now": "290455998",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "290455997",
+    "now": "290455999",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "290455997",
+    "now": "291455997",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "617377846",
+    "now": "616377846",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "617377846",
+    "now": "617377844",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "617377846",
+    "now": "617377845",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "617377846",
+    "now": "617377846",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "617377846",
+    "now": "617377847",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "617377846",
+    "now": "617377848",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "617377846",
+    "now": "618377846",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "103122236",
+    "now": "102122236",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "103122236",
+    "now": "103122234",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "103122236",
+    "now": "103122235",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "103122236",
+    "now": "103122236",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "103122236",
+    "now": "103122237",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "103122236",
+    "now": "103122238",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "103122236",
+    "now": "104122236",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "959243376",
+    "now": "958243376",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "959243376",
+    "now": "959243374",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "959243376",
+    "now": "959243375",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "959243376",
+    "now": "959243376",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "959243376",
+    "now": "959243377",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "959243376",
+    "now": "959243378",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "959243376",
+    "now": "960243376",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "286126954",
+    "now": "285126954",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "286126954",
+    "now": "286126952",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "286126954",
+    "now": "286126953",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "286126954",
+    "now": "286126954",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "286126954",
+    "now": "286126955",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "286126954",
+    "now": "286126956",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "286126954",
+    "now": "287126954",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "750792768",
+    "now": "749792768",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "750792768",
+    "now": "750792766",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "750792768",
+    "now": "750792767",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "750792768",
+    "now": "750792768",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "750792768",
+    "now": "750792769",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "750792768",
+    "now": "750792770",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "750792768",
+    "now": "751792768",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "511213979",
+    "now": "510213979",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "511213979",
+    "now": "511213977",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "511213979",
+    "now": "511213978",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "511213979",
+    "now": "511213979",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "511213979",
+    "now": "511213980",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "511213979",
+    "now": "511213981",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "511213979",
+    "now": "512213979",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "432050531",
+    "now": "431050531",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "432050531",
+    "now": "432050529",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "432050531",
+    "now": "432050530",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "432050531",
+    "now": "432050531",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "432050531",
+    "now": "432050532",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "432050531",
+    "now": "432050533",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "432050531",
+    "now": "433050531",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "172614574",
+    "now": "171614574",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "172614574",
+    "now": "172614572",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "172614574",
+    "now": "172614573",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "172614574",
+    "now": "172614574",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "172614574",
+    "now": "172614575",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "172614574",
+    "now": "172614576",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "172614574",
+    "now": "173614574",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "634750617",
+    "now": "633750617",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "634750617",
+    "now": "634750615",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "634750617",
+    "now": "634750616",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "634750617",
+    "now": "634750617",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "634750617",
+    "now": "634750618",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "634750617",
+    "now": "634750619",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "634750617",
+    "now": "635750617",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "354455355",
+    "now": "353455355",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "354455355",
+    "now": "354455353",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "354455355",
+    "now": "354455354",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "354455355",
+    "now": "354455355",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "354455355",
+    "now": "354455356",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "354455355",
+    "now": "354455357",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "354455355",
+    "now": "355455355",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "678972787",
+    "now": "677972787",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "678972787",
+    "now": "678972785",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "678972787",
+    "now": "678972786",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "678972787",
+    "now": "678972787",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "678972787",
+    "now": "678972788",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "678972787",
+    "now": "678972789",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "678972787",
+    "now": "679972787",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "644547646",
+    "now": "643547646",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "644547646",
+    "now": "644547644",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "644547646",
+    "now": "644547645",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "644547646",
+    "now": "644547646",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "644547646",
+    "now": "644547647",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "644547646",
+    "now": "644547648",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "644547646",
+    "now": "645547646",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "600217673",
+    "now": "599217673",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "600217673",
+    "now": "600217671",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "600217673",
+    "now": "600217672",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "600217673",
+    "now": "600217673",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "600217673",
+    "now": "600217674",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "600217673",
+    "now": "600217675",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "600217673",
+    "now": "601217673",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479744612",
+    "now": "478744612",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479744612",
+    "now": "479744610",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479744612",
+    "now": "479744611",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479744612",
+    "now": "479744612",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479744612",
+    "now": "479744613",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479744612",
+    "now": "479744614",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "479744612",
+    "now": "480744612",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "922499328",
+    "now": "921499328",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "922499328",
+    "now": "922499326",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "922499328",
+    "now": "922499327",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "922499328",
+    "now": "922499328",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "922499328",
+    "now": "922499329",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "922499328",
+    "now": "922499330",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "922499328",
+    "now": "923499328",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "839103877",
+    "now": "838103877",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "839103877",
+    "now": "839103875",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "839103877",
+    "now": "839103876",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "839103877",
+    "now": "839103877",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "839103877",
+    "now": "839103878",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "839103877",
+    "now": "839103879",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "839103877",
+    "now": "840103877",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "549617756",
+    "now": "548617756",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "549617756",
+    "now": "549617754",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "549617756",
+    "now": "549617755",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "549617756",
+    "now": "549617756",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "549617756",
+    "now": "549617757",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "549617756",
+    "now": "549617758",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "549617756",
+    "now": "550617756",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "206328230",
+    "now": "205328230",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "206328230",
+    "now": "206328228",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "206328230",
+    "now": "206328229",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "206328230",
+    "now": "206328230",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "206328230",
+    "now": "206328231",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "206328230",
+    "now": "206328232",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "206328230",
+    "now": "207328230",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883624382",
+    "now": "882624382",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883624382",
+    "now": "883624380",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883624382",
+    "now": "883624381",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883624382",
+    "now": "883624382",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883624382",
+    "now": "883624383",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883624382",
+    "now": "883624384",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "883624382",
+    "now": "884624382",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "98849417",
+    "now": "97849417",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "98849417",
+    "now": "98849415",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "98849417",
+    "now": "98849416",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "98849417",
+    "now": "98849417",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "98849417",
+    "now": "98849418",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "98849417",
+    "now": "98849419",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "98849417",
+    "now": "99849417",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "639489480",
+    "now": "638489480",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "639489480",
+    "now": "639489478",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "639489480",
+    "now": "639489479",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "639489480",
+    "now": "639489480",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "639489480",
+    "now": "639489481",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "639489480",
+    "now": "639489482",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "639489480",
+    "now": "640489480",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "741999774",
+    "now": "740999774",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "741999774",
+    "now": "741999772",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "741999774",
+    "now": "741999773",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "741999774",
+    "now": "741999774",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "741999774",
+    "now": "741999775",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "741999774",
+    "now": "741999776",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "741999774",
+    "now": "742999774",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "832451463",
+    "now": "831451463",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "832451463",
+    "now": "832451461",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "832451463",
+    "now": "832451462",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "832451463",
+    "now": "832451463",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "832451463",
+    "now": "832451464",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "832451463",
+    "now": "832451465",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "832451463",
+    "now": "833451463",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "910889830",
+    "now": "909889830",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "910889830",
+    "now": "910889828",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "910889830",
+    "now": "910889829",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "910889830",
+    "now": "910889830",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "910889830",
+    "now": "910889831",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "910889830",
+    "now": "910889832",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "910889830",
+    "now": "911889830",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "749072042",
+    "now": "748072042",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "749072042",
+    "now": "749072040",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "749072042",
+    "now": "749072041",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "749072042",
+    "now": "749072042",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "749072042",
+    "now": "749072043",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "749072042",
+    "now": "749072044",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "749072042",
+    "now": "750072042",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "225973564",
+    "now": "224973564",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "225973564",
+    "now": "225973562",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "225973564",
+    "now": "225973563",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "225973564",
+    "now": "225973564",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "225973564",
+    "now": "225973565",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "225973564",
+    "now": "225973566",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "225973564",
+    "now": "226973564",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "149317962",
+    "now": "148317962",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "149317962",
+    "now": "149317960",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "149317962",
+    "now": "149317961",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "149317962",
+    "now": "149317962",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "149317962",
+    "now": "149317963",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "149317962",
+    "now": "149317964",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "149317962",
+    "now": "150317962",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "818755271",
+    "now": "817755271",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "818755271",
+    "now": "818755269",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "818755271",
+    "now": "818755270",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "818755271",
+    "now": "818755271",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "818755271",
+    "now": "818755272",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "818755271",
+    "now": "818755273",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "818755271",
+    "now": "819755271",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "738667547",
+    "now": "737667547",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "738667547",
+    "now": "738667545",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "738667547",
+    "now": "738667546",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "738667547",
+    "now": "738667547",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "738667547",
+    "now": "738667548",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "738667547",
+    "now": "738667549",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "738667547",
+    "now": "739667547",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "779583559",
+    "now": "778583559",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "779583559",
+    "now": "779583557",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "779583559",
+    "now": "779583558",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "779583559",
+    "now": "779583559",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "779583559",
+    "now": "779583560",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "779583559",
+    "now": "779583561",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "779583559",
+    "now": "780583559",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "327169939",
+    "now": "326169939",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "327169939",
+    "now": "327169937",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "327169939",
+    "now": "327169938",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "327169939",
+    "now": "327169939",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "327169939",
+    "now": "327169940",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "327169939",
+    "now": "327169941",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "327169939",
+    "now": "328169939",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "64871994",
+    "now": "63871994",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "64871994",
+    "now": "64871992",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "64871994",
+    "now": "64871993",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "64871994",
+    "now": "64871994",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "64871994",
+    "now": "64871995",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "64871994",
+    "now": "64871996",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "64871994",
+    "now": "65871994",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "760060515",
+    "now": "759060515",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "760060515",
+    "now": "760060513",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "760060515",
+    "now": "760060514",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "760060515",
+    "now": "760060515",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "760060515",
+    "now": "760060516",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "760060515",
+    "now": "760060517",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "760060515",
+    "now": "761060515",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "410772674",
+    "now": "409772674",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "410772674",
+    "now": "410772672",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "410772674",
+    "now": "410772673",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "410772674",
+    "now": "410772674",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "410772674",
+    "now": "410772675",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "410772674",
+    "now": "410772676",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "410772674",
+    "now": "411772674",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "198905922",
+    "now": "197905922",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "198905922",
+    "now": "198905920",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "198905922",
+    "now": "198905921",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "198905922",
+    "now": "198905922",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "198905922",
+    "now": "198905923",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "198905922",
+    "now": "198905924",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "198905922",
+    "now": "199905922",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "901217932",
+    "now": "900217932",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "901217932",
+    "now": "901217930",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "901217932",
+    "now": "901217931",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "901217932",
+    "now": "901217932",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "901217932",
+    "now": "901217933",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "901217932",
+    "now": "901217934",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "901217932",
+    "now": "902217932",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "57024010",
+    "now": "56024010",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "57024010",
+    "now": "57024008",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "57024010",
+    "now": "57024009",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "57024010",
+    "now": "57024010",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "57024010",
+    "now": "57024011",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "57024010",
+    "now": "57024012",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "57024010",
+    "now": "58024010",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "45318973",
+    "now": "44318973",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "45318973",
+    "now": "45318971",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "45318973",
+    "now": "45318972",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "45318973",
+    "now": "45318973",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "45318973",
+    "now": "45318974",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "45318973",
+    "now": "45318975",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "45318973",
+    "now": "46318973",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "193053296",
+    "now": "192053296",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "193053296",
+    "now": "193053294",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "193053296",
+    "now": "193053295",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "193053296",
+    "now": "193053296",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "193053296",
+    "now": "193053297",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "193053296",
+    "now": "193053298",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "193053296",
+    "now": "194053296",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "878830203",
+    "now": "877830203",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "878830203",
+    "now": "878830201",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "878830203",
+    "now": "878830202",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "878830203",
+    "now": "878830203",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "878830203",
+    "now": "878830204",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "878830203",
+    "now": "878830205",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "878830203",
+    "now": "879830203",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "786750949",
+    "now": "785750949",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "786750949",
+    "now": "786750947",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "786750949",
+    "now": "786750948",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "786750949",
+    "now": "786750949",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "786750949",
+    "now": "786750950",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "786750949",
+    "now": "786750951",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "786750949",
+    "now": "787750949",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "495556182",
+    "now": "494556182",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "495556182",
+    "now": "495556180",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "495556182",
+    "now": "495556181",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "495556182",
+    "now": "495556182",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "495556182",
+    "now": "495556183",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "495556182",
+    "now": "495556184",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "495556182",
+    "now": "496556182",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "503587416",
+    "now": "502587416",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "503587416",
+    "now": "503587414",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "503587416",
+    "now": "503587415",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "503587416",
+    "now": "503587416",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "503587416",
+    "now": "503587417",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "503587416",
+    "now": "503587418",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "503587416",
+    "now": "504587416",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "925630484",
+    "now": "924630484",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "925630484",
+    "now": "925630482",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "925630484",
+    "now": "925630483",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "925630484",
+    "now": "925630484",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "925630484",
+    "now": "925630485",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "925630484",
+    "now": "925630486",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "925630484",
+    "now": "926630484",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322428161",
+    "now": "321428161",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322428161",
+    "now": "322428159",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322428161",
+    "now": "322428160",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322428161",
+    "now": "322428161",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322428161",
+    "now": "322428162",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322428161",
+    "now": "322428163",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "322428161",
+    "now": "323428161",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "402894623",
+    "now": "401894623",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "402894623",
+    "now": "402894621",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "402894623",
+    "now": "402894622",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "402894623",
+    "now": "402894623",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "402894623",
+    "now": "402894624",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "402894623",
+    "now": "402894625",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "402894623",
+    "now": "403894623",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "9697011",
+    "now": "8697011",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "9697011",
+    "now": "9697009",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "9697011",
+    "now": "9697010",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "9697011",
+    "now": "9697011",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "9697011",
+    "now": "9697012",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "9697011",
+    "now": "9697013",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "9697011",
+    "now": "10697011",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "844387043",
+    "now": "843387043",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "844387043",
+    "now": "844387041",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "844387043",
+    "now": "844387042",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "844387043",
+    "now": "844387043",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "844387043",
+    "now": "844387044",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "844387043",
+    "now": "844387045",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "844387043",
+    "now": "845387043",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "293784836",
+    "now": "292784836",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "293784836",
+    "now": "293784834",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "293784836",
+    "now": "293784835",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "293784836",
+    "now": "293784836",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "293784836",
+    "now": "293784837",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "293784836",
+    "now": "293784838",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "293784836",
+    "now": "294784836",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408528586",
+    "now": "407528586",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408528586",
+    "now": "408528584",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408528586",
+    "now": "408528585",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408528586",
+    "now": "408528586",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408528586",
+    "now": "408528587",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408528586",
+    "now": "408528588",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408528586",
+    "now": "409528586",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "921549742",
+    "now": "920549742",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "921549742",
+    "now": "921549740",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "921549742",
+    "now": "921549741",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "921549742",
+    "now": "921549742",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "921549742",
+    "now": "921549743",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "921549742",
+    "now": "921549744",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "921549742",
+    "now": "922549742",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "787988166",
+    "now": "786988166",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "787988166",
+    "now": "787988164",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "787988166",
+    "now": "787988165",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "787988166",
+    "now": "787988166",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "787988166",
+    "now": "787988167",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "787988166",
+    "now": "787988168",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "787988166",
+    "now": "788988166",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "65986205",
+    "now": "64986205",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "65986205",
+    "now": "65986203",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "65986205",
+    "now": "65986204",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "65986205",
+    "now": "65986205",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "65986205",
+    "now": "65986206",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "65986205",
+    "now": "65986207",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "65986205",
+    "now": "66986205",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "66344857",
+    "now": "65344857",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "66344857",
+    "now": "66344855",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "66344857",
+    "now": "66344856",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "66344857",
+    "now": "66344857",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "66344857",
+    "now": "66344858",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "66344857",
+    "now": "66344859",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "66344857",
+    "now": "67344857",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "118995110",
+    "now": "117995110",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "118995110",
+    "now": "118995108",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "118995110",
+    "now": "118995109",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "118995110",
+    "now": "118995110",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "118995110",
+    "now": "118995111",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "118995110",
+    "now": "118995112",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "118995110",
+    "now": "119995110",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "302483614",
+    "now": "301483614",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "302483614",
+    "now": "302483612",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "302483614",
+    "now": "302483613",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "302483614",
+    "now": "302483614",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "302483614",
+    "now": "302483615",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "302483614",
+    "now": "302483616",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "302483614",
+    "now": "303483614",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "43231794",
+    "now": "42231794",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "43231794",
+    "now": "43231792",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "43231794",
+    "now": "43231793",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "43231794",
+    "now": "43231794",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "43231794",
+    "now": "43231795",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "43231794",
+    "now": "43231796",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "43231794",
+    "now": "44231794",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "115816303",
+    "now": "114816303",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "115816303",
+    "now": "115816301",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "115816303",
+    "now": "115816302",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "115816303",
+    "now": "115816303",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "115816303",
+    "now": "115816304",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "115816303",
+    "now": "115816305",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "115816303",
+    "now": "116816303",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "423166954",
+    "now": "422166954",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "423166954",
+    "now": "423166952",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "423166954",
+    "now": "423166953",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "423166954",
+    "now": "423166954",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "423166954",
+    "now": "423166955",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "423166954",
+    "now": "423166956",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "423166954",
+    "now": "424166954",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "601193922",
+    "now": "600193922",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "601193922",
+    "now": "601193920",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "601193922",
+    "now": "601193921",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "601193922",
+    "now": "601193922",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "601193922",
+    "now": "601193923",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "601193922",
+    "now": "601193924",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "601193922",
+    "now": "602193922",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "49446607",
+    "now": "48446607",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "49446607",
+    "now": "49446605",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "49446607",
+    "now": "49446606",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "49446607",
+    "now": "49446607",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "49446607",
+    "now": "49446608",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "49446607",
+    "now": "49446609",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "49446607",
+    "now": "50446607",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "123213142",
+    "now": "122213142",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "123213142",
+    "now": "123213140",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "123213142",
+    "now": "123213141",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "123213142",
+    "now": "123213142",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "123213142",
+    "now": "123213143",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "123213142",
+    "now": "123213144",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "123213142",
+    "now": "124213142",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "388801891",
+    "now": "387801891",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "388801891",
+    "now": "388801889",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "388801891",
+    "now": "388801890",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "388801891",
+    "now": "388801891",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "388801891",
+    "now": "388801892",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "388801891",
+    "now": "388801893",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "388801891",
+    "now": "389801891",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "33375819",
+    "now": "32375819",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "33375819",
+    "now": "33375817",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "33375819",
+    "now": "33375818",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "33375819",
+    "now": "33375819",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "33375819",
+    "now": "33375820",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "33375819",
+    "now": "33375821",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "33375819",
+    "now": "34375819",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "574000619",
+    "now": "573000619",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "574000619",
+    "now": "574000617",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "574000619",
+    "now": "574000618",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "574000619",
+    "now": "574000619",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "574000619",
+    "now": "574000620",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "574000619",
+    "now": "574000621",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "574000619",
+    "now": "575000619",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "605225469",
+    "now": "604225469",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "605225469",
+    "now": "605225467",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "605225469",
+    "now": "605225468",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "605225469",
+    "now": "605225469",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "605225469",
+    "now": "605225470",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "605225469",
+    "now": "605225471",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "605225469",
+    "now": "606225469",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "719739432",
+    "now": "718739432",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "719739432",
+    "now": "719739430",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "719739432",
+    "now": "719739431",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "719739432",
+    "now": "719739432",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "719739432",
+    "now": "719739433",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "719739432",
+    "now": "719739434",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "719739432",
+    "now": "720739432",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "715890743",
+    "now": "714890743",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "715890743",
+    "now": "715890741",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "715890743",
+    "now": "715890742",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "715890743",
+    "now": "715890743",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "715890743",
+    "now": "715890744",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "715890743",
+    "now": "715890745",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "715890743",
+    "now": "716890743",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "585037445",
+    "now": "584037445",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "585037445",
+    "now": "585037443",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "585037445",
+    "now": "585037444",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "585037445",
+    "now": "585037445",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "585037445",
+    "now": "585037446",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "585037445",
+    "now": "585037447",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "585037445",
+    "now": "586037445",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "80837420",
+    "now": "79837420",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "80837420",
+    "now": "80837418",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "80837420",
+    "now": "80837419",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "80837420",
+    "now": "80837420",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "80837420",
+    "now": "80837421",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "80837420",
+    "now": "80837422",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "80837420",
+    "now": "81837420",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "984785162",
+    "now": "983785162",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "984785162",
+    "now": "984785160",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "984785162",
+    "now": "984785161",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "984785162",
+    "now": "984785162",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "984785162",
+    "now": "984785163",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "984785162",
+    "now": "984785164",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "984785162",
+    "now": "985785162",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "936379220",
+    "now": "935379220",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "936379220",
+    "now": "936379218",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "936379220",
+    "now": "936379219",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "936379220",
+    "now": "936379220",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "936379220",
+    "now": "936379221",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "936379220",
+    "now": "936379222",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "936379220",
+    "now": "937379220",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408513868",
+    "now": "407513868",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408513868",
+    "now": "408513866",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408513868",
+    "now": "408513867",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408513868",
+    "now": "408513868",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408513868",
+    "now": "408513869",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408513868",
+    "now": "408513870",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "408513868",
+    "now": "409513868",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "469456929",
+    "now": "468456929",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "469456929",
+    "now": "469456927",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "469456929",
+    "now": "469456928",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "469456929",
+    "now": "469456929",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "469456929",
+    "now": "469456930",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "469456929",
+    "now": "469456931",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "469456929",
+    "now": "470456929",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "21094241",
+    "now": "20094241",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "21094241",
+    "now": "21094239",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "21094241",
+    "now": "21094240",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "21094241",
+    "now": "21094241",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "21094241",
+    "now": "21094242",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "21094241",
+    "now": "21094243",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  },
+  {
+    "kind": "placeBid",
+    "endTime": "21094241",
+    "now": "22094241",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Bidding period has ended"
+  }
+]

@@ -191,8 +191,8 @@ export default function AuctionDetailPage({
         provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
         const storedAuctioneer = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
         const storedBidder = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
-        const auctioneerPK = storedAuctioneer ? Auction.pureCircuits.bidderPublicKey(storedAuctioneer.secretKey) : null
-        const bidderPK = storedBidder ? Auction.pureCircuits.bidderPublicKey(storedBidder.secretKey) : null
+        const auctioneerPK = storedAuctioneer ? Auction.pureCircuits.auctioneerPublicKey(storedAuctioneer.secretKey) : null
+        const bidderPK = storedBidder ? Auction.pureCircuits.bidderPublicKey(storedBidder.secretKey, auctionId) : null
         setMyAuctioneerPK(auctioneerPK)
         setMyBidderPK(bidderPK)
         setHasSealedBid(bidderPK !== null && ledger.sealedBids.lookup(auctionId).member(bidderPK))
@@ -348,7 +348,8 @@ export default function AuctionDetailPage({
         provider,
       )
       const contract = await getDeployedAuction(providers, AUCTIONEER_STATE_ID, stored)
-      const result = await contract.callTx.closeAuction(auctionId)
+      const newRevealDeadline = BigInt(Math.floor(Date.now() / 1000)) + 21600n
+      const result = await contract.callTx.closeAuction(auctionId, newRevealDeadline)
       setCloseResult(`Auction closed — tx: ${result.public.txId}`)
       await refreshAuctionStatus()
     } catch (err) {
@@ -372,9 +373,6 @@ export default function AuctionDetailPage({
       setRevealError('Wallet not connected — connect a wallet before revealing your bid.')
       return
     }
-
-    // TEMP DEBUG — remove after commitment-mismatch investigation is done.
-    ;(window as any).__debugState = { provider, BIDDER1_STATE_ID, auctionId, walletState, Auction }
 
     setRevealing(true)
     try {

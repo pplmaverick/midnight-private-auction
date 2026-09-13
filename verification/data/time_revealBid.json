@@ -1,0 +1,842 @@
+[
+  {
+    "kind": "revealBid",
+    "revealDeadline": "482834341",
+    "now": "481834341",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "482834341",
+    "now": "482834339",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "482834341",
+    "now": "482834340",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "482834341",
+    "now": "482834341",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "482834341",
+    "now": "482834342",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "482834341",
+    "now": "482834343",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "482834341",
+    "now": "483834341",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "735609507",
+    "now": "734609507",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "735609507",
+    "now": "735609505",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "735609507",
+    "now": "735609506",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "735609507",
+    "now": "735609507",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "735609507",
+    "now": "735609508",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "735609507",
+    "now": "735609509",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "735609507",
+    "now": "736609507",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "763360407",
+    "now": "762360407",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "763360407",
+    "now": "763360405",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "763360407",
+    "now": "763360406",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "763360407",
+    "now": "763360407",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "763360407",
+    "now": "763360408",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "763360407",
+    "now": "763360409",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "763360407",
+    "now": "764360407",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "831866370",
+    "now": "830866370",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "831866370",
+    "now": "831866368",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "831866370",
+    "now": "831866369",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "831866370",
+    "now": "831866370",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "831866370",
+    "now": "831866371",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "831866370",
+    "now": "831866372",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "831866370",
+    "now": "832866370",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "192413254",
+    "now": "191413254",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "192413254",
+    "now": "192413252",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "192413254",
+    "now": "192413253",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "192413254",
+    "now": "192413254",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "192413254",
+    "now": "192413255",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "192413254",
+    "now": "192413256",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "192413254",
+    "now": "193413254",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "321252813",
+    "now": "320252813",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "321252813",
+    "now": "321252811",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "321252813",
+    "now": "321252812",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "321252813",
+    "now": "321252813",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "321252813",
+    "now": "321252814",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "321252813",
+    "now": "321252815",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "321252813",
+    "now": "322252813",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "305979656",
+    "now": "304979656",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "305979656",
+    "now": "305979654",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "305979656",
+    "now": "305979655",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "305979656",
+    "now": "305979656",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "305979656",
+    "now": "305979657",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "305979656",
+    "now": "305979658",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "305979656",
+    "now": "306979656",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "108268409",
+    "now": "107268409",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "108268409",
+    "now": "108268407",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "108268409",
+    "now": "108268408",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "108268409",
+    "now": "108268409",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "108268409",
+    "now": "108268410",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "108268409",
+    "now": "108268411",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "108268409",
+    "now": "109268409",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "346968802",
+    "now": "345968802",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "346968802",
+    "now": "346968800",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "346968802",
+    "now": "346968801",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "346968802",
+    "now": "346968802",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "346968802",
+    "now": "346968803",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "346968802",
+    "now": "346968804",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "346968802",
+    "now": "347968802",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "540058494",
+    "now": "539058494",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "540058494",
+    "now": "540058492",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "540058494",
+    "now": "540058493",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "540058494",
+    "now": "540058494",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "540058494",
+    "now": "540058495",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "540058494",
+    "now": "540058496",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "540058494",
+    "now": "541058494",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "524717276",
+    "now": "523717276",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "524717276",
+    "now": "524717274",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "524717276",
+    "now": "524717275",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "524717276",
+    "now": "524717276",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "524717276",
+    "now": "524717277",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "524717276",
+    "now": "524717278",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "524717276",
+    "now": "525717276",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "755437495",
+    "now": "754437495",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "755437495",
+    "now": "755437493",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "755437495",
+    "now": "755437494",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "755437495",
+    "now": "755437495",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "755437495",
+    "now": "755437496",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "755437495",
+    "now": "755437497",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "755437495",
+    "now": "756437495",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "385330244",
+    "now": "384330244",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "385330244",
+    "now": "385330242",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "385330244",
+    "now": "385330243",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "385330244",
+    "now": "385330244",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "385330244",
+    "now": "385330245",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "385330244",
+    "now": "385330246",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "385330244",
+    "now": "386330244",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "353975914",
+    "now": "352975914",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "353975914",
+    "now": "353975912",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "353975914",
+    "now": "353975913",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "353975914",
+    "now": "353975914",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "353975914",
+    "now": "353975915",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "353975914",
+    "now": "353975916",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "353975914",
+    "now": "354975914",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "336213427",
+    "now": "335213427",
+    "delta": "-1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "336213427",
+    "now": "336213425",
+    "delta": "-2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "336213427",
+    "now": "336213426",
+    "delta": "-1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "336213427",
+    "now": "336213427",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "336213427",
+    "now": "336213428",
+    "delta": "1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "336213427",
+    "now": "336213429",
+    "delta": "2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  },
+  {
+    "kind": "revealBid",
+    "revealDeadline": "336213427",
+    "now": "337213427",
+    "delta": "1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline has passed"
+  }
+]

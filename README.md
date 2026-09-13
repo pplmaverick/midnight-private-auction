@@ -5,7 +5,7 @@ This project is built on the Midnight Network.
 ## 🌐 Live Demo
 https://midnight-private-auction.vercel.app
 
-> Current Contract: [`4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5`](https://explorer.1am.xyz/contract/4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5) · Full deployment history, tx hashes, and block numbers: [DEPLOYMENT.md](DEPLOYMENT.md)
+> Current Contract: [`f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6`](https://explorer.1am.xyz/contract/f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6) · Full deployment history, tx hashes, and block numbers: [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ![CI](https://github.com/pplmaverick/midnight-private-auction/actions/workflows/test.yml/badge.svg)
 ![Network](https://img.shields.io/badge/Midnight_Network-Preprod%20%7C%20Mainnet-blue)

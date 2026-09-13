@@ -1,0 +1,1682 @@
+[
+  {
+    "kind": "closeAuction",
+    "now": "446714369",
+    "newRevealDeadline": "445714369",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "446714369",
+    "newRevealDeadline": "446714367",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "446714369",
+    "newRevealDeadline": "446714368",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "446714369",
+    "newRevealDeadline": "446714369",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "446714369",
+    "newRevealDeadline": "446714370",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "446714369",
+    "newRevealDeadline": "446714371",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "446714369",
+    "newRevealDeadline": "447714369",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "608305843",
+    "newRevealDeadline": "607305843",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "608305843",
+    "newRevealDeadline": "608305841",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "608305843",
+    "newRevealDeadline": "608305842",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "608305843",
+    "newRevealDeadline": "608305843",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "608305843",
+    "newRevealDeadline": "608305844",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "608305843",
+    "newRevealDeadline": "608305845",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "608305843",
+    "newRevealDeadline": "609305843",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "660611805",
+    "newRevealDeadline": "659611805",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "660611805",
+    "newRevealDeadline": "660611803",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "660611805",
+    "newRevealDeadline": "660611804",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "660611805",
+    "newRevealDeadline": "660611805",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "660611805",
+    "newRevealDeadline": "660611806",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "660611805",
+    "newRevealDeadline": "660611807",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "660611805",
+    "newRevealDeadline": "661611805",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "379767482",
+    "newRevealDeadline": "378767482",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "379767482",
+    "newRevealDeadline": "379767480",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "379767482",
+    "newRevealDeadline": "379767481",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "379767482",
+    "newRevealDeadline": "379767482",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "379767482",
+    "newRevealDeadline": "379767483",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "379767482",
+    "newRevealDeadline": "379767484",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "379767482",
+    "newRevealDeadline": "380767482",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "86631784",
+    "newRevealDeadline": "85631784",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "86631784",
+    "newRevealDeadline": "86631782",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "86631784",
+    "newRevealDeadline": "86631783",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "86631784",
+    "newRevealDeadline": "86631784",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "86631784",
+    "newRevealDeadline": "86631785",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "86631784",
+    "newRevealDeadline": "86631786",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "86631784",
+    "newRevealDeadline": "87631784",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "719753262",
+    "newRevealDeadline": "718753262",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "719753262",
+    "newRevealDeadline": "719753260",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "719753262",
+    "newRevealDeadline": "719753261",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "719753262",
+    "newRevealDeadline": "719753262",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "719753262",
+    "newRevealDeadline": "719753263",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "719753262",
+    "newRevealDeadline": "719753264",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "719753262",
+    "newRevealDeadline": "720753262",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "37480102",
+    "newRevealDeadline": "36480102",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "37480102",
+    "newRevealDeadline": "37480100",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "37480102",
+    "newRevealDeadline": "37480101",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "37480102",
+    "newRevealDeadline": "37480102",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "37480102",
+    "newRevealDeadline": "37480103",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "37480102",
+    "newRevealDeadline": "37480104",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "37480102",
+    "newRevealDeadline": "38480102",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "357793106",
+    "newRevealDeadline": "356793106",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "357793106",
+    "newRevealDeadline": "357793104",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "357793106",
+    "newRevealDeadline": "357793105",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "357793106",
+    "newRevealDeadline": "357793106",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "357793106",
+    "newRevealDeadline": "357793107",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "357793106",
+    "newRevealDeadline": "357793108",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "357793106",
+    "newRevealDeadline": "358793106",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "975582824",
+    "newRevealDeadline": "974582824",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "975582824",
+    "newRevealDeadline": "975582822",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "975582824",
+    "newRevealDeadline": "975582823",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "975582824",
+    "newRevealDeadline": "975582824",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "975582824",
+    "newRevealDeadline": "975582825",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "975582824",
+    "newRevealDeadline": "975582826",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "975582824",
+    "newRevealDeadline": "976582824",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "339348098",
+    "newRevealDeadline": "338348098",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "339348098",
+    "newRevealDeadline": "339348096",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "339348098",
+    "newRevealDeadline": "339348097",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "339348098",
+    "newRevealDeadline": "339348098",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "339348098",
+    "newRevealDeadline": "339348099",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "339348098",
+    "newRevealDeadline": "339348100",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "339348098",
+    "newRevealDeadline": "340348098",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "81500643",
+    "newRevealDeadline": "80500643",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "81500643",
+    "newRevealDeadline": "81500641",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "81500643",
+    "newRevealDeadline": "81500642",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "81500643",
+    "newRevealDeadline": "81500643",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "81500643",
+    "newRevealDeadline": "81500644",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "81500643",
+    "newRevealDeadline": "81500645",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "81500643",
+    "newRevealDeadline": "82500643",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "964615335",
+    "newRevealDeadline": "963615335",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "964615335",
+    "newRevealDeadline": "964615333",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "964615335",
+    "newRevealDeadline": "964615334",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "964615335",
+    "newRevealDeadline": "964615335",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "964615335",
+    "newRevealDeadline": "964615336",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "964615335",
+    "newRevealDeadline": "964615337",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "964615335",
+    "newRevealDeadline": "965615335",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "484203078",
+    "newRevealDeadline": "483203078",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "484203078",
+    "newRevealDeadline": "484203076",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "484203078",
+    "newRevealDeadline": "484203077",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "484203078",
+    "newRevealDeadline": "484203078",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "484203078",
+    "newRevealDeadline": "484203079",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "484203078",
+    "newRevealDeadline": "484203080",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "484203078",
+    "newRevealDeadline": "485203078",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "342607983",
+    "newRevealDeadline": "341607983",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "342607983",
+    "newRevealDeadline": "342607981",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "342607983",
+    "newRevealDeadline": "342607982",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "342607983",
+    "newRevealDeadline": "342607983",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "342607983",
+    "newRevealDeadline": "342607984",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "342607983",
+    "newRevealDeadline": "342607985",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "342607983",
+    "newRevealDeadline": "343607983",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "802796613",
+    "newRevealDeadline": "801796613",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "802796613",
+    "newRevealDeadline": "802796611",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "802796613",
+    "newRevealDeadline": "802796612",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "802796613",
+    "newRevealDeadline": "802796613",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "802796613",
+    "newRevealDeadline": "802796614",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "802796613",
+    "newRevealDeadline": "802796615",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "802796613",
+    "newRevealDeadline": "803796613",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "665944864",
+    "newRevealDeadline": "664944864",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "665944864",
+    "newRevealDeadline": "665944862",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "665944864",
+    "newRevealDeadline": "665944863",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "665944864",
+    "newRevealDeadline": "665944864",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "665944864",
+    "newRevealDeadline": "665944865",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "665944864",
+    "newRevealDeadline": "665944866",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "665944864",
+    "newRevealDeadline": "666944864",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "395252611",
+    "newRevealDeadline": "394252611",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "395252611",
+    "newRevealDeadline": "395252609",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "395252611",
+    "newRevealDeadline": "395252610",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "395252611",
+    "newRevealDeadline": "395252611",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "395252611",
+    "newRevealDeadline": "395252612",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "395252611",
+    "newRevealDeadline": "395252613",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "395252611",
+    "newRevealDeadline": "396252611",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "3044607",
+    "newRevealDeadline": "2044607",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "3044607",
+    "newRevealDeadline": "3044605",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "3044607",
+    "newRevealDeadline": "3044606",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "3044607",
+    "newRevealDeadline": "3044607",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "3044607",
+    "newRevealDeadline": "3044608",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "3044607",
+    "newRevealDeadline": "3044609",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "3044607",
+    "newRevealDeadline": "4044607",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "309426199",
+    "newRevealDeadline": "308426199",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "309426199",
+    "newRevealDeadline": "309426197",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "309426199",
+    "newRevealDeadline": "309426198",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "309426199",
+    "newRevealDeadline": "309426199",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "309426199",
+    "newRevealDeadline": "309426200",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "309426199",
+    "newRevealDeadline": "309426201",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "309426199",
+    "newRevealDeadline": "310426199",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "286924022",
+    "newRevealDeadline": "285924022",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "286924022",
+    "newRevealDeadline": "286924020",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "286924022",
+    "newRevealDeadline": "286924021",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "286924022",
+    "newRevealDeadline": "286924022",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "286924022",
+    "newRevealDeadline": "286924023",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "286924022",
+    "newRevealDeadline": "286924024",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "286924022",
+    "newRevealDeadline": "287924022",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "310606539",
+    "newRevealDeadline": "309606539",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "310606539",
+    "newRevealDeadline": "310606537",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "310606539",
+    "newRevealDeadline": "310606538",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "310606539",
+    "newRevealDeadline": "310606539",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "310606539",
+    "newRevealDeadline": "310606540",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "310606539",
+    "newRevealDeadline": "310606541",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "310606539",
+    "newRevealDeadline": "311606539",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "188668653",
+    "newRevealDeadline": "187668653",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "188668653",
+    "newRevealDeadline": "188668651",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "188668653",
+    "newRevealDeadline": "188668652",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "188668653",
+    "newRevealDeadline": "188668653",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "188668653",
+    "newRevealDeadline": "188668654",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "188668653",
+    "newRevealDeadline": "188668655",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "188668653",
+    "newRevealDeadline": "189668653",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "371972615",
+    "newRevealDeadline": "370972615",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "371972615",
+    "newRevealDeadline": "371972613",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "371972615",
+    "newRevealDeadline": "371972614",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "371972615",
+    "newRevealDeadline": "371972615",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "371972615",
+    "newRevealDeadline": "371972616",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "371972615",
+    "newRevealDeadline": "371972617",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "371972615",
+    "newRevealDeadline": "372972615",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "816387873",
+    "newRevealDeadline": "815387873",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "816387873",
+    "newRevealDeadline": "816387871",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "816387873",
+    "newRevealDeadline": "816387872",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "816387873",
+    "newRevealDeadline": "816387873",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "816387873",
+    "newRevealDeadline": "816387874",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "816387873",
+    "newRevealDeadline": "816387875",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "816387873",
+    "newRevealDeadline": "817387873",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "180637699",
+    "newRevealDeadline": "179637699",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "180637699",
+    "newRevealDeadline": "180637697",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "180637699",
+    "newRevealDeadline": "180637698",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "180637699",
+    "newRevealDeadline": "180637699",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "180637699",
+    "newRevealDeadline": "180637700",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "180637699",
+    "newRevealDeadline": "180637701",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "180637699",
+    "newRevealDeadline": "181637699",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "214724780",
+    "newRevealDeadline": "213724780",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "214724780",
+    "newRevealDeadline": "214724778",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "214724780",
+    "newRevealDeadline": "214724779",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "214724780",
+    "newRevealDeadline": "214724780",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "214724780",
+    "newRevealDeadline": "214724781",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "214724780",
+    "newRevealDeadline": "214724782",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "214724780",
+    "newRevealDeadline": "215724780",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "832542303",
+    "newRevealDeadline": "831542303",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "832542303",
+    "newRevealDeadline": "832542301",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "832542303",
+    "newRevealDeadline": "832542302",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "832542303",
+    "newRevealDeadline": "832542303",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "832542303",
+    "newRevealDeadline": "832542304",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "832542303",
+    "newRevealDeadline": "832542305",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "832542303",
+    "newRevealDeadline": "833542303",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "248120794",
+    "newRevealDeadline": "247120794",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "248120794",
+    "newRevealDeadline": "248120792",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "248120794",
+    "newRevealDeadline": "248120793",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "248120794",
+    "newRevealDeadline": "248120794",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "248120794",
+    "newRevealDeadline": "248120795",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "248120794",
+    "newRevealDeadline": "248120796",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "248120794",
+    "newRevealDeadline": "249120794",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "760130092",
+    "newRevealDeadline": "759130092",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "760130092",
+    "newRevealDeadline": "760130090",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "760130092",
+    "newRevealDeadline": "760130091",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "760130092",
+    "newRevealDeadline": "760130092",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "760130092",
+    "newRevealDeadline": "760130093",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "760130092",
+    "newRevealDeadline": "760130094",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "760130092",
+    "newRevealDeadline": "761130092",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "678854171",
+    "newRevealDeadline": "677854171",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "678854171",
+    "newRevealDeadline": "678854169",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "678854171",
+    "newRevealDeadline": "678854170",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "678854171",
+    "newRevealDeadline": "678854171",
+    "delta": "0",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal deadline must be in the future"
+  },
+  {
+    "kind": "closeAuction",
+    "now": "678854171",
+    "newRevealDeadline": "678854172",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "678854171",
+    "newRevealDeadline": "678854173",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "closeAuction",
+    "now": "678854171",
+    "newRevealDeadline": "679854171",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  }
+]

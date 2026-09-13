@@ -1,0 +1,842 @@
+[
+  {
+    "kind": "claimItem",
+    "revealDeadline": "863955398",
+    "now": "862955398",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "863955398",
+    "now": "863955396",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "863955398",
+    "now": "863955397",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "863955398",
+    "now": "863955398",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "863955398",
+    "now": "863955399",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "863955398",
+    "now": "863955400",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "863955398",
+    "now": "864955398",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "862444018",
+    "now": "861444018",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "862444018",
+    "now": "862444016",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "862444018",
+    "now": "862444017",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "862444018",
+    "now": "862444018",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "862444018",
+    "now": "862444019",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "862444018",
+    "now": "862444020",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "862444018",
+    "now": "863444018",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "354347773",
+    "now": "353347773",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "354347773",
+    "now": "354347771",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "354347773",
+    "now": "354347772",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "354347773",
+    "now": "354347773",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "354347773",
+    "now": "354347774",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "354347773",
+    "now": "354347775",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "354347773",
+    "now": "355347773",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "335975413",
+    "now": "334975413",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "335975413",
+    "now": "335975411",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "335975413",
+    "now": "335975412",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "335975413",
+    "now": "335975413",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "335975413",
+    "now": "335975414",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "335975413",
+    "now": "335975415",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "335975413",
+    "now": "336975413",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "302791532",
+    "now": "301791532",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "302791532",
+    "now": "302791530",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "302791532",
+    "now": "302791531",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "302791532",
+    "now": "302791532",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "302791532",
+    "now": "302791533",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "302791532",
+    "now": "302791534",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "302791532",
+    "now": "303791532",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "47596608",
+    "now": "46596608",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "47596608",
+    "now": "47596606",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "47596608",
+    "now": "47596607",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "47596608",
+    "now": "47596608",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "47596608",
+    "now": "47596609",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "47596608",
+    "now": "47596610",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "47596608",
+    "now": "48596608",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "283891352",
+    "now": "282891352",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "283891352",
+    "now": "283891350",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "283891352",
+    "now": "283891351",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "283891352",
+    "now": "283891352",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "283891352",
+    "now": "283891353",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "283891352",
+    "now": "283891354",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "283891352",
+    "now": "284891352",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "139102410",
+    "now": "138102410",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "139102410",
+    "now": "139102408",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "139102410",
+    "now": "139102409",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "139102410",
+    "now": "139102410",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "139102410",
+    "now": "139102411",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "139102410",
+    "now": "139102412",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "139102410",
+    "now": "140102410",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "309276028",
+    "now": "308276028",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "309276028",
+    "now": "309276026",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "309276028",
+    "now": "309276027",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "309276028",
+    "now": "309276028",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "309276028",
+    "now": "309276029",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "309276028",
+    "now": "309276030",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "309276028",
+    "now": "310276028",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "130308928",
+    "now": "129308928",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "130308928",
+    "now": "130308926",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "130308928",
+    "now": "130308927",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "130308928",
+    "now": "130308928",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "130308928",
+    "now": "130308929",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "130308928",
+    "now": "130308930",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "130308928",
+    "now": "131308928",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "967705585",
+    "now": "966705585",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "967705585",
+    "now": "967705583",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "967705585",
+    "now": "967705584",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "967705585",
+    "now": "967705585",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "967705585",
+    "now": "967705586",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "967705585",
+    "now": "967705587",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "967705585",
+    "now": "968705585",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "937192253",
+    "now": "936192253",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "937192253",
+    "now": "937192251",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "937192253",
+    "now": "937192252",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "937192253",
+    "now": "937192253",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "937192253",
+    "now": "937192254",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "937192253",
+    "now": "937192255",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "937192253",
+    "now": "938192253",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "957368271",
+    "now": "956368271",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "957368271",
+    "now": "957368269",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "957368271",
+    "now": "957368270",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "957368271",
+    "now": "957368271",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "957368271",
+    "now": "957368272",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "957368271",
+    "now": "957368273",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "957368271",
+    "now": "958368271",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "339009942",
+    "now": "338009942",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "339009942",
+    "now": "339009940",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "339009942",
+    "now": "339009941",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "339009942",
+    "now": "339009942",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "339009942",
+    "now": "339009943",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "339009942",
+    "now": "339009944",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "339009942",
+    "now": "340009942",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "708457982",
+    "now": "707457982",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "708457982",
+    "now": "708457980",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "708457982",
+    "now": "708457981",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "708457982",
+    "now": "708457982",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "708457982",
+    "now": "708457983",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "708457982",
+    "now": "708457984",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "claimItem",
+    "revealDeadline": "708457982",
+    "now": "709457982",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  }
+]

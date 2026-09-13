@@ -14,6 +14,31 @@
             "type-name": "Bytes",
             "length": 32
           }
+        },
+        {
+          "name": "auctionId",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 4294967295
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "auctioneerPublicKey",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "sk",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
         }
       ],
       "result-type": {
@@ -135,6 +160,13 @@
           "type": {
             "type-name": "Uint",
             "maxval": 4294967295
+          }
+        },
+        {
+          "name": "newRevealDeadline",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 18446744073709551615
           }
         }
       ],

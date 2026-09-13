@@ -37,7 +37,7 @@ import * as api from '../src/api.js';
 import { AUCTIONEER_STATE_ID, BIDDER1_STATE_ID } from '../src/common-types.js';
 import { createAuctionPrivateState } from '../contract/src/index.js';
 
-const CONTRACT_ADDRESS = '4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5';
+const CONTRACT_ADDRESS = 'f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6';
 const DIVIDER = '══════════════════════════════════════════════════════════════';
 
 type PendingReveal = {
@@ -111,7 +111,8 @@ async function main() {
   // ── Step 1: closeAuction ─────────────────────────────────────────────────────
   printStep(1, `closeAuction(${auctionId}) — as auctioneer`);
   const aucContract = await api.joinExisting(providers, CONTRACT_ADDRESS, AUCTIONEER_STATE_ID);
-  const closeTx = await api.withStatus('closeAuction()', () => api.closeAuction(aucContract, auctionId));
+  const newRevealDeadline = BigInt(nowSeconds) + 21600n;
+  const closeTx = await api.withStatus('closeAuction()', () => api.closeAuction(aucContract, auctionId, newRevealDeadline));
   txHashes['closeAuction'] = closeTx.txId;
   printTxHash('closeAuction', closeTx);
 

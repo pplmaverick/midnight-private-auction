@@ -20,25 +20,69 @@
  *   AUCTION_ID=7 BIDDER_PK=<hex64> SECRET_KEY_HEX=<hex64> BID_AMOUNT=150 BID_SALT_HEX=<hex64> \
  *     npm run debug-commitment:mainnet
  *
- * Environment variables (all required):
+ * Environment variables (all required unless noted):
  *   AUCTION_ID       — auction id to check
  *   BIDDER_PK        — bidder's public key, hex, as stored under sealedBids[auctionId]
  *   SECRET_KEY_HEX   — secretKey from the browser's private state, hex
  *   BID_AMOUNT       — bidAmount from the browser's private state, integer
  *   BID_SALT_HEX     — bidSalt from the browser's private state, hex
  *   MIDNIGHT_NETWORK — "mainnet" or "preprod" (default: preprod)
- *   MIDNIGHT_NODE / MIDNIGHT_INDEXER / MIDNIGHT_INDEXER_WS / MIDNIGHT_PROOF_SERVER
- *                    — same as other scripts (mainnet only)
+ *   MIDNIGHT_INDEXER / MIDNIGHT_INDEXER_WS
+ *                    — optional overrides (mainnet only). This script only ever calls
+ *                      indexerPublicDataProvider — it never touches MIDNIGHT_NODE or a
+ *                      proof server, so unlike the other *:mainnet scripts it does NOT
+ *                      go through src/config.ts's MainnetConfig (whose constructor would
+ *                      otherwise demand MIDNIGHT_NODE for no reason this script needs).
+ *                      Defaults match frontend/src/midnight/publicDataProvider.ts's v3
+ *                      endpoint (the one the deployed dapp actually uses) — NOT the v1
+ *                      URL documented in src/config.ts's MainnetConfig comment, which is
+ *                      for the CLI scripts' wallet/RPC path and unrelated to this script.
+ *
+ * ─── Brute-force mode ───────────────────────────────────────────────────────
+ * Set BRUTE_FORCE_TARGET to switch modes entirely: fixes secretKey/auctionId/bidSalt
+ * and scans bidAmount over a range, stopping at the first value whose recomputed
+ * commitment matches BRUTE_FORCE_TARGET. Purely local (Auction.pureCircuits), no
+ * indexer/network call at all — BIDDER_PK and BID_AMOUNT are not read in this mode.
+ *
+ *   AUCTION_ID=7 SECRET_KEY_HEX=<hex64> BID_SALT_HEX=<hex64> \
+ *     BRUTE_FORCE_TARGET=<hex64> [BRUTE_FORCE_MIN=1] [BRUTE_FORCE_MAX=10000] \
+ *     npm run debug-commitment
+ *
+ *   BRUTE_FORCE_TARGET — on-chain commitment hex to match (required to enable this mode)
+ *   BRUTE_FORCE_MIN    — lowest bidAmount to try, inclusive (default: 1)
+ *   BRUTE_FORCE_MAX    — highest bidAmount to try, inclusive (default: 10000)
  */
 
 import { Buffer } from 'node:buffer';
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { assertIsContractAddress } from '@midnight-ntwrk/midnight-js/utils';
-import { PreprodConfig, MainnetConfig } from '../src/config.js';
+import { setNetworkId } from '@midnight-ntwrk/midnight-js/network-id';
+import { PreprodConfig } from '../src/config.js';
 import { Auction } from '../contract/src/index.js';
 
-const CONTRACT_ADDRESS = '4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5';
+const CONTRACT_ADDRESS = 'f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6';
 const DIVIDER = '══════════════════════════════════════════════════════════════';
+
+// v3 endpoint — matches frontend/src/midnight/publicDataProvider.ts's MAINNET_INDEXER /
+// MAINNET_INDEXER_WS, i.e. what the deployed dapp itself actually queries. Deliberately
+// NOT src/config.ts's documented v1 URL (that's the CLI/wallet path, different host).
+const DEFAULT_MAINNET_INDEXER = 'https://indexer.mainnet.midnight.network/api/v3/graphql';
+const DEFAULT_MAINNET_INDEXER_WS = 'wss://indexer.mainnet.midnight.network/api/v3/graphql/ws';
+
+// This script only ever calls indexerPublicDataProvider(indexer, indexerWS) — resolve
+// just those two values instead of constructing a full Config (MainnetConfig's
+// constructor would otherwise require MIDNIGHT_NODE, which nothing here reads).
+function resolveIndexerEndpoints(network: string): { indexer: string; indexerWS: string } {
+  if (network === 'mainnet') {
+    setNetworkId('mainnet');
+    return {
+      indexer: process.env.MIDNIGHT_INDEXER ?? DEFAULT_MAINNET_INDEXER,
+      indexerWS: process.env.MIDNIGHT_INDEXER_WS ?? DEFAULT_MAINNET_INDEXER_WS,
+    };
+  }
+  const preprod = new PreprodConfig(); // hardcoded values, no required env vars, sets networkId
+  return { indexer: preprod.indexer, indexerWS: preprod.indexerWS };
+}
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -52,9 +96,71 @@ function requireEnv(name: string): string {
   return value;
 }
 
+// Fixed secretKey/auctionId/bidSalt, scans bidAmount in [min, max] for the value whose
+// commitment matches target. Purely local — no indexer/network call needed.
+function runBruteForce(target: string): void {
+  const auctionId = BigInt(requireEnv('AUCTION_ID'));
+  const secretKeyArg = requireEnv('SECRET_KEY_HEX');
+  const bidSaltArg = requireEnv('BID_SALT_HEX');
+
+  const secretKey = new Uint8Array(Buffer.from(secretKeyArg, 'hex'));
+  if (secretKey.length !== 32) {
+    console.error(`Error: SECRET_KEY_HEX must be 32 bytes / 64 hex chars — got ${secretKey.length} bytes.`);
+    process.exit(1);
+  }
+  const bidSalt = new Uint8Array(Buffer.from(bidSaltArg, 'hex'));
+  if (bidSalt.length !== 32) {
+    console.error(`Error: BID_SALT_HEX must be 32 bytes / 64 hex chars — got ${bidSalt.length} bytes.`);
+    process.exit(1);
+  }
+  const targetHex = target.toLowerCase();
+  if (Buffer.from(targetHex, 'hex').length !== 32) {
+    console.error(`Error: BRUTE_FORCE_TARGET must be 32 bytes / 64 hex chars — got ${Buffer.from(targetHex, 'hex').length} bytes.`);
+    process.exit(1);
+  }
+
+  const min = BigInt(process.env.BRUTE_FORCE_MIN ?? '1');
+  const max = BigInt(process.env.BRUTE_FORCE_MAX ?? '10000');
+
+  console.log(`\n${DIVIDER}`);
+  console.log('  Midnight Private Auction — debug-commitment (brute-force mode)');
+  console.log(`  Auction ID: ${auctionId}`);
+  console.log(`  secretKey : ${secretKeyArg}`);
+  console.log(`  bidSalt   : ${bidSaltArg}`);
+  console.log(`  target    : ${targetHex}`);
+  console.log(`  range     : bidAmount in [${min}, ${max}]`);
+  console.log(`${DIVIDER}\n`);
+
+  let found: bigint | null = null;
+  for (let amount = min; amount <= max; amount++) {
+    const commitment = Auction.pureCircuits.computeCommitment(secretKey, auctionId, amount, bidSalt);
+    const hex = Buffer.from(commitment).toString('hex');
+    if (hex === targetHex) {
+      found = amount;
+      break;
+    }
+  }
+
+  console.log(`${DIVIDER}`);
+  if (found !== null) {
+    console.log(`  ✓ FOUND — bidAmount = ${found} reproduces the target commitment.`);
+  } else {
+    console.log(`  ✗ NOT FOUND — no bidAmount in [${min}, ${max}] reproduces the target commitment`);
+    console.log('    with this secretKey/auctionId/bidSalt. Either the range is wrong, or one of');
+    console.log('    secretKey/auctionId/bidSalt itself (not bidAmount) is what actually diverged.');
+  }
+  console.log(`${DIVIDER}\n`);
+}
+
 async function main() {
+  const bruteForceTarget = process.env.BRUTE_FORCE_TARGET;
+  if (bruteForceTarget) {
+    runBruteForce(bruteForceTarget);
+    return;
+  }
+
   const network = process.env.MIDNIGHT_NETWORK ?? 'preprod';
-  const config = network === 'mainnet' ? new MainnetConfig() : new PreprodConfig();
+  const { indexer, indexerWS } = resolveIndexerEndpoints(network);
 
   const auctionId = BigInt(requireEnv('AUCTION_ID'));
   const bidderPkArg = requireEnv('BIDDER_PK');
@@ -87,7 +193,7 @@ async function main() {
 
   // ── Step 1: on-chain commitment (read-only, no wallet needed) ─────────────
   assertIsContractAddress(CONTRACT_ADDRESS);
-  const publicDataProvider = indexerPublicDataProvider(config.indexer, config.indexerWS);
+  const publicDataProvider = indexerPublicDataProvider(indexer, indexerWS);
   const state = await publicDataProvider.queryContractState(CONTRACT_ADDRESS);
   if (state == null) {
     console.error(`Error: contract ${CONTRACT_ADDRESS} not found on ${network}.`);
@@ -115,7 +221,7 @@ async function main() {
   // ── Step 2: local recompute from the values you provided ──────────────────
   const recomputed = Auction.pureCircuits.computeCommitment(secretKey, auctionId, bidAmount, bidSalt);
   const recomputedHex = Buffer.from(recomputed).toString('hex');
-  const recomputedPK = Auction.pureCircuits.bidderPublicKey(secretKey);
+  const recomputedPK = Auction.pureCircuits.bidderPublicKey(secretKey, auctionId);
   const recomputedPKHex = Buffer.from(recomputedPK).toString('hex');
 
   console.log(`${DIVIDER}`);

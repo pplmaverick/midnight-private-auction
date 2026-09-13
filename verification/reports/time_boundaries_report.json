@@ -1,0 +1,229 @@
+{
+  "sections": [
+    {
+      "name": "createAuction",
+      "cases": 700,
+      "status": "MATCH",
+      "mismatch_count": 0,
+      "by_delta": {
+        "-1000000": {
+          "cases": 100,
+          "actualPass": 0
+        },
+        "-2": {
+          "cases": 100,
+          "actualPass": 0
+        },
+        "-1": {
+          "cases": 100,
+          "actualPass": 0
+        },
+        "0": {
+          "cases": 100,
+          "actualPass": 0
+        },
+        "1": {
+          "cases": 100,
+          "actualPass": 100
+        },
+        "2": {
+          "cases": 100,
+          "actualPass": 100
+        },
+        "1000000": {
+          "cases": 100,
+          "actualPass": 100
+        }
+      },
+      "mismatches": []
+    },
+    {
+      "name": "placeBid",
+      "cases": 700,
+      "status": "MATCH",
+      "mismatch_count": 0,
+      "by_delta": {
+        "-1000000": {
+          "cases": 100,
+          "actualPass": 100
+        },
+        "-2": {
+          "cases": 100,
+          "actualPass": 100
+        },
+        "-1": {
+          "cases": 100,
+          "actualPass": 100
+        },
+        "0": {
+          "cases": 100,
+          "actualPass": 0
+        },
+        "1": {
+          "cases": 100,
+          "actualPass": 0
+        },
+        "2": {
+          "cases": 100,
+          "actualPass": 0
+        },
+        "1000000": {
+          "cases": 100,
+          "actualPass": 0
+        }
+      },
+      "mismatches": []
+    },
+    {
+      "name": "closeAuction",
+      "cases": 210,
+      "status": "MATCH",
+      "mismatch_count": 0,
+      "by_delta": {
+        "-1000000": {
+          "cases": 30,
+          "actualPass": 0
+        },
+        "-2": {
+          "cases": 30,
+          "actualPass": 0
+        },
+        "-1": {
+          "cases": 30,
+          "actualPass": 0
+        },
+        "0": {
+          "cases": 30,
+          "actualPass": 0
+        },
+        "1": {
+          "cases": 30,
+          "actualPass": 30
+        },
+        "2": {
+          "cases": 30,
+          "actualPass": 30
+        },
+        "1000000": {
+          "cases": 30,
+          "actualPass": 30
+        }
+      },
+      "mismatches": []
+    },
+    {
+      "name": "revealBid",
+      "cases": 105,
+      "status": "MATCH",
+      "mismatch_count": 0,
+      "by_delta": {
+        "-1000000": {
+          "cases": 15,
+          "actualPass": 15
+        },
+        "-2": {
+          "cases": 15,
+          "actualPass": 15
+        },
+        "-1": {
+          "cases": 15,
+          "actualPass": 15
+        },
+        "0": {
+          "cases": 15,
+          "actualPass": 0
+        },
+        "1": {
+          "cases": 15,
+          "actualPass": 0
+        },
+        "2": {
+          "cases": 15,
+          "actualPass": 0
+        },
+        "1000000": {
+          "cases": 15,
+          "actualPass": 0
+        }
+      },
+      "mismatches": []
+    },
+    {
+      "name": "claimItem",
+      "cases": 105,
+      "status": "MATCH",
+      "mismatch_count": 0,
+      "by_delta": {
+        "-1000000": {
+          "cases": 15,
+          "actualPass": 0
+        },
+        "-2": {
+          "cases": 15,
+          "actualPass": 0
+        },
+        "-1": {
+          "cases": 15,
+          "actualPass": 0
+        },
+        "0": {
+          "cases": 15,
+          "actualPass": 15
+        },
+        "1": {
+          "cases": 15,
+          "actualPass": 15
+        },
+        "2": {
+          "cases": 15,
+          "actualPass": 15
+        },
+        "1000000": {
+          "cases": 15,
+          "actualPass": 15
+        }
+      },
+      "mismatches": []
+    },
+    {
+      "name": "finalizeAuction",
+      "cases": 140,
+      "status": "MATCH",
+      "mismatch_count": 0,
+      "by_delta": {
+        "-1000000": {
+          "cases": 20,
+          "actualPass": 0
+        },
+        "-2": {
+          "cases": 20,
+          "actualPass": 0
+        },
+        "-1": {
+          "cases": 20,
+          "actualPass": 0
+        },
+        "0": {
+          "cases": 20,
+          "actualPass": 20
+        },
+        "1": {
+          "cases": 20,
+          "actualPass": 20
+        },
+        "2": {
+          "cases": 20,
+          "actualPass": 20
+        },
+        "1000000": {
+          "cases": 20,
+          "actualPass": 20
+        }
+      },
+      "mismatches": []
+    }
+  ],
+  "overall_status": "ALL MATCH",
+  "total_cases": 1960,
+  "total_mismatches": 0
+}

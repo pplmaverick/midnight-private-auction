@@ -30,7 +30,7 @@ import * as api from '../src/api.js';
 import { createAuctionPrivateState } from '../contract/src/index.js';
 import { AUCTIONEER_STATE_ID, BIDDER1_STATE_ID } from '../src/common-types.js';
 
-const CONTRACT_ADDRESS = '4fd31443997bd04bbf0b94e2ef3d5b0ff05479c4fb80bcac0dc74b2c763282e5';
+const CONTRACT_ADDRESS = 'f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6';
 const DIVIDER = '══════════════════════════════════════════════════════════════';
 
 const ITEM_NAME = 'Cardano Midnight Pioneer Badge #001';

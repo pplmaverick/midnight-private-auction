@@ -619,8 +619,9 @@ export const placeBid = async (
 export const closeAuction = async (
   contract: DeployedAuctionContract,
   auctionId: bigint,
+  newRevealDeadline: bigint,
 ): Promise<FinalizedTxData> => {
-  const result = await contract.callTx.closeAuction(auctionId);
+  const result = await contract.callTx.closeAuction(auctionId, newRevealDeadline);
   return result.public;
 };
 

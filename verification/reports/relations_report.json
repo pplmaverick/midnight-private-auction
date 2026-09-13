@@ -1,0 +1,52 @@
+{
+  "sections": [
+    {
+      "name": "domain_separation",
+      "description": "auctioneerPublicKey(sk) != bidderPublicKey(sk) for the same sk",
+      "cases": 1000,
+      "comparisons": 1000,
+      "status": "MATCH",
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "name": "determinism",
+      "description": "computeCommitment(sk, auctionId, amount, salt) is stable across repeat calls",
+      "cases": 500,
+      "comparisons": 500,
+      "status": "MATCH",
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "name": "input_sensitivity",
+      "description": "changing exactly one input to computeCommitment changes the output",
+      "cases": 500,
+      "comparisons": 2000,
+      "status": "MATCH",
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "name": "auctionid_isolation",
+      "description": "same (sk, amount, salt) across distinct auctionIds never collides",
+      "cases": 300,
+      "comparisons": 300,
+      "status": "MATCH",
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "name": "bidderpk_auctionid_isolation",
+      "description": "bidderPublicKey(sk, auctionId): same sk across distinct auctionIds never collides",
+      "cases": 300,
+      "comparisons": 300,
+      "status": "MATCH",
+      "failure_count": 0,
+      "failures": []
+    }
+  ],
+  "overall_status": "ALL MATCH",
+  "total_comparisons": 4100,
+  "total_failures": 0
+}

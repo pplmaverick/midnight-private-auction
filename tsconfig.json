@@ -12,6 +12,6 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "include": ["contract/src/**/*", "src/**/*", "scripts/**/*.ts"],
+  "include": ["contract/src/**/*", "src/**/*", "scripts/**/*.ts", "verification/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

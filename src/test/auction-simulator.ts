@@ -59,10 +59,11 @@ export class AuctionSimulator {
     return this.circuitContext.currentPrivateState;
   }
 
-  public publicKey(): Uint8Array {
+  public publicKey(auctionId: bigint): Uint8Array {
     return this.contract.circuits.bidderPublicKey(
       this.circuitContext,
       this.getPrivateState().secretKey,
+      auctionId,
     ).result;
   }
 
@@ -107,12 +108,24 @@ export class AuctionSimulator {
     return ledger(this.circuitContext.currentQueryContext.state);
   }
 
-  public closeAuction(auctionId: bigint): Ledger {
+  public closeAuction(auctionId: bigint, newRevealDeadline: bigint): Ledger {
     this.circuitContext = this.contract.impureCircuits.closeAuction(
       this.circuitContext,
       auctionId,
+      newRevealDeadline,
     ).context;
     return ledger(this.circuitContext.currentQueryContext.state);
+  }
+
+  /**
+   * Sets the simulated block time (secondsSinceEpoch) used by blockTimeLt/
+   * blockTimeGte inside the contract. A freshly constructed QueryContext
+   * defaults to 0n (not wall-clock time), so time-gated circuits (placeBid,
+   * revealBid, claimItem) need this to exercise their boundary conditions.
+   */
+  public setBlockTime(secondsSinceEpoch: bigint): void {
+    const qc = this.circuitContext.currentQueryContext;
+    qc.block = { ...qc.block, secondsSinceEpoch };
   }
 
   public revealBid(auctionId: bigint, amount: bigint, salt: Uint8Array): Ledger {

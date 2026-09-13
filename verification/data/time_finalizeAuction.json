@@ -1,0 +1,1122 @@
+[
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "921883273",
+    "now": "920883273",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "921883273",
+    "now": "921883271",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "921883273",
+    "now": "921883272",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "921883273",
+    "now": "921883273",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "921883273",
+    "now": "921883274",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "921883273",
+    "now": "921883275",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "921883273",
+    "now": "922883273",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "940193136",
+    "now": "939193136",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "940193136",
+    "now": "940193134",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "940193136",
+    "now": "940193135",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "940193136",
+    "now": "940193136",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "940193136",
+    "now": "940193137",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "940193136",
+    "now": "940193138",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "940193136",
+    "now": "941193136",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "119665054",
+    "now": "118665054",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "119665054",
+    "now": "119665052",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "119665054",
+    "now": "119665053",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "119665054",
+    "now": "119665054",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "119665054",
+    "now": "119665055",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "119665054",
+    "now": "119665056",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "119665054",
+    "now": "120665054",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "409405677",
+    "now": "408405677",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "409405677",
+    "now": "409405675",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "409405677",
+    "now": "409405676",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "409405677",
+    "now": "409405677",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "409405677",
+    "now": "409405678",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "409405677",
+    "now": "409405679",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "409405677",
+    "now": "410405677",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "555074834",
+    "now": "554074834",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "555074834",
+    "now": "555074832",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "555074834",
+    "now": "555074833",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "555074834",
+    "now": "555074834",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "555074834",
+    "now": "555074835",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "555074834",
+    "now": "555074836",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "555074834",
+    "now": "556074834",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "271438461",
+    "now": "270438461",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "271438461",
+    "now": "271438459",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "271438461",
+    "now": "271438460",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "271438461",
+    "now": "271438461",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "271438461",
+    "now": "271438462",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "271438461",
+    "now": "271438463",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "271438461",
+    "now": "272438461",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "299688903",
+    "now": "298688903",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "299688903",
+    "now": "299688901",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "299688903",
+    "now": "299688902",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "299688903",
+    "now": "299688903",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "299688903",
+    "now": "299688904",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "299688903",
+    "now": "299688905",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "299688903",
+    "now": "300688903",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "899359958",
+    "now": "898359958",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "899359958",
+    "now": "899359956",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "899359958",
+    "now": "899359957",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "899359958",
+    "now": "899359958",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "899359958",
+    "now": "899359959",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "899359958",
+    "now": "899359960",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "899359958",
+    "now": "900359958",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "239923334",
+    "now": "238923334",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "239923334",
+    "now": "239923332",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "239923334",
+    "now": "239923333",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "239923334",
+    "now": "239923334",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "239923334",
+    "now": "239923335",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "239923334",
+    "now": "239923336",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "239923334",
+    "now": "240923334",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "791950499",
+    "now": "790950499",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "791950499",
+    "now": "791950497",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "791950499",
+    "now": "791950498",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "791950499",
+    "now": "791950499",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "791950499",
+    "now": "791950500",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "791950499",
+    "now": "791950501",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "791950499",
+    "now": "792950499",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "732568683",
+    "now": "731568683",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "732568683",
+    "now": "732568681",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "732568683",
+    "now": "732568682",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "732568683",
+    "now": "732568683",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "732568683",
+    "now": "732568684",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "732568683",
+    "now": "732568685",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "732568683",
+    "now": "733568683",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "374931382",
+    "now": "373931382",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "374931382",
+    "now": "374931380",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "374931382",
+    "now": "374931381",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "374931382",
+    "now": "374931382",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "374931382",
+    "now": "374931383",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "374931382",
+    "now": "374931384",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "374931382",
+    "now": "375931382",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "807160542",
+    "now": "806160542",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "807160542",
+    "now": "807160540",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "807160542",
+    "now": "807160541",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "807160542",
+    "now": "807160542",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "807160542",
+    "now": "807160543",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "807160542",
+    "now": "807160544",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "807160542",
+    "now": "808160542",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "684782918",
+    "now": "683782918",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "684782918",
+    "now": "684782916",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "684782918",
+    "now": "684782917",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "684782918",
+    "now": "684782918",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "684782918",
+    "now": "684782919",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "684782918",
+    "now": "684782920",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "684782918",
+    "now": "685782918",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "939443203",
+    "now": "938443203",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "939443203",
+    "now": "939443201",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "939443203",
+    "now": "939443202",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "939443203",
+    "now": "939443203",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "939443203",
+    "now": "939443204",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "939443203",
+    "now": "939443205",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "939443203",
+    "now": "940443203",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "144724203",
+    "now": "143724203",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "144724203",
+    "now": "144724201",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "144724203",
+    "now": "144724202",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "144724203",
+    "now": "144724203",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "144724203",
+    "now": "144724204",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "144724203",
+    "now": "144724205",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "144724203",
+    "now": "145724203",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "195086263",
+    "now": "194086263",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "195086263",
+    "now": "195086261",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "195086263",
+    "now": "195086262",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "195086263",
+    "now": "195086263",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "195086263",
+    "now": "195086264",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "195086263",
+    "now": "195086265",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "195086263",
+    "now": "196086263",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "238743111",
+    "now": "237743111",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "238743111",
+    "now": "238743109",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "238743111",
+    "now": "238743110",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "238743111",
+    "now": "238743111",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "238743111",
+    "now": "238743112",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "238743111",
+    "now": "238743113",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "238743111",
+    "now": "239743111",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "934770119",
+    "now": "933770119",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "934770119",
+    "now": "934770117",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "934770119",
+    "now": "934770118",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "934770119",
+    "now": "934770119",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "934770119",
+    "now": "934770120",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "934770119",
+    "now": "934770121",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "934770119",
+    "now": "935770119",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "741027313",
+    "now": "740027313",
+    "delta": "-1000000",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "741027313",
+    "now": "741027311",
+    "delta": "-2",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "741027313",
+    "now": "741027312",
+    "delta": "-1",
+    "actualPass": false,
+    "actualError": "failed assert: Reveal window still open"
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "741027313",
+    "now": "741027313",
+    "delta": "0",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "741027313",
+    "now": "741027314",
+    "delta": "1",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "741027313",
+    "now": "741027315",
+    "delta": "2",
+    "actualPass": true,
+    "actualError": null
+  },
+  {
+    "kind": "finalizeAuction",
+    "revealDeadline": "741027313",
+    "now": "742027313",
+    "delta": "1000000",
+    "actualPass": true,
+    "actualError": null
+  }
+]

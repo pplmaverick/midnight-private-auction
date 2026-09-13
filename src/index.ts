@@ -152,7 +152,8 @@ async function main() {
   // ── Step 4: Close auction ────────────────────────────────────────────────────
   printStep(4, 'Auctioneer closes bidding phase');
   const aucContract2 = await api.joinAs(providers, contractAddress, AUCTIONEER_STATE_ID, aucPrivState);
-  const closeTx = await api.withStatus('closeAuction()', () => api.closeAuction(aucContract2, auctionId));
+  const newRevealDeadline = BigInt(Math.floor(Date.now() / 1000)) + 21600n;
+  const closeTx = await api.withStatus('closeAuction()', () => api.closeAuction(aucContract2, auctionId, newRevealDeadline));
   txHashes['closeAuction'] = closeTx.txId;
   printTxHash('closeAuction', closeTx);
 

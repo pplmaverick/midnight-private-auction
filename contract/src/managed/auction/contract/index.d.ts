@@ -18,7 +18,9 @@ export type ImpureCircuits<PS> = {
                 auctionEndTime_0: bigint,
                 auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
   placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
-  closeAuction(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  closeAuction(context: __compactRuntime.CircuitContext<PS>,
+               auctionId_0: bigint,
+               newRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
             auctionId_0: bigint,
             amount_0: bigint,
@@ -36,7 +38,9 @@ export type ProvableCircuits<PS> = {
                 auctionEndTime_0: bigint,
                 auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
   placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
-  closeAuction(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  closeAuction(context: __compactRuntime.CircuitContext<PS>,
+               auctionId_0: bigint,
+               newRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
             auctionId_0: bigint,
             amount_0: bigint,
@@ -47,7 +51,8 @@ export type ProvableCircuits<PS> = {
 }
 
 export type PureCircuits = {
-  bidderPublicKey(sk_0: Uint8Array): Uint8Array;
+  bidderPublicKey(sk_0: Uint8Array, auctionId_0: bigint): Uint8Array;
+  auctioneerPublicKey(sk_0: Uint8Array): Uint8Array;
   computeCommitment(sk_0: Uint8Array,
                     auctionId_0: bigint,
                     amount_0: bigint,
@@ -55,7 +60,11 @@ export type PureCircuits = {
 }
 
 export type Circuits<PS> = {
-  bidderPublicKey(context: __compactRuntime.CircuitContext<PS>, sk_0: Uint8Array): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  bidderPublicKey(context: __compactRuntime.CircuitContext<PS>,
+                  sk_0: Uint8Array,
+                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  auctioneerPublicKey(context: __compactRuntime.CircuitContext<PS>,
+                      sk_0: Uint8Array): __compactRuntime.CircuitResults<PS, Uint8Array>;
   computeCommitment(context: __compactRuntime.CircuitContext<PS>,
                     sk_0: Uint8Array,
                     auctionId_0: bigint,
@@ -68,7 +77,9 @@ export type Circuits<PS> = {
                 auctionEndTime_0: bigint,
                 auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
   placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
-  closeAuction(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  closeAuction(context: __compactRuntime.CircuitContext<PS>,
+               auctionId_0: bigint,
+               newRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, []>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
             auctionId_0: bigint,
             amount_0: bigint,
