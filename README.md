@@ -16,7 +16,7 @@ https://midnight-private-auction.vercel.app
 
 Sealed-bid auction on Midnight Network. During the bidding phase, bid amounts and bidder identities are hidden by ZK proofs — chain observers can see that a `placeBid()` call occurred, but not who made it or how much they bid. The amount only appears on-chain when the bidder voluntarily calls `revealBid()`. This is a commit-reveal auction implemented as a **Compact smart contract**, purpose-built for Midnight's ZK circuit model — not a port from an EVM contract.
 
-As of block 1,498,136 (~3 months after Midnight mainnet launch), this contract is one of 114 contracts deployed on Midnight mainnet. See [DEPLOYMENT.md](DEPLOYMENT.md) for the full deployment history across three contract generations (M1–M3), including every verified transaction hash and block number.
+This contract is one of many deployed on Midnight mainnet, across four contract generations (M1–M4). See [DEPLOYMENT.md](DEPLOYMENT.md) for the full deployment history, including every verified transaction hash and block number.
 
 ---
 
@@ -32,7 +32,7 @@ Midnight breaks that coupling. A **Compact** contract compiles to a ZK circuit; 
 |---|---|---|
 | Bid privacy during bidding | Bids are public in calldata the moment they're sent | Bid amount lives in Compact private state (`witness`); only a ZK commitment hash goes on-chain |
 | Preventing frontrunning | Manual commit-hash schemes hand-rolled in Solidity | Privacy enforced by the Compact compiler and ZK circuit — no manual scheme needed |
-| Bidder identity | EOA address trivially linkable across bids | Domain-separated `bidderPublicKey = H("auction:bidder:", sk)` derived from a local secret, never transmitted |
+| Bidder identity | EOA address trivially linkable across bids | Domain-separated `bidderPublicKey = H("auction:bidder:", sk, auctionId)` derived from a local secret, never transmitted — folding in `auctionId` means the same secret produces a different public key in every auction, so a bidder's activity can't be correlated across auctions |
 | Reveal integrity | Trust event logs or off-chain computation | ZK circuit asserts `H(sk, auctionId, amount, salt) == stored commitment` before accepting a reveal |
 | Double-bid prevention | Requires an explicit "hasBid" mapping keyed by `msg.sender` | Nullifier-style on-circuit assertion: `placeBid` rejects a second bid the moment the caller's derived `bidderPublicKey` is already a key in that auction's `sealedBids` map |
 
@@ -72,18 +72,21 @@ Compact's `witness` declarations (`localSecretKey`, `myBidAmount`, `myBidSalt`) 
 
 ```
 // Pure circuits (computation only, no proof, no state change)
-bidderPublicKey(sk: Bytes<32>): Bytes<32>
+bidderPublicKey(sk: Bytes<32>, auctionId: Uint<32>): Bytes<32>   — per-auction identity, not correlatable across auctions
+auctioneerPublicKey(sk: Bytes<32>): Bytes<32>                    — stable across auctions by design (see below)
 computeCommitment(sk: Bytes<32>, auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): Bytes<32>
 
 // Impure circuits (proof required, ledger state changes)
 createAuction(item: Opaque<"string">, desc: Opaque<"string">, startPrice: Uint<32>,
-              auctionEndTime: Uint<64>, auctionRevealDeadline: Uint<64>): Uint<32>   — auctioneer only
+              auctionEndTime: Uint<64>, auctionRevealDeadline: Uint<64>): Uint<32>   — caller becomes the auctioneer for this auction
 placeBid(auctionId: Uint<32>): []                                                    — any bidder, BIDDING phase
-closeAuction(auctionId: Uint<32>): []                                                — auctioneer only
-revealBid(auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): []                — any bidder, CLOSED phase
-claimItem(auctionId: Uint<32>): []                                                   — highest bidder only
-finalizeAuction(auctionId: Uint<32>): []                                             — auctioneer only, no valid bids
+closeAuction(auctionId: Uint<32>, newRevealDeadline: Uint<64>): []                   — auctioneer only, sets the reveal deadline
+revealBid(auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): []                — any bidder, CLOSED phase, before revealDeadline
+claimItem(auctionId: Uint<32>): []                                                   — highest bidder only, after revealDeadline
+finalizeAuction(auctionId: Uint<32>): []                                             — auctioneer only, no valid bids, after revealDeadline
 ```
+
+`auctioneerPublicKey` is deliberately *not* per-auction, unlike `bidderPublicKey`: since `createAuction` is open to anyone, a stable, traceable auctioneer identity across auctions doubles as a lightweight seller-reputation signal (see [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md)).
 
 **Ledger state** is a set of `Map<Uint<32>, ...>` keyed by `auctionId` — `phase`, `itemName`, `description`, `startingPrice`, `endTime`, `revealDeadline`, `auctioneerPK`, `sealedBids`, `bidCount`, `highestBidderPK`, `highestBid`, `itemClaimed` — plus a single global `nextAuctionId: Counter`. Every auction's state is independent, so one contract deployment hosts many concurrent auctions.
 
@@ -162,6 +165,8 @@ npm run build     # production build, output in frontend/dist
 
 The frontend is a React 19 + Vite single-page app that connects to a browser wallet extension (e.g. 1AM, Lace) via `@midnight-ntwrk/dapp-connector-api` and talks to the deployed contract using the same `@midnight-ntwrk/midnight-js` stack as the backend scripts. It's deployed to Vercel — see `vercel.json` for the build configuration.
 
+`npm run build` always runs a `prebuild` step first that copies `contract/src/managed/auction/{keys,zkir}` into `frontend/public/{keys,zkir}` — the browser fetches its ZK verifier/prover keys from there at runtime, so this keeps them in sync with whatever the contract was last compiled to. Run `npm run compile` at the repo root before building the frontend if you've changed `auction.compact`.
+
 ---
 
 ## Security
@@ -185,7 +190,7 @@ Compare with an equivalent EVM contract: `placeBid(uint256 amount, bytes32 salt)
 
 - **Commitment binding:** each commitment is tied to `localSecretKey` and `auctionId` — a bidder cannot replay another bidder's commitment, or replay their own commitment across auctions
 - **Commitment hiding:** without all four of `sk`, `auctionId`, `amount`, and `salt`, the on-chain hash reveals nothing
-- **Auctioneer auth:** `closeAuction()` and `finalizeAuction()` assert `auctioneerPK == bidderPublicKey(localSecretKey())` inside the ZK circuit — no external role system needed
+- **Auctioneer auth:** `closeAuction()` and `finalizeAuction()` assert `auctioneerPK == auctioneerPublicKey(localSecretKey())` inside the ZK circuit — no external role system needed
 - **Claim guard:** `claimItem()` asserts the caller's derived public key equals `highestBidderPK` and `highestBid > 0` and `!itemClaimed`
 - **No private key on-chain:** all secret material stays in Compact `witness` — never serialised into any transaction
 - **Single-bid / nullifier enforcement:** `placeBid()` asserts the caller has not previously submitted a sealed bid for this auction — each bidder may place exactly one bid per auction, enforced on-circuit, not by an off-chain check
@@ -206,7 +211,7 @@ if (pubAmount > highestBid) {         // comparison is between two already-publi
 
 Attempting `if (amount > highestBid) { highestBid = disclose(amount); }` fails to compile with a hard error. Since `revealBid` is the reveal phase, disclosing unconditionally is correct by design.
 
-Deployment-specific limitations (public RPC transaction size limits, wallet WASM memory behavior, SDK signing workarounds) are documented in [DEPLOYMENT.md § Known Limitations](DEPLOYMENT.md#known-limitations).
+Deployment-specific limitations (public RPC transaction size limits, wallet WASM memory behavior, SDK signing workarounds) are documented in [DEPLOYMENT.md § Known Limitations](DEPLOYMENT.md#known-limitations). Contract-level design tradeoffs and accepted risks found during self-audit (salt uniqueness, auctioneer-identity correlation, auctioneer neglect) are documented separately in [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md).
 
 ---
 
@@ -216,12 +221,14 @@ Deployment-specific limitations (public RPC transaction size limits, wallet WASM
 |---|---|
 | Smart contract | Compact (pragma ≥0.20; compiled with compiler 0.31.0 / language 0.23.0) |
 | ZK backend | Midnight Proof Server (local), WASM-executed `.zkir` circuits |
-| Runtime SDK | `@midnight-ntwrk/midnight-js` ^4.0.4 |
+| Runtime SDK | `@midnight-ntwrk/midnight-js` ^4.1.1 |
 | Wallet (backend scripts) | `@midnight-ntwrk/wallet-sdk-facade` ^3.0.0 (Shielded + Dust + Unshielded) |
 | Private state storage | LevelDB via `midnight-js-level-private-state-provider` |
 | Backend language | TypeScript (ESM, Node.js ≥ 22) |
 | Frontend | React 19, Vite, Tailwind CSS 4, `@midnight-ntwrk/dapp-connector-api` |
 | Frontend hosting | Vercel |
+
+`@midnight-ntwrk/ledger-v8` (`8.1.0`) and `@midnight-ntwrk/onchain-runtime-v3` (`3.0.0`) — transitive dependencies pulled in by the SDK above — are pinned to exact versions via `overrides` in `package.json` (both root and `frontend/`), not left on a floating `^` range. A clean `npm install` otherwise resolves newer patch releases of both that were never covered by this project's Independent Reference Model Testing or mainnet e2e verification; see the commit history around the M4 deploy for the incident that motivated this.
 
 ---
 
@@ -229,17 +236,24 @@ Deployment-specific limitations (public RPC transaction size limits, wallet WASM
 
 Full contract IDs, dates, and verified transaction/block records for every generation below are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
-**✅ M3 — Item descriptions, reserve price, timed auctions — Current**
+**✅ M4 — Self-audit fixes: reveal-window enforcement, identity isolation — Current**
+- `revealBid`, `claimItem`, and `finalizeAuction` now enforce a reveal deadline (previously unbounded — a bid could be revealed, or an item claimed, at any time after closing)
+- `closeAuction` now sets the reveal deadline itself (`newRevealDeadline`) instead of relying on the value guessed at `createAuction` time
+- `createAuction` validates `revealDeadline > endTime`
+- `bidderPublicKey` now folds in `auctionId`, so a bidder's identity can no longer be correlated across auctions (`auctioneerPublicKey` split out as its own, intentionally cross-auction-stable circuit)
+- Verified via Independent Reference Model Testing (6,060 real-contract comparisons, all MATCH) and a scripted mainnet e2e run — see [verification/REPORT.md](verification/REPORT.md)
+
+**✅ M3 — Item descriptions, reserve price, timed auctions — Superseded**
 - Added `description`, `startingPrice`, `endTime`, `revealDeadline` ledger fields, keyed per auction
 - Added `finalizeAuction` circuit — auctioneer reclaims the item if no valid bids were revealed by the reveal deadline
 - `revealBid` now enforces that revealed bids meet the auction's starting price
 
-**✅ M2 — Multi-auction contract redesign — Deprecated**
+**✅ M2 — Multi-auction contract redesign — Superseded**
 - Redesigned from single-auction to multi-auction architecture
 - Each auction identified by an auto-incremented `auctionId` (no ID collision)
 - Single-bid enforcement per bidder per auction (on-circuit assertion)
 
-**✅ M1 — Sealed-bid demo, fully verified on mainnet — Deprecated**
+**✅ M1 — Sealed-bid demo, fully verified on mainnet — Superseded**
 - Compact contract with ZK commit-reveal privacy model
 - Full 7-step e2e verified on Midnight mainnet: deploy → bid (×2) → close → reveal (×2) → claim
 - 3-phase wallet sync with checkpoint persistence, WASM memory guard, `MIDNIGHT_DEPLOY_NODE` routing
