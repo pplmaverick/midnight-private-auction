@@ -712,7 +712,22 @@ export default function AuctionDetailPage({
                     </p>
                   </div>
                 ) : (
-                  <div>
+                  <div className="space-y-4">
+                    <div className="p-stack-md border border-primary-container/30 bg-primary-container/5 rounded-lg flex gap-4">
+                      <span className="material-symbols-outlined text-primary" data-weight="fill">
+                        warning
+                      </span>
+                      <div className="space-y-1">
+                        <h4 className="font-label-caps text-label-caps text-primary uppercase">
+                          Before You Bid
+                        </h4>
+                        <p className="font-body-md text-sm text-on-surface-variant leading-relaxed">
+                          This auction has no enforced close deadline. If the auctioneer never closes the
+                          auction, your sealed bid can never be revealed or resolved. No funds are locked —
+                          the only cost if this happens is the gas already spent on this transaction.
+                        </p>
+                      </div>
+                    </div>
                     <BidInput onSealSubmit={handleSealSubmit} submitting={sealingBid} />
                   </div>
                 ))}
