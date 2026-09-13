@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",
-    "@midnight-ntwrk/ledger-v8": "^8.0.0",
+    "@midnight-ntwrk/ledger-v8": "8.1.0",
     "@midnight-ntwrk/midnight-js": "^4.1.1",
     "@midnight-ntwrk/midnight-js-http-client-proof-provider": "^4.1.1",
     "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "^4.1.1",
@@ -58,6 +58,7 @@
     "vitest": "^4.1.10"
   },
   "overrides": {
-    "smoldot": "npm:@aspect-build/empty@0.0.0"
+    "smoldot": "npm:@aspect-build/empty@0.0.0",
+    "@midnight-ntwrk/onchain-runtime-v3": "3.0.0"
   }
 }
