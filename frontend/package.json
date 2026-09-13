@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "cp ../contract/src/managed/auction/keys/*.verifier ../contract/src/managed/auction/keys/*.prover public/keys/ && cp ../contract/src/managed/auction/zkir/*.bzkir public/zkir/",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"

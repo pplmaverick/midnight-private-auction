@@ -52,3 +52,35 @@ spent and a local private-state bid record that can never be redeemed on-chain.
 **Possible future fix direction (not implemented — a feature enhancement, not a bug fix):** allow
 anyone to force-call `closeAuction` after `endTime` plus some grace period, instead of restricting
 it to the auctioneer indefinitely.
+
+## 4. Frontend ZK assets are a manually-synced duplicate, not the single source of truth
+
+**Status:** Partially mitigated (prebuild script added); structural risk still open
+
+`frontend/src/midnight/browserZkConfigProvider.ts` fetches verifier/prover keys and zkir files
+from `frontend/public/keys/` and `frontend/public/zkir/` at runtime (site-root-relative `fetch()`
+calls) — a second, physically separate copy of `contract/src/managed/auction/{keys,zkir}/`. Vite
+copies `public/` verbatim with no content or freshness check against the compiled contract.
+
+This caused a real incident during the M4 deploy: `frontend/public/keys`/`zkir` still held the
+M3-era files (last touched 2026-07-06) after `contract/src/managed/auction/` was recompiled for
+the 8-item fix, so every circuit call from the browser failed with "undefined or have mismatched
+verifier keys" against the new contract address, even though the correct M4 keys were already
+committed and pushed under `contract/src/managed/`. Root-caused and fixed 2026-09-13 (see git
+history around that date for the diagnostic session).
+
+**Mitigation applied:** `frontend/package.json` now has a `prebuild` script that copies
+`contract/src/managed/auction/{keys,zkir}` into `frontend/public/{keys,zkir}` before every
+`npm run build` (verified to actually overwrite stale files, not just no-op when already in sync).
+This prevents a repeat of the same mistake for as long as `npm run build` is the only way builds
+happen (true both locally and on Vercel, whose Root Directory is confirmed to be `frontend`, so
+the `../contract/...` relative path in the script resolves correctly there too).
+
+**Structural risk still open:** the underlying duplication — two physical copies of the same ZK
+assets that can drift — is still there; the prebuild script only guarantees they're re-synced at
+build time, so anyone bypassing `npm run build` (e.g. hand-editing `dist/` or a differently
+configured build pipeline) could reintroduce the same class of bug. The considered-but-deferred
+fix is to eliminate the second copy entirely — have the build pull `keys`/`zkir` directly from
+`contract/src/managed/auction/` (e.g. via a static-copy Vite plugin pointed at that directory)
+instead of maintaining a `frontend/public/` duplicate at all. Deferred pending more deploy cycles
+to judge whether the lighter prebuild-script mitigation is sufficient in practice.
