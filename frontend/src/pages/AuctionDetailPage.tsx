@@ -237,15 +237,16 @@ export default function AuctionDetailPage({
   const isWinner = auctionStatus.exists && bytesEqual(myBidderPK, auctionStatus.highestBidderPK)
   const showCloseButton = auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.BIDDING && isAuctioneer
   const showRevealButton = auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.CLOSED && hasSealedBid
+  const roleUnknown = !provider || !isUnlocked
+  const nowSec = BigInt(Math.floor(Date.now() / 1000))
+  const revealExpired = auctionStatus.revealDeadline > 0n && nowSec > auctionStatus.revealDeadline
   const showClaimButton =
     auctionStatus.exists &&
     auctionStatus.phase === Auction.AuctionPhase.CLOSED &&
     !auctionStatus.itemClaimed &&
     auctionStatus.highestBid > 0n &&
-    isWinner
-  const roleUnknown = !provider || !isUnlocked
-  const nowSec = BigInt(Math.floor(Date.now() / 1000))
-  const revealExpired = auctionStatus.revealDeadline > 0n && nowSec > auctionStatus.revealDeadline
+    isWinner &&
+    revealExpired
   const showFinalizeButton =
     auctionStatus.exists &&
     auctionStatus.phase === Auction.AuctionPhase.CLOSED &&
@@ -661,8 +662,10 @@ export default function AuctionDetailPage({
                       ? 'No Sale — Auction Finalized'
                       : auctionStatus.itemClaimed && auctionStatus.highestBid > 0n
                       ? 'Item Claimed — Auction Complete'
-                      : !auctionStatus.itemClaimed && auctionStatus.highestBid > 0n
+                      : !auctionStatus.itemClaimed && auctionStatus.highestBid > 0n && revealExpired
                       ? 'Reveal Complete — Winner May Claim Item'
+                      : !auctionStatus.itemClaimed && auctionStatus.highestBid > 0n && !revealExpired
+                      ? `Reveal Window Open — Come Back After ${formatTimestamp(auctionStatus.revealDeadline)} to Claim`
                       : !auctionStatus.itemClaimed && auctionStatus.highestBid === 0n && !revealExpired && auctionStatus.bidCount === 0n
                       ? 'No Bids — Awaiting Auctioneer Finalization'
                       : !auctionStatus.itemClaimed && revealExpired
