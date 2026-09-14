@@ -296,6 +296,17 @@ export default function AuctionDetailPage({
       if (!bidderKey) setBidderKey(secretKey)
       const bidSalt = crypto.getRandomValues(new Uint8Array(32))
 
+      // Merge into whatever bids this identity already has recorded for OTHER auctions —
+      // provider.set() overwrites the whole stored object, so building a fresh one with
+      // only this auctionId would silently erase those auctions' bid records, making them
+      // unrevealable.
+      const stored = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+      const existingBids = stored?.bids ?? {}
+      const mergedBids = {
+        ...existingBids,
+        [auctionId.toString()]: { bidAmount: BigInt(parsedAmount), bidSalt },
+      }
+
       const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
         walletState.api,
         provider,
@@ -303,9 +314,7 @@ export default function AuctionDetailPage({
       const contract = await getDeployedAuction(
         providers,
         BIDDER1_STATE_ID,
-        createAuctionPrivateState(secretKey, {
-          [auctionId.toString()]: { bidAmount: BigInt(parsedAmount), bidSalt },
-        }),
+        createAuctionPrivateState(secretKey, mergedBids),
       )
       await contract.callTx.placeBid(auctionId)
       setBidResult('Bid sealed and submitted.')
