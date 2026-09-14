@@ -318,6 +318,7 @@ export default function AuctionDetailPage({
       )
       await contract.callTx.placeBid(auctionId)
       setBidResult('Bid sealed and submitted.')
+      console.log('[DEBUG] merged bids now contain auctionIds:', Object.keys(mergedBids))
       await refreshAuctionStatus()
       onNavigateToZK()
     } catch (err) {
