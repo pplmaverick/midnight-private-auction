@@ -375,6 +375,9 @@ export default function AuctionDetailPage({
       return
     }
 
+    // TEMP DEBUG — remove after commitment-mismatch investigation is done.
+    ;(window as any).__debugState = { provider, BIDDER1_STATE_ID, auctionId, walletState, Auction }
+
     setRevealing(true)
     try {
       // Must reuse the exact secretKey/bidAmount/bidSalt recorded at placeBid time —
