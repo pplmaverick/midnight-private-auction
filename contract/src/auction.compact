@@ -49,6 +49,10 @@ export ledger auctioneerPK: Map<Uint<32>, Bytes<32>>;
 // phase — only its hash is.
 export ledger sealedBids: Map<Uint<32>, Map<Bytes<32>, Bytes<32>>>;
 
+// Per-auction map of bidder public key -> has this bidder already revealed.
+// Prevents a bidder from calling revealBid twice for the same auction.
+export ledger revealedBidders: Map<Uint<32>, Map<Bytes<32>, Boolean>>;
+
 export ledger bidCount: Map<Uint<32>, Counter>;
 
 // Set after reveal phase: the winner and their revealed bid amount, per auction.
@@ -143,6 +147,7 @@ export circuit createAuction(item: Opaque<"string">, desc: Opaque<"string">, sta
   itemClaimed.insert(auctionId, false);
   bidCount.insert(auctionId, default<Counter>);
   sealedBids.insert(auctionId, default<Map<Bytes<32>, Bytes<32>>>);
+  revealedBidders.insert(auctionId, default<Map<Bytes<32>, Boolean>>);
   description.insert(auctionId, disclose(desc));
   startingPrice.insert(auctionId, disclose(startPrice));
   endTime.insert(auctionId, disclose(auctionEndTime));
@@ -171,10 +176,17 @@ export circuit placeBid(auctionId: Uint<32>): [] {
 // Auctioneer closes bidding phase for one auction. No more bids accepted
 // for that auctionId after this; other auctions are unaffected.
 export circuit closeAuction(auctionId: Uint<32>, newRevealDeadline: Uint<64>): [] {
+  // Grace period after endTime after which anyone may force-close an auction
+  // whose auctioneer has gone silent, so a bid can't be locked forever behind
+  // an auctioneer who never calls closeAuction.
+  const THREE_DAYS_SECONDS: Uint<64> = 259200;
+
   const id = disclose(auctionId);
   assert(phase.member(id), "Auction does not exist");
   assert(phase.lookup(id) == AuctionPhase.BIDDING, "Auction is not in bidding phase");
-  assert(auctioneerPK.lookup(id) == auctioneerPublicKey(localSecretKey()), "Only the auctioneer can close");
+  const isAuctioneer = disclose(auctioneerPublicKey(localSecretKey()) == auctioneerPK.lookup(id));
+  const graceElapsed = blockTimeGte((endTime.lookup(id) + THREE_DAYS_SECONDS) as Uint<64>);
+  assert(isAuctioneer || graceElapsed, "Only the auctioneer can close, or wait 3 days after end time");
   assert(blockTimeLt(disclose(newRevealDeadline)), "Reveal deadline must be in the future");
   phase.insert(id, AuctionPhase.CLOSED);
   revealDeadline.insert(id, disclose(newRevealDeadline));
@@ -200,6 +212,8 @@ export circuit revealBid(auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>)
   const expectedCommitment = computeCommitment(localSecretKey(), auctionId, amount, salt);
   assert(sealedBids.lookup(id).lookup(myPK) == expectedCommitment, "Bid commitment verification failed");
   assert(disclose(amount) >= startingPrice.lookup(id), "Bid below starting price");
+  assert(!revealedBidders.lookup(id).member(myPK), "Already revealed your bid");
+  revealedBidders.lookup(id).insert(myPK, disclose(true));
 
   const pubAmount = disclose(amount);
   if (pubAmount > highestBid.lookup(id)) {

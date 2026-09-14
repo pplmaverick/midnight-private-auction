@@ -26,7 +26,7 @@ import * as api from './api.js';
 import { createAuctionPrivateState } from '../contract/src/index.js';
 import { AUCTIONEER_STATE_ID, BIDDER1_STATE_ID } from './common-types.js';
 
-const CONTRACT_ADDRESS = 'f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6';
+const CONTRACT_ADDRESS = '5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069';
 const DIVIDER = '══════════════════════════════════════════════════════════════';
 
 function printStep(n: number, label: string) {

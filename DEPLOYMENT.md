@@ -10,16 +10,30 @@ Midnight mainnet launched in 2026. As of block **1,498,136** (~3 months post-lau
 
 | | |
 |---|---|
-| Active contract | [`f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6`](https://explorer.1am.xyz/contract/f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6) |
+| Active contract | [`5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069`](https://explorer.1am.xyz/contract/5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069) |
 | Network | Midnight Mainnet |
-| Generation | M4 |
+| Generation | M5 |
 | Status | ✅ Current |
 
 ---
 
 ## Deployment History
 
-### M4 (Current) — deployed 2026-09-13
+### M5 (Current) — deployed 2026-09-14
+
+Two circuit-level fixes found during self-audit follow-up: (1) `revealBid` had no protection against a bidder calling it twice for the same auction — added `revealedBidders: Map<Uint<32>, Map<Bytes<32>, Boolean>>` ledger tracking, initialized empty in `createAuction`, checked and set in `revealBid` right after commitment verification and before the `highestBid` update. (2) `closeAuction` required the exact auctioneer identity with no fallback, so a bid could be permanently stuck in BIDDING phase if the auctioneer went silent — added a permissionless-close grace period: `closeAuction` now accepts either the recorded auctioneer, or anyone once `blockTimeGte(endTime + 259200)` (3 days past `endTime`). Full rationale and status: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). Reference-model unit tests covering both fixes, including a `delta=0` boundary test at the exact 3-day mark: `src/test/auction.test.ts`.
+
+| | |
+|---|---|
+| Contract Address | [`5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069`](https://explorer.1am.xyz/contract/5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069) |
+| Deploy Tx Hash | `00fe467c9facb7b97b13f7ae59defa091c6d643b00c2cc0df54d6a2c3d72825c49` |
+| Block Height | 2,578,777 |
+| Network | Midnight Mainnet |
+| Status | ✅ Current |
+
+---
+
+### M4 (Superseded) — deployed 2026-09-13, superseded 2026-09-14
 
 Self-audit fix: 8 logic gaps found and fixed — reveal-window enforcement was missing on `placeBid`/`revealBid`/`claimItem`/`finalizeAuction` (a bid could be revealed or an item claimed with no time bound on the reveal phase, and `finalizeAuction` could fire before the reveal window closed), `createAuction` did not validate `revealDeadline > endTime`, and `bidderPublicKey` produced the same output for a given secret key across every auction, letting an on-chain observer correlate one bidder's activity across unrelated auctions (`auctioneerPublicKey` is deliberately left cross-auction-correlatable as a lightweight seller-reputation mechanism). Full list, rationale, and accepted/rejected risk judgments: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). Independent Reference Model Testing of all 8 fixes (6,060 real-contract-output comparisons, all MATCH): [verification/REPORT.md](verification/REPORT.md).
 
@@ -29,7 +43,7 @@ Self-audit fix: 8 logic gaps found and fixed — reveal-window enforcement was m
 | Deploy Tx Hash | `0061e95ebbfc0ab48be71d52808771b13b80081844b40028241528e733285f8f0c` |
 | Block Height | 2,560,089 |
 | Network | Midnight Mainnet |
-| Status | ✅ Current |
+| Status | Superseded |
 
 ---
 

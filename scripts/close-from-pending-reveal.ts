@@ -1,26 +1,27 @@
 /**
- * Midnight Private Auction — close an auction and reveal our bid, then stop.
+ * Midnight Private Auction — close an auction using the auctioneer secretKey recovered
+ * from logs/pending-reveals/<id>.json, instead of joinExisting()'s local leveldb slot.
+ * (one-off test script)
  *
- * Companion to scripts/create-and-bid.ts. Joins the existing multi-auction contract
- * and runs:
- *   1. closeAuction(auctionId)  — as the auctioneer
- *   2. revealBid(auctionId)     — as the bidder, using the secret data saved by
- *                                 create-and-bid.ts to logs/pending-reveals/<id>.json
+ * Why this exists: create-only-test.ts / close-only-test.ts have a known bug — each
+ * create-only-test.ts run writes a fresh random auctioneer secretKey into the shared
+ * AUCTIONEER_STATE_ID leveldb slot via joinAs(), unconditionally overwriting whatever
+ * was there before. Running it twice (once per test auction) leaves that slot holding
+ * only the LAST auction's auctioneer identity — close-only-test.ts's joinExisting()
+ * then fails for every earlier auction, because the derived public key no longer
+ * matches what's recorded on-chain for them.
  *
- * The auctioneer's secretKey was never written to disk (only the leveldb-persisted
- * private state provider has it, under the 'auctioneer' slot) — this script recovers
- * it via api.joinExisting() instead of generating a new one, since closeAuction only
- * succeeds if the caller's derived public key matches the one recorded at
- * createAuction time. It only works as long as nothing else has since reused the
- * 'auctioneer' slot in the local leveldb.
- *
- * claimItem is NOT run — that's a separate step once the highest bid is settled.
+ * The fix is NOT applied to those two scripts (they're one-off test scripts, to be
+ * deleted after this test run) — this script instead sidesteps the bug by rebuilding
+ * the auctioneer's private state directly from the aucSecretKeyHex that
+ * create-only-test.ts already saved to logs/pending-reveals/<auctionId>.json at
+ * creation time, independent of whatever the leveldb slot currently holds.
  *
  * Usage:
- *   AUCTION_ID=4 npm run close-and-reveal:mainnet
+ *   AUCTION_ID=4 npm run close-from-pending-reveal
  *
  * Environment variables:
- *   AUCTION_ID             — auction id to close + reveal (required)
+ *   AUCTION_ID             — auction id to close (required)
  *   WALLET_SEED            — hex seed (required)
  *   MIDNIGHT_NETWORK        — "mainnet" or "preprod" (default: preprod)
  *   MIDNIGHT_NODE           — public node RPC (mainnet only)
@@ -34,7 +35,7 @@ import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { PreprodConfig, MainnetConfig } from '../src/config.js';
 import * as api from '../src/api.js';
-import { AUCTIONEER_STATE_ID, BIDDER1_STATE_ID } from '../src/common-types.js';
+import { AUCTIONEER_STATE_ID } from '../src/common-types.js';
 import { createAuctionPrivateState } from '../contract/src/index.js';
 
 const CONTRACT_ADDRESS = '5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069';
@@ -44,11 +45,7 @@ type PendingReveal = {
   network: string;
   contractAddress: string;
   auctionId: string;
-  bidAmount: string;
-  bidSecretKeyHex: string;
-  bidSaltHex: string;
-  endTime: string;
-  endTimeIso: string;
+  aucSecretKeyHex: string;
 };
 
 function printStep(n: number, label: string) {
@@ -68,8 +65,7 @@ async function main() {
 
   const auctionIdArg = process.env.AUCTION_ID;
   if (!auctionIdArg) {
-    console.error('Error: AUCTION_ID is required.');
-    process.exit(1);
+    throw new Error('AUCTION_ID is required.');
   }
   const auctionId = BigInt(auctionIdArg);
 
@@ -78,18 +74,20 @@ async function main() {
   const pending: PendingReveal = JSON.parse(readFileSync(pendingPath, 'utf8'));
 
   if (pending.contractAddress !== CONTRACT_ADDRESS) {
-    console.error(`Error: pending-reveal contract (${pending.contractAddress}) does not match ${CONTRACT_ADDRESS}`);
-    process.exit(1);
+    throw new Error(`pending-reveal contract (${pending.contractAddress}) does not match ${CONTRACT_ADDRESS}`);
+  }
+  if (pending.auctionId !== auctionIdArg) {
+    throw new Error(`pending-reveal file auctionId (${pending.auctionId}) does not match AUCTION_ID=${auctionIdArg}`);
+  }
+  if (!pending.aucSecretKeyHex) {
+    throw new Error(`No aucSecretKeyHex in ${pendingPath} — cannot rebuild auctioneer identity.`);
   }
 
-  const nowSeconds = Math.floor(Date.now() / 1000);
-  if (nowSeconds < Number(pending.endTime)) {
-    console.error(`Error: endTime (${pending.endTimeIso}) has not passed yet — closeAuction would be rejected.`);
-    process.exit(1);
-  }
+  const aucSecretKey = new Uint8Array(Buffer.from(pending.aucSecretKeyHex, 'hex'));
+  const aucPrivState = createAuctionPrivateState(aucSecretKey);
 
   console.log(`\n${DIVIDER}`);
-  console.log(`  Midnight Private Auction — close + reveal (${network})`);
+  console.log(`  Midnight Private Auction — close from pending-reveal secretKey (${network})`);
   console.log(`  Contract: ${CONTRACT_ADDRESS}`);
   console.log(`  Auction ID: ${auctionId}`);
   console.log(`${DIVIDER}\n`);
@@ -109,41 +107,20 @@ async function main() {
   const txHashes: Record<string, string> = {};
 
   // ── Step 1: closeAuction ─────────────────────────────────────────────────────
-  printStep(1, `closeAuction(${auctionId}) — as auctioneer`);
-  const aucContract = await api.joinExisting(providers, CONTRACT_ADDRESS, AUCTIONEER_STATE_ID);
+  // joinAs() here overwrites the shared AUCTIONEER_STATE_ID leveldb slot again —
+  // same known bug as create-only-test.ts, deliberately not fixed (see file header).
+  printStep(1, `closeAuction(${auctionId}) — as auctioneer (rebuilt from pending-reveal)`);
+  const aucContract = await api.joinAs(providers, CONTRACT_ADDRESS, AUCTIONEER_STATE_ID, aucPrivState);
+  const nowSeconds = Math.floor(Date.now() / 1000);
   const newRevealDeadline = BigInt(nowSeconds) + 21600n;
   const closeTx = await api.withStatus('closeAuction()', () => api.closeAuction(aucContract, auctionId, newRevealDeadline));
   txHashes['closeAuction'] = closeTx.txId;
   printTxHash('closeAuction', closeTx);
 
-  // ── Step 2: revealBid ────────────────────────────────────────────────────────
-  const bidAmount = BigInt(pending.bidAmount);
-  const bidSalt = new Uint8Array(Buffer.from(pending.bidSaltHex, 'hex'));
-  const bidSecretKey = new Uint8Array(Buffer.from(pending.bidSecretKeyHex, 'hex'));
-  const bidPrivState = createAuctionPrivateState(bidSecretKey, {
-    [auctionId.toString()]: { bidAmount, bidSalt },
-  });
-
-  printStep(2, `revealBid(${auctionId}, ${bidAmount})`);
-  const bidContract = await api.joinAs(providers, CONTRACT_ADDRESS, BIDDER1_STATE_ID, bidPrivState);
-  const revealTx = await api.withStatus(`revealBid(${bidAmount}, salt)`, () =>
-    api.revealBid(bidContract, auctionId, bidAmount, bidSalt),
-  );
-  txHashes['revealBid'] = revealTx.txId;
-  printTxHash('revealBid', revealTx);
-
-  // ── Final ledger state ───────────────────────────────────────────────────────
-  const finalState = await api.getLedgerState(providers, CONTRACT_ADDRESS as any);
-
   console.log(`\n${DIVIDER}`);
-  console.log('  Close + Reveal Complete');
+  console.log('  Close Complete');
   console.log(DIVIDER);
-  if (finalState) {
-    console.log(`  item        : ${finalState.itemName.lookup(auctionId)}`);
-    console.log(`  highestBid  : ${finalState.highestBid.lookup(auctionId)}`);
-    console.log(`  bidCount    : ${finalState.bidCount.lookup(auctionId).read()}`);
-    console.log(`  itemClaimed : ${finalState.itemClaimed.lookup(auctionId)}`);
-  }
+  console.log(`  newRevealDeadline : ${newRevealDeadline} (${new Date(Number(newRevealDeadline) * 1000).toISOString()})`);
 
   console.log(`\n${DIVIDER}`);
   console.log('  Transaction Hashes');

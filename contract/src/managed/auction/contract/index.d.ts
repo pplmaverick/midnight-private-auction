@@ -124,6 +124,18 @@ export type Ledger = {
       [Symbol.iterator](): Iterator<[Uint8Array, Uint8Array]>
     }
   };
+  revealedBidders: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: bigint): boolean;
+    lookup(key_0: bigint): {
+      isEmpty(): boolean;
+      size(): bigint;
+      member(key_1: Uint8Array): boolean;
+      lookup(key_1: Uint8Array): boolean;
+      [Symbol.iterator](): Iterator<[Uint8Array, boolean]>
+    }
+  };
   bidCount: {
     isEmpty(): boolean;
     size(): bigint;

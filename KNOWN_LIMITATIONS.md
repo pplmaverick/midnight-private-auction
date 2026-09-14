@@ -39,19 +39,23 @@ lightweight reputation mechanism, letting bidders look up the same seller's auct
 
 ## 3. No escape hatch for auctioneer neglect
 
-**Status:** Known limitation, accepted risk (not addressed at this time)
+**Status:** Resolved (this round — M5)
 
-If an auctioneer creates an auction and never calls `closeAuction`, `phase` stays permanently in
-`BIDDING` — there is no mechanism for a bidder to withdraw their sealed bid record or force the
+If an auctioneer creates an auction and never calls `closeAuction`, `phase` stayed permanently in
+`BIDDING` — there was no mechanism for a bidder to withdraw their sealed bid record or force the
 auction's phase forward.
 
-**Risk assessment:** `placeBid` does not lock any DUST or token as collateral (it only writes a
-hash commitment), so there is no funds-at-risk in this scenario. The worst case is the gas already
-spent and a local private-state bid record that can never be redeemed on-chain.
+**Fix:** `closeAuction`'s permission check now accepts either the recorded auctioneer, or anyone
+once `blockTimeGte(endTime + 259200)` (3 days past `endTime`) — a permissionless-close grace
+period. Implemented as `assert(isAuctioneer || graceElapsed, ...)`, with `isAuctioneer` explicitly
+`disclose()`'d before the `||` (Compact's disclosure analysis rejects combining a witness-derived
+comparison with a public one via `||` unless the witness-derived side is disclosed first). Verified
+via unit tests covering `delta = -1/0/+1` around the exact 3-day boundary, plus confirming the
+auctioneer can still close immediately regardless of the grace period (`src/test/auction.test.ts`).
 
-**Possible future fix direction (not implemented — a feature enhancement, not a bug fix):** allow
-anyone to force-call `closeAuction` after `endTime` plus some grace period, instead of restricting
-it to the auctioneer indefinitely.
+**Residual risk assessment (unchanged from before the fix):** `placeBid` does not lock any DUST or
+token as collateral, so there was never funds-at-risk in this scenario — only a 3-day worst-case
+delay before an abandoned auction becomes forcibly closeable by anyone.
 
 ## 4. Frontend ZK assets are a manually-synced duplicate, not the single source of truth
 
@@ -84,3 +88,20 @@ fix is to eliminate the second copy entirely — have the build pull `keys`/`zki
 `contract/src/managed/auction/` (e.g. via a static-copy Vite plugin pointed at that directory)
 instead of maintaining a `frontend/public/` duplicate at all. Deferred pending more deploy cycles
 to judge whether the lighter prebuild-script mitigation is sufficient in practice.
+
+## 5. Reveal could be replayed by the same bidder
+
+**Status:** Resolved (this round — M5)
+
+`revealBid` verified the commitment and updated `highestBid`/`highestBidderPK` but never recorded
+that a given bidder had already revealed for a given auction, so the same bidder could call
+`revealBid` again for the same auction with the same (or, since the commitment is bound to a fixed
+`amount`/`salt` pair, only the same) revealed values.
+
+**Fix:** added `revealedBidders: Map<Uint<32>, Map<Bytes<32>, Boolean>>`, initialized empty per
+auction in `createAuction`. `revealBid` now asserts `!revealedBidders.lookup(id).member(myPK)`
+right after commitment verification and the starting-price check, then inserts `(myPK, true)`
+before the `highestBid` comparison/update — so a second `revealBid` call from the same bidder for
+the same auction is rejected with `"Already revealed your bid"`. Verified via unit tests: a second
+reveal from the same bidder is rejected, and two different bidders can each reveal once in the same
+auction without interference (`src/test/auction.test.ts`).

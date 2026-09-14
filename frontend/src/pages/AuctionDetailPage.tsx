@@ -138,6 +138,7 @@ export default function AuctionDetailPage({
   const [myAuctioneerPK, setMyAuctioneerPK] = useState<Uint8Array | null>(null)
   const [myBidderPK, setMyBidderPK] = useState<Uint8Array | null>(null)
   const [hasSealedBid, setHasSealedBid] = useState(false)
+  const [hasRevealed, setHasRevealed] = useState(false)
 
   const [closing, setClosing] = useState(false)
   const [closeError, setCloseError] = useState<string | null>(null)
@@ -169,6 +170,7 @@ export default function AuctionDetailPage({
         setMyAuctioneerPK(null)
         setMyBidderPK(null)
         setHasSealedBid(false)
+        setHasRevealed(false)
         return
       }
 
@@ -196,10 +198,12 @@ export default function AuctionDetailPage({
         setMyAuctioneerPK(auctioneerPK)
         setMyBidderPK(bidderPK)
         setHasSealedBid(bidderPK !== null && ledger.sealedBids.lookup(auctionId).member(bidderPK))
+        setHasRevealed(bidderPK !== null && ledger.revealedBidders.lookup(auctionId).member(bidderPK))
       } else {
         setMyAuctioneerPK(null)
         setMyBidderPK(null)
         setHasSealedBid(false)
+        setHasRevealed(false)
       }
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : 'Failed to load auction data')
@@ -235,11 +239,20 @@ export default function AuctionDetailPage({
 
   const isAuctioneer = auctionStatus.exists && bytesEqual(myAuctioneerPK, auctionStatus.auctioneerPK)
   const isWinner = auctionStatus.exists && bytesEqual(myBidderPK, auctionStatus.highestBidderPK)
-  const showCloseButton = auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.BIDDING && isAuctioneer
-  const showRevealButton = auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.CLOSED && hasSealedBid
   const roleUnknown = !provider || !isUnlocked
   const nowSec = BigInt(Math.floor(Date.now() / 1000))
   const revealExpired = auctionStatus.revealDeadline > 0n && nowSec > auctionStatus.revealDeadline
+  // Mirrors the contract's THREE_DAYS_SECONDS grace period (auction.compact's
+  // closeAuction) — once elapsed, closeAuction accepts any caller, not just the
+  // auctioneer, so an abandoned auction's bid(s) can't be locked forever.
+  const THREE_DAYS_SECONDS = 259200n
+  const closeGraceElapsed = auctionStatus.exists && auctionStatus.endTime > 0n && nowSec >= auctionStatus.endTime + THREE_DAYS_SECONDS
+  const showCloseButton =
+    auctionStatus.exists &&
+    auctionStatus.phase === Auction.AuctionPhase.BIDDING &&
+    (isAuctioneer || closeGraceElapsed)
+  const showRevealButton =
+    auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.CLOSED && hasSealedBid && !hasRevealed
   const showClaimButton =
     auctionStatus.exists &&
     auctionStatus.phase === Auction.AuctionPhase.CLOSED &&
@@ -345,14 +358,21 @@ export default function AuctionDetailPage({
 
     setClosing(true)
     try {
-      // Never generate a fresh key here — closeAuction must act as the exact
-      // auctioneer identity that created this auction, which is whatever is
-      // already stored locally (if anything).
+      // Prefer the exact auctioneer identity that created this auction, whatever is
+      // already stored locally. Only fall back to a fresh identity when force-closing
+      // an abandoned auction past the grace period — the contract's permissionless-close
+      // path doesn't check who's calling once closeGraceElapsed is true, so any identity
+      // works there.
       provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
-      const stored = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
+      let stored = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
       if (!stored) {
-        setCloseError('No auctioneer identity found in this browser for this auction.')
-        return
+        if (!isAuctioneer && closeGraceElapsed) {
+          const secretKey = await deriveWalletBoundSecretKey(walletState.address, AUCTIONEER_STATE_ID)
+          stored = createAuctionPrivateState(secretKey)
+        } else {
+          setCloseError('No auctioneer identity found in this browser for this auction.')
+          return
+        }
       }
       const providers = await buildAuctionProviders<AuctionCircuits, AuctionRoleId, AuctionPrivateState>(
         walletState.api,
@@ -747,6 +767,17 @@ export default function AuctionDetailPage({
                     <BidInput onSealSubmit={handleSealSubmit} submitting={sealingBid} />
                   </div>
                 ))}
+
+              {auctionStatus.phase === Auction.AuctionPhase.CLOSED && hasSealedBid && hasRevealed && !revealExpired && (
+                <div className="flex gap-3 p-4 rounded-lg border border-success/30 bg-success/10">
+                  <span className="material-symbols-outlined text-success shrink-0" data-weight="fill">
+                    check_circle
+                  </span>
+                  <p className="font-body-md text-sm text-on-surface-variant leading-relaxed">
+                    Bid revealed — waiting for reveal window to close.
+                  </p>
+                </div>
+              )}
             </div>
 
             {(showCloseButton || showRevealButton || showClaimButton || showFinalizeButton || roleUnknown) && (
@@ -786,7 +817,11 @@ export default function AuctionDetailPage({
                       disabled={closing}
                       className="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-label-mono text-label-md font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all active:scale-[0.98] disabled:opacity-50"
                     >
-                      {closing ? 'Closing…' : 'Close Auction (Auctioneer)'}
+                      {closing
+                        ? 'Closing…'
+                        : isAuctioneer
+                        ? 'Close Auction (Auctioneer)'
+                        : 'Close Auction (Auctioneer Abandoned — Anyone Can Close)'}
                     </button>
                   </div>
                 )}

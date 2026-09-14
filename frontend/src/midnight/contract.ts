@@ -30,7 +30,7 @@ export type DeployedAuctionContract =
   | DeployedContract<Auction.Contract<AuctionPrivateState>>
   | FoundContract<Auction.Contract<AuctionPrivateState>>
 
-export const AUCTION_CONTRACT_ADDRESS = 'f7a1e5df0e42ff659b1e44bc26075bbd705f91facaad5f7a58209067bf90f8f6'
+export const AUCTION_CONTRACT_ADDRESS = '5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069'
 
 // Same construction as src/api.ts's auctionCompiledContract. withCompiledFileAssets()
 // only attaches a string to satisfy CompiledContract's type-level context (it makes R

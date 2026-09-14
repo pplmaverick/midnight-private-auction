@@ -127,6 +127,110 @@ describe('Midnight Private Auction - revealBid', () => {
   });
 });
 
+describe('Midnight Private Auction - revealBid duplicate reveal', () => {
+  it('rejects a second reveal from the same bidder', () => {
+    const auctioneerKey = randomBytes(32);
+    const bidderKey = randomBytes(32);
+    const salt = randomBytes(32);
+    const sim = new AuctionSimulator(auctioneerKey);
+    const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, 1000n, 2000n);
+
+    sim.switchUser(bidderKey);
+    sim.placeBid(auctionId, 150n, salt);
+
+    sim.switchUser(auctioneerKey);
+    sim.closeAuction(auctionId, 2000n);
+
+    sim.switchUser(bidderKey);
+    sim.revealBid(auctionId, 150n, salt);
+
+    expect(() => sim.revealBid(auctionId, 150n, salt)).toThrow('Already revealed your bid');
+  });
+
+  it('lets two different bidders each reveal once in the same auction', () => {
+    const auctioneerKey = randomBytes(32);
+    const bidderKey = randomBytes(32);
+    const otherBidderKey = randomBytes(32);
+    const salt = randomBytes(32);
+    const otherSalt = randomBytes(32);
+    const sim = new AuctionSimulator(auctioneerKey);
+    const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, 1000n, 2000n);
+
+    sim.switchUser(bidderKey);
+    sim.placeBid(auctionId, 150n, salt);
+    sim.switchUser(otherBidderKey);
+    sim.placeBid(auctionId, 120n, otherSalt);
+
+    sim.switchUser(auctioneerKey);
+    sim.closeAuction(auctionId, 2000n);
+
+    sim.switchUser(bidderKey);
+    sim.revealBid(auctionId, 150n, salt);
+    sim.switchUser(otherBidderKey);
+    sim.revealBid(auctionId, 120n, otherSalt);
+
+    expect(sim.getLedger().highestBid.lookup(auctionId)).toEqual(150n);
+  });
+});
+
+describe('Midnight Private Auction - closeAuction permissionless after grace period', () => {
+  const THREE_DAYS_SECONDS = 259200n;
+
+  it('rejects close from a non-auctioneer before endTime + 3 days', () => {
+    const auctioneerKey = randomBytes(32);
+    const otherKey = randomBytes(32);
+    const sim = new AuctionSimulator(auctioneerKey);
+    const endTime = 1000n;
+    const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, endTime, 2000n);
+
+    sim.switchUser(otherKey);
+    // delta = 0 boundary: exactly at endTime + THREE_DAYS_SECONDS, blockTimeGte is
+    // true (>=), so this must succeed, not throw. Use delta = -1 for the "must still
+    // reject" case, matching the project's existing delta-based boundary convention.
+    sim.setBlockTime(endTime + THREE_DAYS_SECONDS - 1n);
+    expect(() => sim.closeAuction(auctionId, endTime + THREE_DAYS_SECONDS + 1000n)).toThrow(
+      'Only the auctioneer can close, or wait 3 days after end time',
+    );
+  });
+
+  it('lets a non-auctioneer close exactly at endTime + 3 days (delta = 0)', () => {
+    const auctioneerKey = randomBytes(32);
+    const otherKey = randomBytes(32);
+    const sim = new AuctionSimulator(auctioneerKey);
+    const endTime = 1000n;
+    const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, endTime, 2000n);
+
+    sim.switchUser(otherKey);
+    sim.setBlockTime(endTime + THREE_DAYS_SECONDS);
+    sim.closeAuction(auctionId, endTime + THREE_DAYS_SECONDS + 1000n);
+
+    expect(sim.getLedger().phase.lookup(auctionId)).toEqual(AuctionPhase.CLOSED);
+  });
+
+  it('lets a non-auctioneer close one second after endTime + 3 days', () => {
+    const auctioneerKey = randomBytes(32);
+    const otherKey = randomBytes(32);
+    const sim = new AuctionSimulator(auctioneerKey);
+    const endTime = 1000n;
+    const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, endTime, 2000n);
+
+    sim.switchUser(otherKey);
+    sim.setBlockTime(endTime + THREE_DAYS_SECONDS + 1n);
+    sim.closeAuction(auctionId, endTime + THREE_DAYS_SECONDS + 1000n);
+
+    expect(sim.getLedger().phase.lookup(auctionId)).toEqual(AuctionPhase.CLOSED);
+  });
+
+  it('still lets the auctioneer close immediately, before the grace period', () => {
+    const auctioneerKey = randomBytes(32);
+    const sim = new AuctionSimulator(auctioneerKey);
+    const auctionId = sim.createAuction('Vase', 'Ming vase', 100n, 1000n, 2000n);
+    sim.setBlockTime(0n);
+    sim.closeAuction(auctionId, 2000n);
+    expect(sim.getLedger().phase.lookup(auctionId)).toEqual(AuctionPhase.CLOSED);
+  });
+});
+
 describe('Midnight Private Auction - claimItem', () => {
   it('lets the highest bidder claim the item', () => {
     const auctioneerKey = randomBytes(32);

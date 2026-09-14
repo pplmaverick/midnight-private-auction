@@ -369,8 +369,28 @@
       }
     },
     {
-      "name": "bidCount",
+      "name": "revealedBidders",
       "index": 5,
+      "exported": true,
+      "storage": "Map",
+      "key": {
+        "type-name": "Uint",
+        "maxval": 4294967295
+      },
+      "value": {
+        "type-name": "Map",
+        "key": {
+          "type-name": "Bytes",
+          "length": 32
+        },
+        "value": {
+          "type-name": "Boolean"
+        }
+      }
+    },
+    {
+      "name": "bidCount",
+      "index": 6,
       "exported": true,
       "storage": "Map",
       "key": {
@@ -383,7 +403,7 @@
     },
     {
       "name": "highestBidderPK",
-      "index": 6,
+      "index": 7,
       "exported": true,
       "storage": "Map",
       "key": {
@@ -397,7 +417,7 @@
     },
     {
       "name": "highestBid",
-      "index": 7,
+      "index": 8,
       "exported": true,
       "storage": "Map",
       "key": {
@@ -411,7 +431,7 @@
     },
     {
       "name": "itemClaimed",
-      "index": 8,
+      "index": 9,
       "exported": true,
       "storage": "Map",
       "key": {
@@ -424,7 +444,7 @@
     },
     {
       "name": "description",
-      "index": 9,
+      "index": 10,
       "exported": true,
       "storage": "Map",
       "key": {
@@ -438,7 +458,7 @@
     },
     {
       "name": "startingPrice",
-      "index": 10,
+      "index": 11,
       "exported": true,
       "storage": "Map",
       "key": {
@@ -452,7 +472,7 @@
     },
     {
       "name": "endTime",
-      "index": 11,
+      "index": 12,
       "exported": true,
       "storage": "Map",
       "key": {
@@ -466,7 +486,7 @@
     },
     {
       "name": "revealDeadline",
-      "index": 12,
+      "index": 13,
       "exported": true,
       "storage": "Map",
       "key": {

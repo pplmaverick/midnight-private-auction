@@ -26,7 +26,8 @@
     "debug-commitment": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/debug-commitment.ts",
     "debug-commitment:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/debug-commitment.ts",
     "create-only-test": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/create-only-test.ts",
-    "close-only-test": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-only-test.ts"
+    "close-only-test": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-only-test.ts",
+    "close-from-pending-reveal": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-from-pending-reveal.ts"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",
