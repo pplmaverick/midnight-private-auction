@@ -16,7 +16,7 @@ https://midnight-private-auction.vercel.app
 
 Sealed-bid auction on Midnight Network. During the bidding phase, bid amounts and bidder identities are hidden by ZK proofs — chain observers can see that a `placeBid()` call occurred, but not who made it or how much they bid. The amount only appears on-chain when the bidder voluntarily calls `revealBid()`. This is a commit-reveal auction implemented as a **Compact smart contract**, purpose-built for Midnight's ZK circuit model — not a port from an EVM contract.
 
-This contract is one of many deployed on Midnight mainnet, across four contract generations (M1–M4). See [DEPLOYMENT.md](DEPLOYMENT.md) for the full deployment history, including every verified transaction hash and block number.
+This contract is one of many deployed on Midnight mainnet, across five contract generations (M1–M5). See [DEPLOYMENT.md](DEPLOYMENT.md) for the full deployment history, including every verified transaction hash and block number.
 
 ---
 
@@ -80,7 +80,7 @@ computeCommitment(sk: Bytes<32>, auctionId: Uint<32>, amount: Uint<32>, salt: By
 createAuction(item: Opaque<"string">, desc: Opaque<"string">, startPrice: Uint<32>,
               auctionEndTime: Uint<64>, auctionRevealDeadline: Uint<64>): Uint<32>   — caller becomes the auctioneer for this auction
 placeBid(auctionId: Uint<32>): []                                                    — any bidder, BIDDING phase
-closeAuction(auctionId: Uint<32>, newRevealDeadline: Uint<64>): []                   — auctioneer only, sets the reveal deadline
+closeAuction(auctionId: Uint<32>, newRevealDeadline: Uint<64>): []                   — auctioneer, or anyone once 3 days past endTime; sets the reveal deadline
 revealBid(auctionId: Uint<32>, amount: Uint<32>, salt: Bytes<32>): []                — any bidder, CLOSED phase, before revealDeadline
 claimItem(auctionId: Uint<32>): []                                                   — highest bidder only, after revealDeadline
 finalizeAuction(auctionId: Uint<32>): []                                             — auctioneer only, no valid bids, after revealDeadline
@@ -236,7 +236,12 @@ Deployment-specific limitations (public RPC transaction size limits, wallet WASM
 
 Full contract IDs, dates, and verified transaction/block records for every generation below are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
-**✅ M4 — Self-audit fixes: reveal-window enforcement, identity isolation — Current**
+**✅ M5 — Reveal replay guard, permissionless close after grace period — Current**
+- `revealBid` now tracks `revealedBidders` per auction and rejects a second reveal call from the same bidder for the same auction
+- `closeAuction` now accepts either the recorded auctioneer, or anyone once 3 days past `endTime` — prevents a bid getting permanently stuck in BIDDING phase if the auctioneer goes silent
+- Reference-model unit tests cover both fixes, including a `delta=0` boundary test at the exact 3-day mark: `src/test/auction.test.ts`
+
+**✅ M4 — Self-audit fixes: reveal-window enforcement, identity isolation — Superseded**
 - `revealBid`, `claimItem`, and `finalizeAuction` now enforce a reveal deadline (previously unbounded — a bid could be revealed, or an item claimed, at any time after closing)
 - `closeAuction` now sets the reveal deadline itself (`newRevealDeadline`) instead of relying on the value guessed at `createAuction` time
 - `createAuction` validates `revealDeadline > endTime`
