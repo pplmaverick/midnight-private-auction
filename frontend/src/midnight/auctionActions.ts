@@ -13,6 +13,11 @@ export interface ActionsPanelInput {
   // Private state is locked, so the viewer's role (auctioneer / bidder / winner) is unknown
   // and the panel offers an Unlock prompt to find out.
   readonly roleUnknown: boolean
+  // The viewer sealed a bid, never revealed it, and the auction ended with a winner
+  // (result.me === 'abstained' && result.sold). Every remaining action — claim, finalize —
+  // belongs to the winner or to the auctioneer of a no-sale auction, so there is nothing for
+  // this viewer even while private state is locked.
+  readonly abstainedAfterSale?: boolean
 }
 
 // A closed auction with itemClaimed = true is settled: either the winner claimed the item
@@ -25,5 +30,29 @@ export const isSettled = ({ isClosed, itemClaimed }: Pick<ActionsPanelInput, 'is
 
 export const shouldShowActionsPanel = (input: ActionsPanelInput): boolean => {
   if (isSettled(input)) return false
+  if (input.abstainedAfterSale) return false
   return input.showClose || input.showReveal || input.showClaim || input.showFinalize || input.roleUnknown
 }
+
+export interface RevealButtonInput {
+  readonly isClosed: boolean // ledger phase === CLOSED
+  readonly hasSealedBid: boolean // my sealed bid is on-chain
+  readonly hasRevealed: boolean // my bid is already revealed
+  readonly nowSec: bigint
+  readonly revealDeadline: bigint
+}
+
+// Mirrors auction.compact's revealBid: `assert(blockTimeLt(revealDeadline), "Reveal deadline has
+// passed")` — the block time must be STRICTLY LESS than revealDeadline, so a reveal sent at
+// exactly the deadline is rejected. (claimItem/finalizeAuction use blockTimeGte(revealDeadline),
+// the exact complement: at now == deadline the reveal window is closed and the result is final.)
+export const isRevealWindowOpen = (nowSec: bigint, revealDeadline: bigint): boolean => nowSec < revealDeadline
+
+export const canShowRevealButton = ({
+  isClosed,
+  hasSealedBid,
+  hasRevealed,
+  nowSec,
+  revealDeadline,
+}: RevealButtonInput): boolean =>
+  isClosed && hasSealedBid && !hasRevealed && isRevealWindowOpen(nowSec, revealDeadline)

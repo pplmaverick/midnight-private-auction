@@ -12,7 +12,7 @@ import { ProvingNotSupportedError } from '../midnight/proofProvider'
 import { deriveWalletBoundSecretKey } from '../midnight/identity'
 import { getMyBidderPKs } from '../midnight/myBidderPKs'
 import { computeAuctionResult } from '../midnight/auctionResult'
-import { shouldShowActionsPanel } from '../midnight/auctionActions'
+import { canShowRevealButton, shouldShowActionsPanel } from '../midnight/auctionActions'
 import {
   getDeployedAuction,
   createAuctionPrivateState,
@@ -316,8 +316,15 @@ export default function AuctionDetailPage({
     auctionStatus.exists &&
     auctionStatus.phase === Auction.AuctionPhase.BIDDING &&
     (isAuctioneer || closeGraceElapsed)
-  const showRevealButton =
-    auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.CLOSED && hasSealedBid && !hasRevealed
+  // Reveal is only accepted while blockTime < revealDeadline (auction.compact revealBid,
+  // blockTimeLt) — hide the button from the deadline on instead of offering a doomed tx.
+  const showRevealButton = canShowRevealButton({
+    isClosed: auctionStatus.exists && auctionStatus.phase === Auction.AuctionPhase.CLOSED,
+    hasSealedBid,
+    hasRevealed,
+    nowSec,
+    revealDeadline: auctionStatus.revealDeadline,
+  })
   const showClaimButton =
     auctionStatus.exists &&
     auctionStatus.phase === Auction.AuctionPhase.CLOSED &&
@@ -869,6 +876,7 @@ export default function AuctionDetailPage({
               showClaim: showClaimButton,
               showFinalize: showFinalizeButton,
               roleUnknown,
+              abstainedAfterSale: auctionResult.me === 'abstained' && auctionResult.sold,
             }) && (
               <div className="glass-panel p-8 rounded-xl space-y-6">
                 <span className="font-label-caps text-label-caps text-text-secondary uppercase">Auction Actions</span>

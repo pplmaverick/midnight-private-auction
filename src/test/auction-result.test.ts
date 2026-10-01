@@ -1,7 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { computeAuctionResult, computePublicResult, type AuctionResultInput } from '../../frontend/src/midnight/auctionResult.js';
-import { shouldShowActionsPanel, type ActionsPanelInput } from '../../frontend/src/midnight/auctionActions.js';
+import {
+  shouldShowActionsPanel,
+  canShowRevealButton,
+  isRevealWindowOpen,
+  type ActionsPanelInput,
+} from '../../frontend/src/midnight/auctionActions.js';
+import { describeMyOutcome, NOT_COUNTED_TEXT } from '../../frontend/src/midnight/resultCopy.js';
 
 // Pure result logic (frontend/src/midnight/auctionResult.ts): no wasm, no network.
 
@@ -173,6 +179,8 @@ describe('result UI copy guard', () => {
       'components/AuctionCard.tsx',
       'components/SettlementNote.tsx',
       'midnight/auctionResult.ts',
+      'midnight/resultCopy.ts',
+      'midnight/auctionActions.ts',
     ]) {
       expect(ui(f), f).not.toMatch(/refund|退款/i);
     }
@@ -180,6 +188,7 @@ describe('result UI copy guard', () => {
 
   it('bids and prices carry no currency unit (DUST is not transferable)', () => {
     expect(ui('components/AuctionResultPanel.tsx')).not.toMatch(/DUST/);
+    expect(ui('midnight/resultCopy.ts')).not.toMatch(/DUST/);
     expect(ui('components/AuctionCard.tsx')).not.toMatch(/DUST/);
     // The network-fee line is a DUST fee, not a price — the one allowed mention.
     expect(ui('components/BidInput.tsx').replace('Network Fee: ~0.0002 DUST', '')).not.toMatch(/DUST/);
@@ -269,5 +278,89 @@ describe('Auction Actions panel visibility', () => {
 
   it('closed + unclaimed + role known + nothing to do (e.g. a non-winner after the deadline): hidden, as before', () => {
     expect(panel({})).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+// Reveal button vs. the contract's revealBid deadline check (blockTimeLt: now < revealDeadline)
+
+const reveal = (o: Partial<Parameters<typeof canShowRevealButton>[0]>): boolean =>
+  canShowRevealButton({ isClosed: true, hasSealedBid: true, hasRevealed: false, nowSec: BEFORE, revealDeadline: DEADLINE, ...o });
+
+describe('Reveal button follows revealBid’s blockTimeLt(revealDeadline)', () => {
+  it('shown before the deadline for a sealed, unrevealed bid', () => {
+    expect(reveal({ nowSec: BEFORE })).toBe(true);
+    expect(reveal({ nowSec: 0n })).toBe(true);
+  });
+
+  it('hidden once the deadline has passed', () => {
+    expect(reveal({ nowSec: AFTER })).toBe(false);
+    expect(reveal({ nowSec: DEADLINE + 86_400n })).toBe(false);
+  });
+
+  it('boundary: one second before the deadline is open, exactly at the deadline is closed (strict <)', () => {
+    expect(reveal({ nowSec: DEADLINE - 1n })).toBe(true);
+    expect(reveal({ nowSec: DEADLINE })).toBe(false);
+    expect(reveal({ nowSec: DEADLINE + 1n })).toBe(false);
+  });
+
+  it('the reveal window and the final result are exact complements (no gap, no overlap) around the deadline', () => {
+    for (const now of [DEADLINE - 2n, DEADLINE - 1n, DEADLINE, DEADLINE + 1n, DEADLINE + 2n]) {
+      const finalized = computePublicResult({ isClosed: true, nowSec: now, revealDeadline: DEADLINE, highestBid: 1n }).finalized;
+      expect(isRevealWindowOpen(now, DEADLINE), `now=${now}`).toBe(!finalized);
+    }
+  });
+
+  it('still hidden when already revealed, when there is no sealed bid, or when the auction is not closed', () => {
+    expect(reveal({ hasRevealed: true })).toBe(false);
+    expect(reveal({ hasSealedBid: false })).toBe(false);
+    expect(reveal({ isClosed: false })).toBe(false);
+  });
+});
+
+describe('After the deadline: sealed but never revealed', () => {
+  const abstained = computeAuctionResult(
+    input({ nowSec: AFTER, highestBid: 200n, highestBidderPK: PK_OTHER, sealed: [PK_A, PK_OTHER], revealed: [PK_OTHER] }),
+  );
+
+  it('the result panel renders exactly the agreed "Not counted" copy', () => {
+    expect(abstained.me).toBe('abstained');
+    const { text, tone } = describeMyOutcome(abstained.me, { deadline: 'x', sold: abstained.sold, highestBid: abstained.highestBid });
+    expect(text).toBe("Not counted. You placed a bid but didn't reveal it before the deadline, so it wasn't considered.");
+    expect(text).toBe(NOT_COUNTED_TEXT);
+    expect(tone).toBe('bad');
+    // and the panel component really renders describeMyOutcome's text, not a copy of its own
+    const panelSrc = ui('components/AuctionResultPanel.tsx');
+    expect(panelSrc).toContain('describeMyOutcome(result.me');
+    expect(panelSrc).toContain('{mine.text}');
+  });
+
+  it('the not-selected copy for a revealed loser quotes the winning bid without a currency', () => {
+    const lost = describeMyOutcome('revealed-not-winner', { deadline: 'x', sold: true, highestBid: 200n });
+    expect(lost.text).toBe('Not selected. Your bid was revealed but was not the highest. Winning bid: 200');
+  });
+
+  it('Auction Actions panel is hidden: unlocked (no flags) and locked (role unknown) alike, when someone won', () => {
+    const revealShown = canShowRevealButton({ isClosed: true, hasSealedBid: true, hasRevealed: false, nowSec: AFTER, revealDeadline: DEADLINE });
+    expect(revealShown).toBe(false);
+    const abstainedAfterSale = abstained.me === 'abstained' && abstained.sold;
+    expect(abstainedAfterSale).toBe(true);
+    expect(panel({ showReveal: revealShown, roleUnknown: false, abstainedAfterSale })).toBe(false);
+    expect(panel({ showReveal: revealShown, roleUnknown: true, abstainedAfterSale })).toBe(false);
+  });
+
+  it('no sale (nobody revealed) + locked: panel stays — this viewer might be the auctioneer who must finalize', () => {
+    const noSale = computeAuctionResult(input({ nowSec: AFTER, highestBid: 0n, sealed: [PK_A], revealed: [] }));
+    expect(noSale.me).toBe('abstained');
+    expect(noSale.sold).toBe(false);
+    expect(panel({ roleUnknown: true, abstainedAfterSale: noSale.me === 'abstained' && noSale.sold })).toBe(true);
+    // ...and when unlocked as the auctioneer, the finalize button keeps it visible too
+    expect(panel({ showFinalize: true, abstainedAfterSale: false })).toBe(true);
+  });
+
+  it('while the window is still open the same bidder keeps the reveal button and the panel', () => {
+    const open = computeAuctionResult(input({ nowSec: BEFORE, sealed: [PK_A], revealed: [] }));
+    expect(open.me).toBe('sealed-pending');
+    expect(panel({ showReveal: true, abstainedAfterSale: open.me === 'abstained' && open.sold })).toBe(true);
   });
 });
