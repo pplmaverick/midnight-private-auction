@@ -12,6 +12,7 @@ import { ProvingNotSupportedError } from '../midnight/proofProvider'
 import { deriveWalletBoundSecretKey } from '../midnight/identity'
 import { getMyBidderPKs } from '../midnight/myBidderPKs'
 import { computeAuctionResult } from '../midnight/auctionResult'
+import { shouldShowActionsPanel } from '../midnight/auctionActions'
 import {
   getDeployedAuction,
   createAuctionPrivateState,
@@ -860,7 +861,15 @@ export default function AuctionDetailPage({
               )}
             </div>
 
-            {(showCloseButton || showRevealButton || showClaimButton || showFinalizeButton || roleUnknown) && (
+            {shouldShowActionsPanel({
+              isClosed: auctionStatus.phase === Auction.AuctionPhase.CLOSED,
+              itemClaimed: auctionStatus.itemClaimed,
+              showClose: showCloseButton,
+              showReveal: showRevealButton,
+              showClaim: showClaimButton,
+              showFinalize: showFinalizeButton,
+              roleUnknown,
+            }) && (
               <div className="glass-panel p-8 rounded-xl space-y-6">
                 <span className="font-label-caps text-label-caps text-text-secondary uppercase">Auction Actions</span>
 

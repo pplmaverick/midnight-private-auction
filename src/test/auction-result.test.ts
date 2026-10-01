@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { computeAuctionResult, computePublicResult, type AuctionResultInput } from '../../frontend/src/midnight/auctionResult.js';
+import { shouldShowActionsPanel, type ActionsPanelInput } from '../../frontend/src/midnight/auctionActions.js';
 
 // Pure result logic (frontend/src/midnight/auctionResult.ts): no wasm, no network.
 
@@ -216,5 +217,57 @@ describe('result UI copy guard', () => {
     expect(ui('components/SettlementNote.tsx')).toContain(NOTE);
     expect(ui('components/AuctionResultPanel.tsx')).toContain('<SettlementNote />');
     expect(ui('pages/AuctionDetailPage.tsx')).toContain('<SettlementNote />');
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+// "Auction Actions" panel visibility (frontend/src/midnight/auctionActions.ts)
+
+const panel = (o: Partial<ActionsPanelInput>): boolean =>
+  shouldShowActionsPanel({
+    isClosed: true,
+    itemClaimed: false,
+    showClose: false,
+    showReveal: false,
+    showClaim: false,
+    showFinalize: false,
+    roleUnknown: false,
+    ...o,
+  });
+
+describe('Auction Actions panel visibility', () => {
+  it('hidden once the item is claimed — even while private state is locked (no Unlock prompt)', () => {
+    expect(panel({ itemClaimed: true, roleUnknown: true })).toBe(false);
+    expect(panel({ itemClaimed: true, roleUnknown: false })).toBe(false);
+  });
+
+  it('hidden for a finalized no-sale auction (finalizeAuction sets itemClaimed) — locked or unlocked', () => {
+    // highestBid = 0 and itemClaimed = true: the auctioneer already finalized.
+    expect(panel({ itemClaimed: true, showFinalize: false, roleUnknown: true })).toBe(false);
+    expect(panel({ itemClaimed: true, showFinalize: false, roleUnknown: false })).toBe(false);
+  });
+
+  it('still shown while the winner has not claimed yet (claim button, or locked so role unknown)', () => {
+    expect(panel({ showClaim: true })).toBe(true);
+    expect(panel({ roleUnknown: true })).toBe(true); // closed, unclaimed, locked: Unlock to find out
+  });
+
+  it('still shown while the auctioneer has not finalized a no-sale auction', () => {
+    expect(panel({ showFinalize: true })).toBe(true);
+    expect(panel({ roleUnknown: true })).toBe(true);
+  });
+
+  it('still shown during the reveal window for a bidder who can reveal', () => {
+    expect(panel({ showReveal: true })).toBe(true);
+  });
+
+  it('unchanged in the BIDDING phase: close button, or locked role, shows it; neither hides it', () => {
+    expect(panel({ isClosed: false, showClose: true })).toBe(true);
+    expect(panel({ isClosed: false, roleUnknown: true })).toBe(true);
+    expect(panel({ isClosed: false })).toBe(false);
+  });
+
+  it('closed + unclaimed + role known + nothing to do (e.g. a non-winner after the deadline): hidden, as before', () => {
+    expect(panel({})).toBe(false);
   });
 });
