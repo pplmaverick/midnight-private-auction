@@ -31,9 +31,6 @@ export default function BidInput({ onSealSubmit, submitting = false }: BidInputP
           onChange={(e) => setAmount(e.target.value)}
           disabled={submitting}
         />
-        <div className="absolute right-6 top-1/2 -translate-y-1/2 font-label-mono text-lg text-on-surface-variant">
-          DUST
-        </div>
       </div>
       <button
         type="button"

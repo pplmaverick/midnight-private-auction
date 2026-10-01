@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import type { PublicResult } from '../midnight/auctionResult'
 
 const BG_IMAGE_COUNT = 6
 
@@ -11,6 +12,8 @@ interface AuctionCardProps {
   startingPrice: bigint
   endTime: bigint
   auctionId: bigint
+  // Public outcome only — never anything about the viewer or any bidder's identity.
+  result?: PublicResult
 }
 
 export default function AuctionCard({
@@ -22,9 +25,11 @@ export default function AuctionCard({
   startingPrice,
   endTime,
   auctionId,
+  result,
 }: AuctionCardProps) {
   const isBidding = phaseLabel === 'BIDDING'
   const isClosed = phaseLabel === 'CLOSED'
+  const finalized = result?.finalized === true
   const bgImage = `/images/auction-bg-${Number(auctionId) % BG_IMAGE_COUNT}.avif`
 
   const [timeLeft, setTimeLeft] = useState({ h: 0, m: 0, s: 0 })
@@ -62,7 +67,7 @@ export default function AuctionCard({
             }`}
           >
             {isBidding && <span className="w-2 h-2 bg-white rounded-full status-pulse"></span>}
-            {phaseLabel}
+            {finalized ? 'ENDED' : phaseLabel}
           </span>
         </div>
       </div>
@@ -77,8 +82,19 @@ export default function AuctionCard({
           </span>
         </div>
         <div className="font-label-mono text-xs text-on-surface-variant mb-6">
-          {startingPrice > 0n ? `${startingPrice} DUST` : 'No reserve'}
+          {startingPrice > 0n ? `${startingPrice}` : 'No reserve'}
         </div>
+        {isClosed && result && (
+          <div className="font-label-mono text-xs text-primary mb-4" data-testid="card-result">
+            {finalized
+              ? result.sold
+                ? `Winning bid: ${result.highestBid}`
+                : 'No sale'
+              : result.highestBid > 0n
+              ? `Current highest revealed bid: ${result.highestBid}`
+              : 'Reveal window open'}
+          </div>
+        )}
         {isBidding && endTime > 0n && (
           <div className="flex gap-2 font-label-mono text-xs text-on-surface-variant mb-2">
             <span>{String(timeLeft.h).padStart(2, '0')}h</span>

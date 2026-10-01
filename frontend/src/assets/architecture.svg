@@ -62,7 +62,7 @@
   <rect x="40" y="312" width="220" height="100" rx="10" stroke-width="0.5"/>
   <text class="th" x="150" y="336" text-anchor="middle">Bidder discloses</text>
   <rect x="60" y="350" width="180" height="24" rx="5" stroke-width="0.5" style="opacity:0.3"/>
-  <text class="ts" x="150" y="366" text-anchor="middle">amount = 200 DUST</text>
+  <text class="ts" x="150" y="366" text-anchor="middle">amount = 200</text>
   <rect x="60" y="379" width="180" height="24" rx="5" stroke-width="0.5" style="opacity:0.3"/>
   <text class="ts" x="150" y="395" text-anchor="middle">salt = 0xabc...</text>
 </g>

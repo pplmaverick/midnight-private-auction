@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import AuctionCard from '../components/AuctionCard'
+import { computePublicResult } from '../midnight/auctionResult'
 import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
@@ -25,6 +26,8 @@ interface AuctionListItem {
   readonly description: string
   readonly startingPrice: bigint
   readonly endTime: bigint
+  readonly revealDeadline: bigint
+  readonly highestBid: bigint
 }
 
 const phaseLabel = (phase: Auction.AuctionPhase): string => (phase === Auction.AuctionPhase.BIDDING ? 'BIDDING' : 'CLOSED')
@@ -86,6 +89,8 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
           description: ledger.description.member(id) ? String(ledger.description.lookup(id)) : '',
           startingPrice: ledger.startingPrice.member(id) ? BigInt(ledger.startingPrice.lookup(id)) : 0n,
           endTime: ledger.endTime.member(id) ? BigInt(ledger.endTime.lookup(id)) : 0n,
+          revealDeadline: ledger.revealDeadline.member(id) ? BigInt(ledger.revealDeadline.lookup(id)) : 0n,
+          highestBid: ledger.highestBid.member(id) ? BigInt(ledger.highestBid.lookup(id)) : 0n,
         })
       }
       // Newest first.
@@ -159,6 +164,8 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
           description,
           startingPrice: BigInt(startingPrice),
           endTime: auctionEndTime,
+          revealDeadline: auctionRevealDeadline,
+          highestBid: 0n,
         },
         ...prev,
       ])
@@ -309,6 +316,12 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
                   startingPrice={auction.startingPrice}
                   endTime={auction.endTime}
                   auctionId={auction.auctionId}
+                  result={computePublicResult({
+                    isClosed: auction.phase === Auction.AuctionPhase.CLOSED,
+                    nowSec: BigInt(Math.floor(Date.now() / 1000)),
+                    revealDeadline: auction.revealDeadline,
+                    highestBid: auction.highestBid,
+                  })}
                 />
               ))}
             </div>
@@ -353,7 +366,7 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
                 </select>
               </div>
               <div className="flex flex-col gap-1">
-                <label className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest">Reserve Price (DUST)</label>
+                <label className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest">Reserve Price</label>
                 <input
                   type="number"
                   value={startingPrice}

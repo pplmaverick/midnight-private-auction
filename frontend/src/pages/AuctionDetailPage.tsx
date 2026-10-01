@@ -2,12 +2,16 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import PhaseIndicator from '../components/PhaseIndicator'
 import BidInput from '../components/BidInput'
+import AuctionResultPanel from '../components/AuctionResultPanel'
+import SettlementNote from '../components/SettlementNote'
 import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
 import { readContractState } from '../midnight/publicDataProvider'
 import { ProvingNotSupportedError } from '../midnight/proofProvider'
 import { deriveWalletBoundSecretKey } from '../midnight/identity'
+import { getMyBidderPKs } from '../midnight/myBidderPKs'
+import { computeAuctionResult } from '../midnight/auctionResult'
 import {
   getDeployedAuction,
   createAuctionPrivateState,
@@ -57,6 +61,19 @@ const describeBidError = (err: unknown): string => {
   }
   return message || 'Failed to submit bid.'
 }
+
+// Stable string key for a public key, used to look a PK up in the Sets below.
+const pkKey = (pk: Uint8Array): string => Array.from(pk, (b) => b.toString(16).padStart(2, '0')).join('')
+
+// Result-view identity: which bidder PKs this wallet could be using in THIS auction (from
+// getMyBidderPKs — derived from the connected wallet alone, no IndexedDB, no unlock), and the
+// subset of them that the chain shows as sealed / revealed. pks === null means no wallet.
+interface ResultIdentity {
+  readonly pks: Uint8Array[] | null
+  readonly sealed: ReadonlySet<string>
+  readonly revealed: ReadonlySet<string>
+}
+const NO_RESULT_IDENTITY: ResultIdentity = { pks: null, sealed: new Set(), revealed: new Set() }
 
 interface AuctionStatus {
   readonly exists: boolean
@@ -144,6 +161,7 @@ export default function AuctionDetailPage({
   const [myBidderPK, setMyBidderPK] = useState<Uint8Array | null>(null)
   const [hasSealedBid, setHasSealedBid] = useState(false)
   const [hasRevealed, setHasRevealed] = useState(false)
+  const [resultIdentity, setResultIdentity] = useState<ResultIdentity>(NO_RESULT_IDENTITY)
 
   const [closing, setClosing] = useState(false)
   const [closeError, setCloseError] = useState<string | null>(null)
@@ -178,6 +196,7 @@ export default function AuctionDetailPage({
         setMyBidderPK(null)
         setHasSealedBid(false)
         setHasRevealed(false)
+        setResultIdentity(NO_RESULT_IDENTITY)
         return true
       }
 
@@ -194,6 +213,24 @@ export default function AuctionDetailPage({
         revealDeadline: ledger.revealDeadline.member(auctionId) ? BigInt(ledger.revealDeadline.lookup(auctionId)) : 0n,
         itemName: ledger.itemName.member(auctionId) ? String(ledger.itemName.lookup(auctionId)) : '',
         bidCount: ledger.bidCount.member(auctionId) ? BigInt(ledger.bidCount.lookup(auctionId).read()) : 0n,
+      })
+
+      // Result view: derived from the connected wallet only, so it works after clearing browser
+      // storage or switching browsers, and without unlocking private state.
+      let resultPKs: Uint8Array[] | null = null
+      if (connectedAddress) {
+        try {
+          resultPKs = await getMyBidderPKs(connectedAddress, auctionId)
+        } catch {
+          resultPKs = null
+        }
+      }
+      const sealedBids = ledger.sealedBids.lookup(auctionId)
+      const revealedBidders = ledger.revealedBidders.lookup(auctionId)
+      setResultIdentity({
+        pks: resultPKs,
+        sealed: new Set((resultPKs ?? []).filter((pk) => sealedBids.member(pk)).map(pkKey)),
+        revealed: new Set((resultPKs ?? []).filter((pk) => revealedBidders.member(pk)).map(pkKey)),
       })
 
       if (provider && isUnlocked) {
@@ -227,7 +264,7 @@ export default function AuctionDetailPage({
     } finally {
       setIsLoading(false)
     }
-  }, [auctionId, provider, isUnlocked])
+  }, [auctionId, provider, isUnlocked, connectedAddress])
 
   useEffect(() => {
     refreshAuctionStatus()
@@ -259,6 +296,16 @@ export default function AuctionDetailPage({
   const roleUnknown = !provider || !isUnlocked
   const nowSec = BigInt(Math.floor(Date.now() / 1000))
   const revealExpired = auctionStatus.revealDeadline > 0n && nowSec > auctionStatus.revealDeadline
+  const auctionResult = computeAuctionResult({
+    isClosed: auctionStatus.phase === Auction.AuctionPhase.CLOSED,
+    nowSec,
+    revealDeadline: auctionStatus.revealDeadline,
+    highestBid: auctionStatus.highestBid,
+    highestBidderPK: auctionStatus.highestBidderPK,
+    myPKs: resultIdentity.pks,
+    isSealed: (pk) => resultIdentity.sealed.has(pkKey(pk)),
+    isRevealed: (pk) => resultIdentity.revealed.has(pkKey(pk)),
+  })
   // Mirrors the contract's THREE_DAYS_SECONDS grace period (auction.compact's
   // closeAuction) — once elapsed, closeAuction accepts any caller, not just the
   // auctioneer, so an abandoned auction's bid(s) can't be locked forever.
@@ -348,7 +395,6 @@ export default function AuctionDetailPage({
       )
       await contract.callTx.placeBid(auctionId)
       setBidResult('Bid sealed and submitted.')
-      console.log('[DEBUG] merged bids now contain auctionIds:', Object.keys(mergedBids))
       await refreshAuctionStatus(true)
       onNavigateToZK()
     } catch (err) {
@@ -421,9 +467,6 @@ export default function AuctionDetailPage({
       setRevealError('Wallet not connected — connect a wallet before revealing your bid.')
       return
     }
-
-    // TEMP DEBUG — remove after commitment-mismatch investigation is done.
-    ;(window as any).__debugState = { provider, BIDDER1_STATE_ID, auctionId, walletState, Auction }
 
     setRevealing(true)
     try {
@@ -627,7 +670,7 @@ export default function AuctionDetailPage({
             <div className="flex items-center gap-3">
               <span className="font-label-mono text-label-mono text-text-secondary">Reserve Price:</span>
               <span className="font-label-mono text-label-mono text-primary">
-                {auctionStatus.startingPrice > 0n ? `${auctionStatus.startingPrice} DUST` : 'No reserve'}
+                {auctionStatus.startingPrice > 0n ? `${auctionStatus.startingPrice}` : 'No reserve'}
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -657,6 +700,9 @@ export default function AuctionDetailPage({
                 </p>
               </div>
             </div>
+            {/* Once the auction is closed the result panel (right column) carries this same note,
+                so it is shown here only before that — exactly once per page in every phase. */}
+            {auctionStatus.phase !== Auction.AuctionPhase.CLOSED && <SettlementNote />}
           </div>
 
           {/* Right Column: Status & Bidding */}
@@ -734,6 +780,12 @@ export default function AuctionDetailPage({
                       : 'Reveal Phase — Submit your bid amount'}
                   </div>
                 </div>
+              )}
+              {auctionStatus.phase === Auction.AuctionPhase.CLOSED && (
+                <AuctionResultPanel
+                  result={auctionResult}
+                  revealDeadlineText={formatTimestamp(auctionStatus.revealDeadline)}
+                />
               )}
               <div className="h-px bg-outline-variant/30"></div>
 
