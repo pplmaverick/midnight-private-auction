@@ -57,7 +57,15 @@ export default function AuctionCard({
           backgroundPosition: 'center',
         }}
       >
-        <h2 className="font-headline-md text-3xl text-white text-center font-bold px-4 group-hover:scale-105 transition-transform duration-700">
+        {/* Dark overlay so the white centered title stays readable over bright artwork: darkest
+            in the middle (where the title sits), lighter toward the edges. It comes first in the
+            DOM, so the title (relative) and the status badge (absolute) both paint above it. */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 100%)' }}
+          data-testid="card-image-overlay"
+        ></div>
+        <h2 className="relative font-headline-md text-3xl text-white text-center font-bold px-4 group-hover:scale-105 transition-transform duration-700">
           {itemName}
         </h2>
         <div className="absolute top-4 left-4 flex gap-stack-sm">

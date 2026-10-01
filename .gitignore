@@ -16,3 +16,5 @@ midnight-level-db/
 .vercel
 DEPLOY_NOTES.md
 .env*
+# Source images for asset replacement (originals; the optimized avifs live in frontend/public/images/)
+new-images/
