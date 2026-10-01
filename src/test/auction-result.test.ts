@@ -364,3 +364,25 @@ describe('After the deadline: sealed but never revealed', () => {
     expect(panel({ showReveal: true, abstainedAfterSale: open.me === 'abstained' && open.sold })).toBe(true);
   });
 });
+
+describe('AuctionCard structure', () => {
+  const card = ui('components/AuctionCard.tsx');
+
+  it('has no title over the image (the title appears once, below it) and no dark overlay', () => {
+    expect(card).not.toContain('card-image-overlay');
+    expect(card).not.toMatch(/<h2\b/);
+    expect(card.match(/\{itemName\}/g)?.length).toBe(1);
+    expect(card).toMatch(/<h3[^>]*>\{itemName\}<\/h3>/);
+  });
+
+  it('keeps the status badge over the image, top-left', () => {
+    expect(card).toContain('absolute top-4 left-4');
+    expect(card).toContain("finalized ? 'ENDED' : phaseLabel");
+  });
+
+  it('labels the reserve price, from startingPrice, matching the detail page', () => {
+    expect(card).toContain("startingPrice > 0n ? `Reserve ${startingPrice}` : 'No reserve'");
+    expect(ui('pages/HomePage.tsx')).toContain('startingPrice={auction.startingPrice}');
+    expect(ui('pages/AuctionDetailPage.tsx')).toContain('Reserve Price:');
+  });
+});

@@ -50,24 +50,13 @@ export default function AuctionCard({
   return (
     <div className="glass-card rounded-xl overflow-hidden group cursor-pointer" onClick={onSelect}>
       <div
-        className="relative h-52 overflow-hidden flex items-center justify-center p-6"
+        className="relative h-52 overflow-hidden"
         style={{
           backgroundImage: `url(${bgImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-        {/* Dark overlay so the white centered title stays readable over bright artwork: darkest
-            in the middle (where the title sits), lighter toward the edges. It comes first in the
-            DOM, so the title (relative) and the status badge (absolute) both paint above it. */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 100%)' }}
-          data-testid="card-image-overlay"
-        ></div>
-        <h2 className="relative font-headline-md text-3xl text-white text-center font-bold px-4 group-hover:scale-105 transition-transform duration-700">
-          {itemName}
-        </h2>
         <div className="absolute top-4 left-4 flex gap-stack-sm">
           <span
             className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg ${
@@ -90,7 +79,7 @@ export default function AuctionCard({
           </span>
         </div>
         <div className="font-label-mono text-xs text-on-surface-variant mb-6">
-          {startingPrice > 0n ? `${startingPrice}` : 'No reserve'}
+          {startingPrice > 0n ? `Reserve ${startingPrice}` : 'No reserve'}
         </div>
         {isClosed && result && (
           <div className="font-label-mono text-xs text-primary mb-4" data-testid="card-result">
