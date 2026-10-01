@@ -6,7 +6,7 @@ const steps = [
     number: '01',
     icon: 'account_balance_wallet',
     title: 'Connect Wallet',
-    body: "Install the 1AM wallet extension and connect to Midnight mainnet. You'll need DUST (Midnight's native token) to place bids. Your bids are shielded at the protocol level — the network records only cryptographic commitments, never bid amounts or secret keys.",
+    body: "Install the 1AM wallet extension and connect to Midnight mainnet. You'll need DUST in your wallet to pay transaction fees. Your bids are shielded at the protocol level — the network records only cryptographic commitments, never bid amounts or secret keys.",
   },
   {
     number: '02',
@@ -47,7 +47,7 @@ const primitives = [
   },
   {
     name: '@midnight-ntwrk/dapp-connector-api',
-    body: 'connects to whichever wallet extension is installed (e.g. 1AM) via the CAIP-372 window.midnight provider, for transaction signing and DUST transfers',
+    body: 'connects to whichever wallet extension is installed (e.g. 1AM) via the CAIP-372 window.midnight provider, for transaction signing',
   },
 ]
 

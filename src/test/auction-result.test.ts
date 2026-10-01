@@ -186,6 +186,30 @@ describe('result UI copy guard', () => {
     expect(ui('pages/HomePage.tsx')).not.toMatch(/Reserve Price \(DUST\)/);
   });
 
+  it('HowItWorks mentions DUST only as the transaction-fee token, never as a bid currency or transferable', () => {
+    const lines = ui('pages/HowItWorksPage.tsx').split('\n').filter((l) => /DUST/.test(l));
+    expect(lines.length).toBeGreaterThan(0);
+    for (const l of lines) expect(l).toMatch(/fees?\b/i);
+    expect(ui('pages/HowItWorksPage.tsx')).not.toMatch(/DUST transfers|place bids/i);
+  });
+
+  it('architecture diagrams show the bid amount without a currency unit', () => {
+    for (const f of ['../../docs/architecture.svg', '../../frontend/src/assets/architecture.svg']) {
+      const text = readFileSync(new URL(f, import.meta.url), 'utf8');
+      expect(text, f).toContain('amount = 200');
+      expect(text, f).not.toMatch(/amount = 200 DUST/);
+    }
+  });
+
+  it('bid input is integer-only, matching the handler (whole numbers 1..4294967295)', () => {
+    const src = ui('components/BidInput.tsx');
+    expect(src).toContain('step="1"');
+    expect(src).toContain('min="1"');
+    expect(src).toContain('inputMode="numeric"');
+    expect(src).toContain('placeholder="0"');
+    expect(src).not.toMatch(/placeholder="0\.00"|step="0\.01"/);
+  });
+
   it('shows the fixed off-chain settlement note on the result panel and the detail page', () => {
     const NOTE =
       'Bids are recorded on-chain as plain numbers. Currency, payment and delivery are agreed and settled off-chain between the auctioneer and the winner.';

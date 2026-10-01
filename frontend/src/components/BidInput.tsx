@@ -24,8 +24,10 @@ export default function BidInput({ onSealSubmit, submitting = false }: BidInputP
       <div className="relative group">
         <input
           className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-6 py-5 font-label-mono text-2xl focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all placeholder:text-surface-container-highest disabled:opacity-50"
-          placeholder="0.00"
-          step="0.01"
+          placeholder="0"
+          step="1"
+          min="1"
+          inputMode="numeric"
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
