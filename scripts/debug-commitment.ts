@@ -27,16 +27,10 @@
  *   BID_AMOUNT       — bidAmount from the browser's private state, integer
  *   BID_SALT_HEX     — bidSalt from the browser's private state, hex
  *   MIDNIGHT_NETWORK — "mainnet" or "preprod" (default: preprod)
- *   MIDNIGHT_INDEXER / MIDNIGHT_INDEXER_WS
- *                    — optional overrides (mainnet only). This script only ever calls
- *                      indexerPublicDataProvider — it never touches MIDNIGHT_NODE or a
- *                      proof server, so unlike the other *:mainnet scripts it does NOT
- *                      go through src/config.ts's MainnetConfig (whose constructor would
- *                      otherwise demand MIDNIGHT_NODE for no reason this script needs).
- *                      Defaults match frontend/src/midnight/publicDataProvider.ts's v3
- *                      endpoint (the one the deployed dapp actually uses) — NOT the v1
- *                      URL documented in src/config.ts's MainnetConfig comment, which is
- *                      for the CLI scripts' wallet/RPC path and unrelated to this script.
+ *   BLOCKFROST_PROJECT_ID (shell or git-ignored .env.local)
+ *                    — mainnet only: auth for the Blockfrost-hosted indexer (the
+ *                      Midnight-hosted one was shut down 2026-09-30). Endpoint resolution
+ *                      is shared with src/config.ts (resolveMainnetEndpoints).
  *
  * ─── Brute-force mode ───────────────────────────────────────────────────────
  * Set BRUTE_FORCE_TARGET to switch modes entirely: fixes secretKey/auctionId/bidSalt
@@ -57,28 +51,20 @@ import { Buffer } from 'node:buffer';
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { assertIsContractAddress } from '@midnight-ntwrk/midnight-js/utils';
 import { setNetworkId } from '@midnight-ntwrk/midnight-js/network-id';
-import { PreprodConfig } from '../src/config.js';
+import { PreprodConfig, resolveMainnetEndpoints } from '../src/config.js';
 import { Auction } from '../contract/src/index.js';
 
 const CONTRACT_ADDRESS = '5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069';
 const DIVIDER = '══════════════════════════════════════════════════════════════';
 
-// v3 endpoint — matches frontend/src/midnight/publicDataProvider.ts's MAINNET_INDEXER /
-// MAINNET_INDEXER_WS, i.e. what the deployed dapp itself actually queries. Deliberately
-// NOT src/config.ts's documented v1 URL (that's the CLI/wallet path, different host).
-const DEFAULT_MAINNET_INDEXER = 'https://indexer.mainnet.midnight.network/api/v3/graphql';
-const DEFAULT_MAINNET_INDEXER_WS = 'wss://indexer.mainnet.midnight.network/api/v3/graphql/ws';
-
-// This script only ever calls indexerPublicDataProvider(indexer, indexerWS) — resolve
-// just those two values instead of constructing a full Config (MainnetConfig's
-// constructor would otherwise require MIDNIGHT_NODE, which nothing here reads).
+// This script only ever calls indexerPublicDataProvider(indexer, indexerWS) — use just
+// those two values instead of constructing a full Config. Never log them: on mainnet they
+// carry the Blockfrost project_id.
 function resolveIndexerEndpoints(network: string): { indexer: string; indexerWS: string } {
   if (network === 'mainnet') {
     setNetworkId('mainnet');
-    return {
-      indexer: process.env.MIDNIGHT_INDEXER ?? DEFAULT_MAINNET_INDEXER,
-      indexerWS: process.env.MIDNIGHT_INDEXER_WS ?? DEFAULT_MAINNET_INDEXER_WS,
-    };
+    const { indexer, indexerWS } = resolveMainnetEndpoints();
+    return { indexer, indexerWS };
   }
   const preprod = new PreprodConfig(); // hardcoded values, no required env vars, sets networkId
   return { indexer: preprod.indexer, indexerWS: preprod.indexerWS };

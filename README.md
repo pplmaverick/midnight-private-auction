@@ -124,9 +124,7 @@ npm install
 | `WALLET_SEED` | Optional | Hex seed to reuse an existing wallet; if unset, a fresh wallet is generated |
 | `MIDNIGHT_NETWORK` | Optional | `preprod` (default) or `mainnet` |
 | `MIDNIGHT_PROOF_SERVER` | Optional | Override proof server URL (default: `http://127.0.0.1:6300`) |
-| `MIDNIGHT_INDEXER` | Mainnet only | Indexer GraphQL HTTP endpoint |
-| `MIDNIGHT_INDEXER_WS` | Mainnet only | Indexer GraphQL WebSocket endpoint |
-| `MIDNIGHT_NODE` | Mainnet only | Node RPC endpoint |
+| `BLOCKFROST_PROJECT_ID` | Mainnet only | Blockfrost project ID (set in the git-ignored `.env.local` or the shell). Indexer HTTP, indexer WebSocket and node RPC all resolve to the Blockfrost-hosted Midnight endpoints from it — the Midnight-hosted ones were shut down 2026-09-30 |
 
 Deploy-specific variables (`MIDNIGHT_DEPLOY_NODE`, funding requirements) are covered in [DEPLOYMENT.md](DEPLOYMENT.md).
 
@@ -138,7 +136,7 @@ npm run compile
 WALLET_SEED=<hex> npm run preprod
 
 # Run on Mainnet
-MIDNIGHT_INDEXER=<url> MIDNIGHT_INDEXER_WS=<url> MIDNIGHT_NODE=<url> \
+# (BLOCKFROST_PROJECT_ID is read from .env.local)
 WALLET_SEED=<hex> npm run mainnet
 ```
 

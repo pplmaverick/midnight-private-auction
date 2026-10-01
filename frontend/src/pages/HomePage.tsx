@@ -4,7 +4,7 @@ import AuctionCard from '../components/AuctionCard'
 import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
-import { publicDataProvider } from '../midnight/publicDataProvider'
+import { readContractState } from '../midnight/publicDataProvider'
 import { deriveWalletBoundSecretKey } from '../midnight/identity'
 import {
   getDeployedAuction,
@@ -58,16 +58,20 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
 
   const [auctionList, setAuctionList] = useState<AuctionListItem[]>([])
   const [loadingAuctions, setLoadingAuctions] = useState(true)
+  // Set when the chain read fails (or the contract state is missing) — kept separate from
+  // an empty auctionList so "couldn't load" is never displayed as "0 auctions".
+  const [auctionsError, setAuctionsError] = useState<string | null>(null)
 
   // Reads nextAuctionId (the exclusive upper bound of assigned auction IDs) and, for
   // each existing ID, its itemName/phase/bidCount — all local lookups against the one
   // ledger snapshot fetched below, not one network round-trip per auction.
   const refreshAuctionList = useCallback(async () => {
     setLoadingAuctions(true)
+    setAuctionsError(null)
     try {
-      const state = await publicDataProvider.queryContractState(AUCTION_CONTRACT_ADDRESS)
+      const state = await readContractState(AUCTION_CONTRACT_ADDRESS)
       if (!state) {
-        setAuctionList([])
+        setAuctionsError('Contract state not found on the indexer.')
         return
       }
       const ledger = Auction.ledger(state.data)
@@ -87,8 +91,8 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
       // Newest first.
       items.reverse()
       setAuctionList(items)
-    } catch {
-      setAuctionList([])
+    } catch (err) {
+      setAuctionsError(err instanceof Error ? err.message : 'Failed to read auctions from chain.')
     } finally {
       setLoadingAuctions(false)
     }
@@ -259,12 +263,12 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
           </div>
           <div className="grid grid-cols-3 gap-6 mb-12">
             <div className="glass-panel p-6 rounded-xl text-center">
-              <div className="font-display-xl text-3xl text-primary font-bold">{auctionList.length}</div>
+              <div className="font-display-xl text-3xl text-primary font-bold">{auctionsError ? '—' : auctionList.length}</div>
               <div className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest mt-1">Total Auctions</div>
             </div>
             <div className="glass-panel p-6 rounded-xl text-center">
               <div className="font-display-xl text-3xl text-primary font-bold">
-                {auctionList.reduce((sum, a) => sum + a.bidCount, 0n).toString()}
+                {auctionsError ? '—' : auctionList.reduce((sum, a) => sum + a.bidCount, 0n).toString()}
               </div>
               <div className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest mt-1">Total Sealed Bids</div>
             </div>
@@ -275,6 +279,19 @@ export default function HomePage({ onNavigateToDetail, onNavigateHowItWorks, onN
           </div>
           {loadingAuctions ? (
             <p className="font-label-mono text-sm text-on-surface-variant">Loading auctions from chain…</p>
+          ) : auctionsError ? (
+            <div className="flex flex-col items-start gap-3" role="alert">
+              <p className="font-label-mono text-sm text-error">
+                Failed to load auctions — please try again. ({auctionsError})
+              </p>
+              <button
+                type="button"
+                onClick={refreshAuctionList}
+                className="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-mono text-sm font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all"
+              >
+                Retry
+              </button>
+            </div>
           ) : auctionList.length === 0 ? (
             <p className="font-label-mono text-sm text-on-surface-variant">
               No auctions yet — create the first one below.

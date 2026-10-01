@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import PhaseIndicator from '../components/PhaseIndicator'
 import BidInput from '../components/BidInput'
 import { usePrivateState } from '../midnight/PrivateStateContext'
 import { useWallet } from '../midnight/WalletContext'
 import { buildAuctionProviders } from '../midnight/auctionProviders'
-import { publicDataProvider } from '../midnight/publicDataProvider'
+import { readContractState } from '../midnight/publicDataProvider'
 import { ProvingNotSupportedError } from '../midnight/proofProvider'
 import { deriveWalletBoundSecretKey } from '../midnight/identity'
 import {
@@ -130,6 +130,11 @@ export default function AuctionDetailPage({
   // Set only when refreshAuctionStatus itself throws (network/provider failure) — kept
   // distinct from "auction doesn't exist" so a failed fetch isn't shown as a 404.
   const [loadError, setLoadError] = useState<string | null>(null)
+  // True once any refresh has succeeded. After that, a failed refresh must NOT replace the
+  // page with the full-screen error (loadError) — the page is still valid, just possibly
+  // stale — so it surfaces as a banner (refreshNotice) instead.
+  const hasLoadedRef = useRef(false)
+  const [refreshNotice, setRefreshNotice] = useState<string | null>(null)
   // Derived from whichever secretKey is already stored locally for this contract
   // (never freshly generated here — only createAuction/placeBid establish new
   // identities; close/reveal/claim always act as whoever you already are).
@@ -156,14 +161,16 @@ export default function AuctionDetailPage({
   // is already unlocked — never forces the password prompt) this browser's own
   // stored auctioneer/bidder identities, so the action buttons below reflect
   // reality instead of always being visible.
-  const refreshAuctionStatus = useCallback(async () => {
+  // Resolves true when the chain read succeeded, false when it failed — it never throws, so
+  // callers right after a submitted transaction can tell the user the tx went through even if
+  // the status refresh didn't.
+  const refreshAuctionStatus = useCallback(async (afterTx = false): Promise<boolean> => {
     try {
+      const state = await readContractState(AUCTION_CONTRACT_ADDRESS)
+      if (!state) throw new Error('Contract state not found on the indexer.')
       setLoadError(null)
-      const state = await publicDataProvider.queryContractState(AUCTION_CONTRACT_ADDRESS)
-      if (!state) {
-        setAuctionStatus(EMPTY_AUCTION_STATUS)
-        return
-      }
+      setRefreshNotice(null)
+      hasLoadedRef.current = true
       const ledger = Auction.ledger(state.data)
       if (!ledger.phase.member(auctionId)) {
         setAuctionStatus(EMPTY_AUCTION_STATUS)
@@ -171,7 +178,7 @@ export default function AuctionDetailPage({
         setMyBidderPK(null)
         setHasSealedBid(false)
         setHasRevealed(false)
-        return
+        return true
       }
 
       setAuctionStatus({
@@ -205,8 +212,18 @@ export default function AuctionDetailPage({
         setHasSealedBid(false)
         setHasRevealed(false)
       }
+      return true
     } catch (err) {
-      setLoadError(err instanceof Error ? err.message : 'Failed to load auction data')
+      if (hasLoadedRef.current) {
+        setRefreshNotice(
+          afterTx
+            ? 'Transaction submitted, but the status update failed — please refresh the page.'
+            : 'Could not refresh auction status — the data shown may be out of date.',
+        )
+      } else {
+        setLoadError(err instanceof Error ? err.message : 'Failed to load auction data')
+      }
+      return false
     } finally {
       setIsLoading(false)
     }
@@ -332,7 +349,7 @@ export default function AuctionDetailPage({
       await contract.callTx.placeBid(auctionId)
       setBidResult('Bid sealed and submitted.')
       console.log('[DEBUG] merged bids now contain auctionIds:', Object.keys(mergedBids))
-      await refreshAuctionStatus()
+      await refreshAuctionStatus(true)
       onNavigateToZK()
     } catch (err) {
       if (err instanceof ProvingNotSupportedError) {
@@ -382,7 +399,7 @@ export default function AuctionDetailPage({
       const newRevealDeadline = BigInt(Math.floor(Date.now() / 1000)) + 21600n
       const result = await contract.callTx.closeAuction(auctionId, newRevealDeadline)
       setCloseResult(`Auction closed — tx: ${result.public.txId}`)
-      await refreshAuctionStatus()
+      await refreshAuctionStatus(true)
     } catch (err) {
       if (err instanceof ProvingNotSupportedError) {
         setProvingUnsupported(true)
@@ -426,7 +443,7 @@ export default function AuctionDetailPage({
       const contract = await getDeployedAuction(providers, BIDDER1_STATE_ID, stored)
       const result = await contract.callTx.revealBid(auctionId, bid.bidAmount, bid.bidSalt)
       setRevealResult(`Bid revealed — tx: ${result.public.txId}`)
-      await refreshAuctionStatus()
+      await refreshAuctionStatus(true)
     } catch (err) {
       if (err instanceof ProvingNotSupportedError) {
         setProvingUnsupported(true)
@@ -464,7 +481,7 @@ export default function AuctionDetailPage({
       const contract = await getDeployedAuction(providers, BIDDER1_STATE_ID, stored)
       const result = await contract.callTx.claimItem(auctionId)
       setClaimResult(`Item claimed — tx: ${result.public.txId}`)
-      await refreshAuctionStatus()
+      await refreshAuctionStatus(true)
     } catch (err) {
       if (err instanceof ProvingNotSupportedError) {
         setProvingUnsupported(true)
@@ -502,7 +519,7 @@ export default function AuctionDetailPage({
       const contract = await getDeployedAuction(providers, AUCTIONEER_STATE_ID, stored)
       const result = await contract.callTx.finalizeAuction(auctionId)
       setCloseResult(`Auction finalized (no sale) — tx: ${result.public.txId}`)
-      await refreshAuctionStatus()
+      await refreshAuctionStatus(true)
     } catch (err) {
       if (err instanceof ProvingNotSupportedError) {
         setProvingUnsupported(true)
@@ -563,6 +580,17 @@ export default function AuctionDetailPage({
           </div>
         ) : (
         <>
+        {refreshNotice && (
+          <div
+            className="mb-stack-lg flex gap-3 p-4 rounded-lg border border-error/50 bg-error/10 max-w-3xl mx-auto"
+            role="alert"
+          >
+            <span className="material-symbols-outlined text-error shrink-0" data-weight="fill">
+              error
+            </span>
+            <p className="font-body-md text-sm text-error leading-relaxed">{refreshNotice}</p>
+          </div>
+        )}
         <PhaseIndicator
           phase={auctionStatus.phase}
           itemClaimed={auctionStatus.itemClaimed}

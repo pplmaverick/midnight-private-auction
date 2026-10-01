@@ -178,9 +178,7 @@ The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version pref
 | `WALLET_SEED` | Yes | Deploy, run | Hex seed for the deploying/operating wallet. If unset in non-deploy scripts, a fresh wallet is generated |
 | `MIDNIGHT_NETWORK` | Optional | Deploy, run | `preprod` (default) or `mainnet` |
 | `MIDNIGHT_PROOF_SERVER` | Optional | Deploy, run | Override proof server URL (default: `http://127.0.0.1:6300`) |
-| `MIDNIGHT_INDEXER` | Mainnet only | Deploy, run | Indexer GraphQL HTTP endpoint |
-| `MIDNIGHT_INDEXER_WS` | Mainnet only | Deploy, run | Indexer GraphQL WebSocket endpoint |
-| `MIDNIGHT_NODE` | Mainnet only | Deploy, run | Public node RPC endpoint, used for wallet sync |
+| `BLOCKFROST_PROJECT_ID` | Mainnet only | Deploy, run | Blockfrost project ID (git-ignored `.env.local` or shell). Indexer HTTP, indexer WebSocket and the public node RPC (used for wallet sync) all resolve to Blockfrost-hosted endpoints from it; the Midnight-hosted ones were shut down 2026-09-30 |
 | `MIDNIGHT_DEPLOY_NODE` | Mainnet deploy only | Deploy | Authorised/private node RPC endpoint. Used **only** for the `contractDeploy` transaction — see [Known Limitations](#known-limitations) |
 
 **Prerequisites**
@@ -207,7 +205,6 @@ The Midnight SDK returns 66-character tx IDs (33 bytes, with a `00` version pref
 3. **Deploy to mainnet** using the deploy-only script (`src/deploy-only.ts`):
    ```bash
    MIDNIGHT_NETWORK=mainnet \
-   MIDNIGHT_INDEXER=<url> MIDNIGHT_INDEXER_WS=<url> MIDNIGHT_NODE=<url> \
    MIDNIGHT_DEPLOY_NODE=<authorised-rpc-url> \
    WALLET_SEED=<hex> npm run deploy:mainnet
    ```
