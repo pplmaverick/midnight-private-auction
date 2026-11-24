@@ -5,16 +5,16 @@ This project is built on the Midnight Network.
 ## 🌐 Live Demo
 https://midnight-private-auction.vercel.app
 
-> Current Contract: [`5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069`](https://explorer.1am.xyz/contract/5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069) · Full deployment history, tx hashes, and block numbers: [DEPLOYMENT.md](DEPLOYMENT.md)
+> Current Contract: [`118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78`](https://explorer.1am.xyz/contract/118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78) · Full deployment history, tx hashes, and block numbers: [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ![CI](https://github.com/pplmaverick/midnight-private-auction/actions/workflows/test.yml/badge.svg)
-![Network](https://img.shields.io/badge/Midnight_Network-Preprod%20%7C%20Mainnet-blue)
-![Compact](https://img.shields.io/badge/Compact-0.23.0-purple)
+![Network](https://img.shields.io/badge/Midnight_Network-Mainnet-blue)
+![Compact](https://img.shields.io/badge/Compact-compiler_0.36.1_%7C_language_0.28.0_%7C_runtime_0.21.0-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Legacy Contract
 
-The current production contract (M5) was deployed with the **ledger 8 Compact toolchain** (compiler `0.31.0`, language `0.23.0`, compact-runtime `0.16.0`) and stays on Midnight mainnet at its original address. It is **not** upgraded in place: the ledger 9 migration (M6) recompiles the contract with compiler `0.36.1` (compact-runtime `0.21.0`), which produces different verifier keys, so it is deployed as a new contract.
+The previous production contract (M5, superseded by M6) was deployed with the **ledger 8 Compact toolchain** (compiler `0.31.0`, language `0.23.0`, compact-runtime `0.16.0`) and stays on Midnight mainnet at its original address. It is **not** upgraded in place: the ledger 9 migration (M6) recompiles the contract with compiler `0.36.1` (compact-runtime `0.21.0`), which produces different verifier keys, so it is deployed as a new contract.
 
 | | |
 |---|---|
@@ -22,7 +22,7 @@ The current production contract (M5) was deployed with the **ledger 8 Compact to
 | Toolchain | ledger 8 — Compact compiler 0.31.0 / language 0.23.0 / compact-runtime 0.16.0 |
 | Deployed | 2026-09-14 (see [DEPLOYMENT.md](DEPLOYMENT.md), generation M5) |
 | State at migration | 3 auctions (ids 0–2), all closed and claimed; 6 sealed bids, all revealed |
-| Build artifacts | git tag `m5-ledger8` (commit `638e164`): `contract/src/managed/auction/` with the ledger 8 compiled contract, keys and ZKIR; compiler metadata also kept in [`legacy/contract-info-0.31.0.json`](legacy/contract-info-0.31.0.json) |
+| Build artifacts | git tag [`m5-ledger8`](https://github.com/pplmaverick/midnight-private-auction/releases/tag/m5-ledger8) (commit `638e164`): `contract/src/managed/auction/` with the ledger 8 compiled contract, keys and ZKIR; compiler metadata also kept in [`legacy/contract-info-0.31.0.json`](legacy/contract-info-0.31.0.json) |
 
 The legacy contract is permanent, public chain history and remains readable through the indexer; its auctions are not carried over to the new contract (bids are bound to bidders' private keys and cannot be re-created).
 
@@ -82,7 +82,7 @@ Compact's `witness` declarations (`localSecretKey`, `myBidAmount`, `myBidSalt`) 
 
 ## Contract Interface
 
-**File:** `contract/src/auction.compact` · Compact pragma `>= 0.20`; committed build artifacts were compiled with compact compiler `0.31.0` / language version `0.23.0` (see `contract/src/managed/auction/compiler/contract-info.json`).
+**File:** `contract/src/auction.compact` · Compact pragma `>= 0.20`; committed build artifacts were compiled with compact compiler `0.36.1` / language version `0.28.0` / compact-runtime `0.21.0` (see `contract/src/managed/auction/compiler/contract-info.json`).
 
 ```
 // Pure circuits (computation only, no proof, no state change)
@@ -123,7 +123,7 @@ VACANT ──createAuction()──► BIDDING ──closeAuction()──► CLOS
 - Node.js ≥ 22
 - `compact` compiler in `PATH`
 - Midnight Proof Server running locally (default port 6300)
-- Night tokens — Preprod: [faucet](https://faucet.preprod.midnight.network); Mainnet: real tokens
+- Night tokens — Mainnet: real tokens (Preprod has been retired)
 
 ```bash
 git clone git@github.com:pplmaverick/midnight-private-auction.git
@@ -136,7 +136,7 @@ npm install
 | Variable | Required | Description |
 |---|---|---|
 | `WALLET_SEED` | Optional | Hex seed to reuse an existing wallet; if unset, a fresh wallet is generated |
-| `MIDNIGHT_NETWORK` | Optional | `preprod` (default) or `mainnet` |
+| `MIDNIGHT_NETWORK` | Optional | `mainnet` or `preview` (Preprod endpoints are retired); deploy and check scripts require it to be set explicitly |
 | `MIDNIGHT_PROOF_SERVER` | Optional | Override proof server URL (default: `http://127.0.0.1:6300`) |
 | `BLOCKFROST_PROJECT_ID` | Mainnet only | Blockfrost project ID (set in the git-ignored `.env.local` or the shell). Indexer HTTP, indexer WebSocket and node RPC all resolve to the Blockfrost-hosted Midnight endpoints from it — the Midnight-hosted ones were shut down 2026-09-30 |
 
@@ -145,9 +145,6 @@ Deploy-specific variables (`MIDNIGHT_DEPLOY_NODE`, funding requirements) are cov
 ```bash
 # Recompile contract from source (pre-compiled artifacts are committed)
 npm run compile
-
-# Run on Preprod
-WALLET_SEED=<hex> npm run preprod
 
 # Run on Mainnet
 # (BLOCKFROST_PROJECT_ID is read from .env.local)
@@ -231,7 +228,7 @@ Deployment-specific limitations (public RPC transaction size limits, wallet WASM
 
 | Layer | Technology |
 |---|---|
-| Smart contract | Compact (pragma ≥0.20; compiled with compiler 0.31.0 / language 0.23.0) |
+| Smart contract | Compact (pragma ≥0.20; compiled with compiler 0.36.1 / language 0.28.0 / compact-runtime 0.21.0) |
 | ZK backend | Midnight Proof Server (local), WASM-executed `.zkir` circuits |
 | Runtime SDK | `@midnight-ntwrk/midnight-js` ^4.1.1 |
 | Wallet (backend scripts) | `@midnight-ntwrk/wallet-sdk-facade` ^3.0.0 (Shielded + Dust + Unshielded) |

@@ -10,32 +10,33 @@ Midnight mainnet launched in 2026. As of block **1,498,136** (~3 months post-lau
 
 | | |
 |---|---|
-| Active contract | [`5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069`](https://explorer.1am.xyz/contract/5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069) |
+| Active contract | [`118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78`](https://explorer.1am.xyz/contract/118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78) |
 | Network | Midnight Mainnet |
-| Generation | M5 |
+| Generation | M6 |
 | Status | ✅ Current |
 
 ---
 
 ## Deployment History
 
-### M6 (DRAFT — not deployed) — ledger 9 migration
+### M6 (Current) — ledger 9 migration, deployed at block 3,591,168
 
-> **Status: draft.** Nothing below has been deployed. Address and tx hash are intentionally blank and must be filled in only after a successful deploy and the post-deploy sync check.
+> **Status: deployed.** Address, tx hash and block height below are read back from the indexer (contract action `ContractDeploy`, block 3,591,168). The step list, prerequisites and pre-flight table further down are the pre-deploy notes as written before the deployment and are kept for reference; `src/deploy-only.ts` has since been hardened (restore-only wallet, `CONFIRM_MAINNET_DEPLOY=1`, no implicit DUST registration).
 
 Recompiled, unchanged contract source for the ledger 9 network (ledger 9 went live on mainnet 2026-11-06). The M5 contract (`5de1a75b…1e4069`, ledger 8 toolchain) cannot be upgraded in place: its verifier keys differ from the ledger 9 build for all six circuits, so M6 is a fresh deployment. M5 stays on-chain as permanent public history (git tag `m5-ledger8`).
 
 | | |
 |---|---|
-| Contract Address | _(blank — fill after deploy)_ |
-| Deploy Tx Hash | _(blank — fill after deploy)_ |
-| Block Height | _(blank — fill after deploy)_ |
+| Contract Address | [`118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78`](https://explorer.1am.xyz/contract/118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78) |
+| Deploy Tx Hash | `9b1690bd528d921138862189c7a3ecf4b8e97a44899bfea04252e778b73437a1` |
+| Block Height | 3591168 |
+| Fee paid | 7316523200000001 SPECK (≈ 7.3165 DUST), per the indexer |
 | Network | Midnight Mainnet |
 | Toolchain | Compact compiler 0.36.1 / language 0.28.0 / compact-runtime 0.21.0 |
 | SDK | midnight-js 5.0.1; wallet-sdk-facade 5.0.1 (dust-wallet 5.1.0, shielded 4.0.1, unshielded 4.0.1, hd 4.0.0, address-format 4.0.1) |
 | Proof server | `midnightntwrk/proof-server:9.0.2` (see pre-flight) |
 | Supersedes | M5 `5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069` |
-| Status | ⏳ Pending |
+| Status | ✅ Current |
 
 Verifier key fingerprints (first 16 hex chars of SHA-256 of `contract/src/managed/auction/keys/<circuit>.verifier`; compare against the keys read back from the deployed contract state after deploy):
 
@@ -88,7 +89,7 @@ Update the address in every one of: `frontend/src/midnight/contract.ts:27`, `src
 
 ---
 
-### M5 (Current) — deployed 2026-09-14
+### M5 (Superseded by M6) — deployed 2026-09-14, ledger 8 toolchain
 
 Two circuit-level fixes found during self-audit follow-up: (1) `revealBid` had no protection against a bidder calling it twice for the same auction — added `revealedBidders: Map<Uint<32>, Map<Bytes<32>, Boolean>>` ledger tracking, initialized empty in `createAuction`, checked and set in `revealBid` right after commitment verification and before the `highestBid` update. (2) `closeAuction` required the exact auctioneer identity with no fallback, so a bid could be permanently stuck in BIDDING phase if the auctioneer went silent — added a permissionless-close grace period: `closeAuction` now accepts either the recorded auctioneer, or anyone once `blockTimeGte(endTime + 259200)` (3 days past `endTime`). Full rationale and status: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). Reference-model unit tests covering both fixes, including a `delta=0` boundary test at the exact 3-day mark: `src/test/auction.test.ts`.
 
@@ -98,7 +99,7 @@ Two circuit-level fixes found during self-audit follow-up: (1) `revealBid` had n
 | Deploy Tx Hash | `00fe467c9facb7b97b13f7ae59defa091c6d643b00c2cc0df54d6a2c3d72825c49` |
 | Block Height | 2,578,777 |
 | Network | Midnight Mainnet |
-| Status | ✅ Current |
+| Status | Superseded (by M6; still on-chain as public history, git tag `m5-ledger8`) |
 
 ---
 
