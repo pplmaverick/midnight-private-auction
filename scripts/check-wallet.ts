@@ -4,7 +4,7 @@
  *
  * Required env vars:
  *   WALLET_SEED        — hex master seed (read from the environment inside this process only)
- *   MIDNIGHT_NETWORK   — "mainnet" or "preprod" (default: preprod)
+ *   MIDNIGHT_NETWORK   — "mainnet" or "preview" (default: preview)
  *   MIDNIGHT_PROOF_SERVER (optional) — only used to build the wallet config; no proving happens
  *   CHECK_WALLET_TIMEOUT_SEC (optional, default 300) — overall deadline for the sync
  *   CHECK_WALLET_MAX_SYNC_ERRORS (optional, default 8) — abort after this many Wallet.* errors
@@ -13,7 +13,7 @@
  * .env.local / the environment; the token is never printed.
  *
  * Output: a progress line every 30 s while syncing, then these lines:
- *   network: <mainnet|preprod>
+ *   network: <mainnet|preview>
  *   checkpoint_restored: <true|false>
  *   sync: <complete|failed>
  *   night_balance_raw: <integer, smallest unit>
@@ -32,7 +32,8 @@ import * as Rx from 'rxjs';
 import { Cause } from 'effect';
 import type { WalletFacade } from '@midnight-ntwrk/wallet-sdk-facade';
 import * as ledger from '@midnight-ntwrk/midnight-js-protocol/v9';
-import { MainnetConfig, PreprodConfig } from '../src/config.js';
+import { readFileSync } from 'node:fs';
+import { MainnetConfig, PreviewConfig } from '../src/config.js';
 import { buildWallet } from '../src/api.js';
 
 const TIMEOUT_MS = Number(process.env.CHECK_WALLET_TIMEOUT_SEC ?? 300) * 1000;
@@ -125,9 +126,13 @@ const fail = (reason: string): never => {
 };
 
 async function main(): Promise<void> {
+  // WALLET_SEED_FILE lets a throwaway seed live in a 600-permission file instead of the shell.
+  if (!process.env.WALLET_SEED && process.env.WALLET_SEED_FILE) {
+    process.env.WALLET_SEED = readFileSync(process.env.WALLET_SEED_FILE, 'utf-8').trim();
+  }
   const seed = process.env.WALLET_SEED;
   if (!seed) {
-    console.error('Error: WALLET_SEED is required (set it in the environment for this one command).');
+    console.error('Error: WALLET_SEED (or WALLET_SEED_FILE) is required.');
     process.exit(1);
   }
   if (!/^[0-9a-fA-F]{64}$/.test(seed)) {
@@ -135,12 +140,12 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const network = process.env.MIDNIGHT_NETWORK ?? 'preprod';
-  if (network !== 'mainnet' && network !== 'preprod') {
-    console.error('Error: MIDNIGHT_NETWORK must be "mainnet" or "preprod".');
+  const network = process.env.MIDNIGHT_NETWORK ?? 'preview';
+  if (network !== 'mainnet' && network !== 'preview') {
+    console.error('Error: MIDNIGHT_NETWORK must be "mainnet" or "preview" (preprod endpoints are retired).');
     process.exit(1);
   }
-  const config = network === 'mainnet' ? new MainnetConfig() : new PreprodConfig();
+  const config = network === 'mainnet' ? new MainnetConfig() : new PreviewConfig();
 
   console.log(`network: ${network}`);
   console.log(`limits: timeout=${TIMEOUT_MS / 1000}s max_sdk_errors=${MAX_SYNC_ERRORS}`);

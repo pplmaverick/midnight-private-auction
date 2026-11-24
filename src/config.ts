@@ -18,12 +18,27 @@ export interface Config {
   readonly proofServer: string;
 }
 
+// RETIRED: these Midnight-hosted preprod endpoints now answer HTTP 410. Kept only so the existing
+// scripts that import PreprodConfig still compile; do not use it. Use PreviewConfig (public,
+// no token) or a Blockfrost-based Preprod config (needs a Preprod project token).
+/** @deprecated endpoints retired (HTTP 410) */
 export class PreprodConfig implements Config {
   networkId: NetworkId = 'preprod';
   logDir = path.resolve(currentDir, '..', 'logs', 'preprod');
   indexer = 'https://indexer.preprod.midnight.network/api/v4/graphql';
   indexerWS = 'wss://indexer.preprod.midnight.network/api/v4/graphql/ws';
   node = 'https://rpc.preprod.midnight.network';
+  proofServer = process.env.MIDNIGHT_PROOF_SERVER ?? 'http://127.0.0.1:6300';
+}
+
+// Preview: Midnight-hosted public network (ledger 9), no token needed. Used as the control group
+// when diagnosing wallet-sync problems, and for deploy dry runs.
+export class PreviewConfig implements Config {
+  networkId: NetworkId = 'preview';
+  logDir = path.resolve(currentDir, '..', 'logs', 'preview');
+  indexer = 'https://indexer.preview.midnight.network/api/v4/graphql';
+  indexerWS = 'wss://indexer.preview.midnight.network/api/v4/graphql/ws';
+  node = 'https://rpc.preview.midnight.network';
   proofServer = process.env.MIDNIGHT_PROOF_SERVER ?? 'http://127.0.0.1:6300';
 }
 
