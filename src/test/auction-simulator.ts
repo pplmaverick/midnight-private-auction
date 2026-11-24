@@ -1,9 +1,8 @@
 import {
   type CircuitContext,
-  QueryContext,
   sampleContractAddress,
   createConstructorContext,
-  CostModel,
+  createCircuitContext,
 } from '@midnight-ntwrk/compact-runtime';
 import {
   Contract,
@@ -25,21 +24,30 @@ export class AuctionSimulator {
   readonly contract: Contract<AuctionPrivateState>;
   circuitContext: CircuitContext<AuctionPrivateState>;
 
-  constructor(secretKey: Uint8Array) {
-    this.contract = new Contract<AuctionPrivateState>(witnesses);
+  // compact-runtime 0.21: Contract.initialState() is async, so construction goes through
+  // the static async factory `AuctionSimulator.create(secretKey)`.
+  private constructor(contract: Contract<AuctionPrivateState>, circuitContext: CircuitContext<AuctionPrivateState>) {
+    this.contract = contract;
+    this.circuitContext = circuitContext;
+  }
+
+  static async create(secretKey: Uint8Array): Promise<AuctionSimulator> {
+    const contract = new Contract<AuctionPrivateState>(witnesses);
     const { currentPrivateState, currentContractState, currentZswapLocalState } =
-      this.contract.initialState(
+      await contract.initialState(
         createConstructorContext(createAuctionPrivateState(secretKey), '0'.repeat(64)),
       );
-    this.circuitContext = {
-      currentPrivateState,
-      currentZswapLocalState,
-      costModel: CostModel.initialCostModel(),
-      currentQueryContext: new QueryContext(
-        currentContractState.data,
-        sampleContractAddress(),
-      ),
-    };
+    const circuitContext = createCircuitContext<AuctionPrivateState>({
+      circuitId: 'simulator',
+      contractAddress: sampleContractAddress(),
+      coinPublicKeyOrZswapState: currentZswapLocalState,
+      contractState: currentContractState.data,
+      privateState: currentPrivateState,
+      // compact-runtime 0.21 defaults `time` to wall-clock now; 0.16's QueryContext started at
+      // block time 0. Pin it to 0 so the time-gated tests keep their meaning.
+      time: 0,
+    });
+    return new AuctionSimulator(contract, circuitContext);
   }
 
   /**
@@ -48,33 +56,33 @@ export class AuctionSimulator {
    * the relevant entry itself before invoking the circuit.
    */
   public switchUser(secretKey: Uint8Array, bids: AuctionPrivateState['bids'] = {}) {
-    this.circuitContext.currentPrivateState = createAuctionPrivateState(secretKey, bids);
+    this.circuitContext.callContext.currentPrivateState = createAuctionPrivateState(secretKey, bids);
   }
 
   public getLedger(): Ledger {
-    return ledger(this.circuitContext.currentQueryContext.state);
+    return ledger(this.circuitContext.callContext.currentQueryContext.state);
   }
 
   public getPrivateState(): AuctionPrivateState {
-    return this.circuitContext.currentPrivateState;
+    return this.circuitContext.callContext.currentPrivateState!;
   }
 
-  public publicKey(auctionId: bigint): Uint8Array {
-    return this.contract.circuits.bidderPublicKey(
+  public async publicKey(auctionId: bigint): Promise<Uint8Array> {
+    return (await this.contract.circuits.bidderPublicKey(
       this.circuitContext,
       this.getPrivateState().secretKey,
       auctionId,
-    ).result;
+    )).result;
   }
 
-  public createAuction(
+  public async createAuction(
     item: string,
     desc: string,
     startPrice: bigint,
     endTime: bigint,
     revealDeadline: bigint,
-  ): bigint {
-    const { result, context } = this.contract.impureCircuits.createAuction(
+  ): Promise<bigint> {
+    const { result, context } = await this.contract.impureCircuits.createAuction(
       this.circuitContext,
       item,
       desc,
@@ -92,29 +100,29 @@ export class AuctionSimulator {
    * This wrapper stores the bid into private state first, then invokes
    * the circuit, so callers can pass the bid inline like the other methods.
    */
-  public placeBid(auctionId: bigint, bidAmount: bigint, bidSalt: Uint8Array): Ledger {
-    const currentPS = this.circuitContext.currentPrivateState;
-    this.circuitContext.currentPrivateState = {
+  public async placeBid(auctionId: bigint, bidAmount: bigint, bidSalt: Uint8Array): Promise<Ledger> {
+    const currentPS = this.circuitContext.callContext.currentPrivateState!;
+    this.circuitContext.callContext.currentPrivateState = {
       ...currentPS,
       bids: {
         ...currentPS.bids,
         [auctionId.toString()]: { bidAmount, bidSalt },
       },
     };
-    this.circuitContext = this.contract.impureCircuits.placeBid(
+    this.circuitContext = (await this.contract.impureCircuits.placeBid(
       this.circuitContext,
       auctionId,
-    ).context;
-    return ledger(this.circuitContext.currentQueryContext.state);
+    )).context;
+    return ledger(this.circuitContext.callContext.currentQueryContext.state);
   }
 
-  public closeAuction(auctionId: bigint, newRevealDeadline: bigint): Ledger {
-    this.circuitContext = this.contract.impureCircuits.closeAuction(
+  public async closeAuction(auctionId: bigint, newRevealDeadline: bigint): Promise<Ledger> {
+    this.circuitContext = (await this.contract.impureCircuits.closeAuction(
       this.circuitContext,
       auctionId,
       newRevealDeadline,
-    ).context;
-    return ledger(this.circuitContext.currentQueryContext.state);
+    )).context;
+    return ledger(this.circuitContext.callContext.currentQueryContext.state);
   }
 
   /**
@@ -124,33 +132,33 @@ export class AuctionSimulator {
    * revealBid, claimItem) need this to exercise their boundary conditions.
    */
   public setBlockTime(secondsSinceEpoch: bigint): void {
-    const qc = this.circuitContext.currentQueryContext;
+    const qc = this.circuitContext.callContext.currentQueryContext;
     qc.block = { ...qc.block, secondsSinceEpoch };
   }
 
-  public revealBid(auctionId: bigint, amount: bigint, salt: Uint8Array): Ledger {
-    this.circuitContext = this.contract.impureCircuits.revealBid(
+  public async revealBid(auctionId: bigint, amount: bigint, salt: Uint8Array): Promise<Ledger> {
+    this.circuitContext = (await this.contract.impureCircuits.revealBid(
       this.circuitContext,
       auctionId,
       amount,
       salt,
-    ).context;
-    return ledger(this.circuitContext.currentQueryContext.state);
+    )).context;
+    return ledger(this.circuitContext.callContext.currentQueryContext.state);
   }
 
-  public claimItem(auctionId: bigint): Ledger {
-    this.circuitContext = this.contract.impureCircuits.claimItem(
+  public async claimItem(auctionId: bigint): Promise<Ledger> {
+    this.circuitContext = (await this.contract.impureCircuits.claimItem(
       this.circuitContext,
       auctionId,
-    ).context;
-    return ledger(this.circuitContext.currentQueryContext.state);
+    )).context;
+    return ledger(this.circuitContext.callContext.currentQueryContext.state);
   }
 
-  public finalizeAuction(auctionId: bigint): Ledger {
-    this.circuitContext = this.contract.impureCircuits.finalizeAuction(
+  public async finalizeAuction(auctionId: bigint): Promise<Ledger> {
+    this.circuitContext = (await this.contract.impureCircuits.finalizeAuction(
       this.circuitContext,
       auctionId,
-    ).context;
-    return ledger(this.circuitContext.currentQueryContext.state);
+    )).context;
+    return ledger(this.circuitContext.callContext.currentQueryContext.state);
   }
 }

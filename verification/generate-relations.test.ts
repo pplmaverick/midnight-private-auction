@@ -1,11 +1,12 @@
 // Independent Reference Model Testing — hash-relation data generator.
 //
 // persistentHash (used by bidderPublicKey / auctioneerPublicKey / computeCommitment)
-// is implemented as a compiled WASM primitive inside @midnight-ntwrk/onchain-runtime-v3
+// is implemented as a compiled WASM primitive inside @midnightntwrk/onchain-runtime-v4
 // with no publicly readable bit-level spec available in this environment, so a Python
 // re-implementation cannot be verified byte-for-byte against it. Instead, this generates
-// raw outputs from the REAL compiled circuits (via AuctionSimulator — no proof server,
-// no mocking; see src/test/auction-simulator.ts) so verify_relations.py can check that
+// raw outputs from the REAL compiled circuits (the compiled contract's own `pureCircuits`
+// export — no proof server, no mocking; compact-runtime 0.21 made the simulator-driven
+// circuit calls async, but these three are pure and callable synchronously) so verify_relations.py can check that
 // those real outputs satisfy the RELATIONAL properties the spec requires (domain
 // separation, determinism, input sensitivity, auctionId isolation) without ever
 // reimplementing the hash itself.
@@ -18,12 +19,9 @@
 // property of the contract or the data being generated, so it does not change what
 // this generator is actually testing — it only changes which runner executes it.
 import { describe, it, expect } from 'vitest';
-import { setNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { AuctionSimulator } from '../src/test/auction-simulator.js';
+import { pureCircuits } from '../contract/src/managed/auction/contract/index.js';
 import { randomBytes } from '../src/test/utils.js';
-
-setNetworkId('undeployed');
 
 const hex = (b: Uint8Array): string => Buffer.from(b).toString('hex');
 
@@ -32,15 +30,13 @@ const randomUint32 = (): bigint => BigInt(Math.floor(Math.random() * 4294967296)
 
 describe('Independent Reference Model Testing — hash relation data generation', () => {
   it('generates domain-separation, determinism, sensitivity, and isolation datasets from the real compiled contract', () => {
-    const sim = new AuctionSimulator(randomBytes(32));
-    const ctx = sim.circuitContext;
 
     const auctioneerPK = (sk: Uint8Array): Uint8Array =>
-      sim.contract.circuits.auctioneerPublicKey(ctx, sk).result;
+      pureCircuits.auctioneerPublicKey(sk);
     const bidderPK = (sk: Uint8Array, auctionId: bigint): Uint8Array =>
-      sim.contract.circuits.bidderPublicKey(ctx, sk, auctionId).result;
+      pureCircuits.bidderPublicKey(sk, auctionId);
     const commitment = (sk: Uint8Array, auctionId: bigint, amount: bigint, salt: Uint8Array): Uint8Array =>
-      sim.contract.circuits.computeCommitment(ctx, sk, auctionId, amount, salt).result;
+      pureCircuits.computeCommitment(sk, auctionId, amount, salt);
 
     // ---- 1. Domain separation: auctioneerPublicKey(sk) vs bidderPublicKey(sk, auctionId) ----
     const N_DOMAIN_SEPARATION = 1000;
