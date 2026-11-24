@@ -165,12 +165,15 @@ export interface BuildWalletOptions {
   readonly mode: 'auto' | 'restore';
   // Suppress informational output (addresses, RSS lines). Sync status is still shown.
   readonly quiet?: boolean;
+  // Called once the facade has started syncing (before buildWallet resolves) so a caller can
+  // observe progress or enforce its own timeout. Receives the live facade.
+  readonly onWalletStarted?: (wallet: WalletFacade) => void;
 }
 
 export const buildWallet = async (
   config: Config,
   seed: string,
-  { mode, quiet = false }: BuildWalletOptions,
+  { mode, quiet = false, onWalletStarted }: BuildWalletOptions,
 ): Promise<WalletContext> => {
   const log = (message: string): void => {
     if (!quiet) console.log(message);
@@ -225,6 +228,7 @@ export const buildWallet = async (
       dustCheckpoint !== null ? DustWallet(cfg).restore(dustCheckpoint) : DustWallet(cfg).startWithSeed(seeds.dust),
   });
   await wallet.start(seeds);
+  onWalletStarted?.(wallet);
 
   log(`\n  Unshielded address: ${unshieldedKeystore.getBech32Address()}`);
   const syncedState = await withStatus('Syncing with network', () => waitForSync(wallet));
