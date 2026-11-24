@@ -23,7 +23,7 @@ Midnight mainnet launched in 2026. As of block **1,498,136** (~3 months post-lau
 
 > **Status: deployed.** Address, tx hash and block height below are read back from the indexer (contract action `ContractDeploy`, block 3,591,168). The step list, prerequisites and pre-flight table further down are the pre-deploy notes as written before the deployment and are kept for reference; `src/deploy-only.ts` has since been hardened (restore-only wallet, `CONFIRM_MAINNET_DEPLOY=1`, no implicit DUST registration).
 
-Recompiled, unchanged contract source for the ledger 9 network (ledger 9 went live on mainnet 2026-11-06). The M5 contract (`5de1a75b…1e4069`, ledger 8 toolchain) cannot be upgraded in place: its verifier keys differ from the ledger 9 build for all six circuits, so M6 is a fresh deployment. M5 stays on-chain as permanent public history (git tag `m5-ledger8`).
+Recompiled, unchanged contract source for the ledger 9 network (ledger 9 went live on mainnet 2026-11-06). The M5 contract (`5de1a75b…1e4069`, ledger 8 toolchain) cannot be upgraded in place: its verifier keys differ from the ledger 9 build for all six circuits, so M6 is a fresh deployment. M5 stays on-chain as permanent public history ([M5 final state: commit 638e164](https://github.com/pplmaverick/midnight-private-auction/tree/638e164b38525a079f7d97082220e6726d3dfa78)).
 
 | | |
 |---|---|
@@ -99,7 +99,7 @@ Two circuit-level fixes found during self-audit follow-up: (1) `revealBid` had n
 | Deploy Tx Hash | `00fe467c9facb7b97b13f7ae59defa091c6d643b00c2cc0df54d6a2c3d72825c49` |
 | Block Height | 2,578,777 |
 | Network | Midnight Mainnet |
-| Status | Superseded (by M6; still on-chain as public history, git tag `m5-ledger8`) |
+| Status | Superseded (by M6; still on-chain as public history; [M5 final state: commit 638e164](https://github.com/pplmaverick/midnight-private-auction/tree/638e164b38525a079f7d97082220e6726d3dfa78)) |
 
 ---
 

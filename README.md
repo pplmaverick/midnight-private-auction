@@ -22,7 +22,7 @@ The previous production contract (M5, superseded by M6) was deployed with the **
 | Toolchain | ledger 8 — Compact compiler 0.31.0 / language 0.23.0 / compact-runtime 0.16.0 |
 | Deployed | 2026-09-14 (see [DEPLOYMENT.md](DEPLOYMENT.md), generation M5) |
 | State at migration | 3 auctions (ids 0–2), all closed and claimed; 6 sealed bids, all revealed |
-| Build artifacts | git tag [`m5-ledger8`](https://github.com/pplmaverick/midnight-private-auction/releases/tag/m5-ledger8) (commit `638e164`): `contract/src/managed/auction/` with the ledger 8 compiled contract, keys and ZKIR; compiler metadata also kept in [`legacy/contract-info-0.31.0.json`](legacy/contract-info-0.31.0.json) |
+| Build artifacts | [M5 final state: commit 638e164](https://github.com/pplmaverick/midnight-private-auction/tree/638e164b38525a079f7d97082220e6726d3dfa78): `contract/src/managed/auction/` with the ledger 8 compiled contract, keys and ZKIR; compiler metadata also kept in [`legacy/contract-info-0.31.0.json`](legacy/contract-info-0.31.0.json) |
 
 The legacy contract is permanent, public chain history and remains readable through the indexer; its auctions are not carried over to the new contract (bids are bound to bidders' private keys and cannot be re-created).
 
