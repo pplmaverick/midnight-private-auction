@@ -345,6 +345,10 @@ export const buildWalletFromCheckpoints = async (config: Config, seed: string): 
 export const configureDeployProviders = async (ctx: WalletContext, config: Config): Promise<AuctionProviders> =>
   buildProviders(ctx, config, privateStateStoreName + '-deploy');
 
+// Providers for the deploy dry-run — its own Level DB store so nothing touches the real stores.
+export const configureDryRunProviders = async (ctx: WalletContext, config: Config): Promise<AuctionProviders> =>
+  buildProviders(ctx, config, privateStateStoreName + '-dryrun');
+
 export const buildFreshWallet = async (config: Config): Promise<WalletContext> => {
   const seed = Buffer.from(randomBytes32()).toString('hex');
   console.log('\n  ══════════════════════════════════════════════');

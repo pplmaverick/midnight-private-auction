@@ -29,6 +29,11 @@
     "close-only-test": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-only-test.ts",
     "close-from-pending-reveal": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-from-pending-reveal.ts",
     "check-wallet": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/check-wallet.ts",
+    "deploy:dry-run": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/deploy-dry-run.ts",
+    "deploy:dry-run:preview": "WALLET_SEED_FILE=.wallet-state/preview-seed MIDNIGHT_NETWORK=preview node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/deploy-dry-run.ts",
+    "verify:keys": "node --no-warnings --max-old-space-size=4096 --experimental-specifier-resolution=node --loader ts-node/esm scripts/verify-deployed-keys.ts",
+    "check:address": "node scripts/check-contract-address.mjs",
+    "update:address": "node scripts/update-contract-address.mjs",
     "gen-preview-seed": "node scripts/gen-preview-seed.mjs",
     "check-wallet:preview": "WALLET_SEED_FILE=.wallet-state/preview-seed MIDNIGHT_NETWORK=preview node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/check-wallet.ts",
     "check-wallet:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/check-wallet.ts"
