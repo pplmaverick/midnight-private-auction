@@ -38,7 +38,7 @@ import {
 } from '@midnight-ntwrk/wallet-sdk-address-format';
 import * as Rx from 'rxjs';
 import { WebSocket } from 'ws';
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, mkdirSync, renameSync, chmodSync } from 'node:fs';
 import path from 'node:path';
 import { randomBytes as cryptoRandomBytes } from 'node:crypto';
 import {
@@ -54,11 +54,13 @@ import { type Config, zkConfigPath, privateStateStoreName } from './config.js';
 
 // Wallet checkpoints. The wallet-sdk 5.x snapshot format is NOT the one the 3.x/2.x SDK wrote,
 // so v9 checkpoints live in their own subdirectory (the old .wallet-state/*.json files are
-// left untouched and are never read). Files are keyed by the shielded coin public key, so a
-// checkpoint can never be restored into a wallet derived from a different seed.
+// left untouched and are never read). Files are keyed by NETWORK and the shielded coin public
+// key (<kind>-<networkId>-<coinPubKey16>.json), and every load re-validates the snapshot's own
+// networkId and (shielded) coin public key, so a checkpoint is never restored into another
+// network or into a wallet derived from a different seed.
 const STATE_DIR = path.resolve(process.cwd(), '.wallet-state', 'v9');
-const checkpointFile = (kind: 'shielded' | 'dust', coinPublicKey: string): string =>
-  path.resolve(STATE_DIR, `${kind}-${coinPublicKey.slice(0, 16)}.json`);
+const checkpointFile = (kind: 'shielded' | 'dust', networkId: string, coinPublicKey: string): string =>
+  path.resolve(STATE_DIR, `${kind}-${networkId}-${coinPublicKey.slice(0, 16)}.json`);
 
 // Required for GraphQL subscriptions (wallet sync) to work in Node.js
 // @ts-expect-error: enables WebSocket usage through apollo
@@ -100,18 +102,47 @@ const buildWalletConfiguration = ({ networkId, indexer, indexerWS, node, proofSe
   },
 });
 
-const loadCheckpoint = (file: string): string | null => {
+// Returns the raw snapshot only if it parses, was written for THIS network and (shielded) belongs to
+// THIS wallet's coin public key. Anything else is rejected (null) with a reason on stderr; the
+// caller then syncs from genesis (or fails, in 'restore' mode).
+const loadCheckpoint = (
+  file: string,
+  kind: 'shielded' | 'dust',
+  networkId: string,
+  coinPublicKey: string,
+): string | null => {
   if (!existsSync(file)) return null;
+  const reject = (why: string): null => {
+    console.error(`  ✗ Ignoring ${kind} checkpoint ${path.basename(file)}: ${why}`);
+    return null;
+  };
+  let raw: string;
   try {
-    return readFileSync(file, 'utf-8');
+    raw = readFileSync(file, 'utf-8');
   } catch {
     return null; // unreadable — fall back to a full sync
   }
+  let snap: { networkId?: unknown; publicKeys?: { coinPublicKey?: unknown } };
+  try {
+    snap = JSON.parse(raw);
+  } catch {
+    return reject('not valid JSON');
+  }
+  if (snap.networkId !== networkId) return reject(`written for network "${String(snap.networkId)}", wallet is on "${networkId}"`);
+  if (kind === 'shielded' && String(snap.publicKeys?.coinPublicKey ?? '').toLowerCase() !== coinPublicKey.toLowerCase()) {
+    return reject('belongs to a different wallet (coin public key mismatch)');
+  }
+  return raw;
 };
 
+// Atomic: write a temp file (mode 600) next to the target, then rename over it, so a crash or kill
+// mid-write can never leave a truncated checkpoint behind.
 const saveCheckpoint = (file: string, serialized: string): void => {
   mkdirSync(STATE_DIR, { recursive: true });
-  writeFileSync(file, serialized);
+  const tmp = `${file}.tmp-${process.pid}`;
+  writeFileSync(tmp, serialized, { mode: 0o600 });
+  chmodSync(tmp, 0o600);
+  renameSync(tmp, file);
 };
 
 // Era handling: midnight-js 5.x hands providers era-tagged transaction handles. This CLI targets
@@ -167,13 +198,24 @@ export interface BuildWalletOptions {
   readonly quiet?: boolean;
   // Called once the facade has started syncing (before buildWallet resolves) so a caller can
   // observe progress or enforce its own timeout. Receives the live facade.
-  readonly onWalletStarted?: (wallet: WalletFacade) => void;
+  readonly onWalletStarted?: (wallet: WalletFacade, controls: WalletControls) => void;
+  // Serialize both wallets to .wallet-state/v9/ every N ms while syncing (0/undefined = off).
+  // The snapshot records the applied event index, and restore() resumes from that cursor.
+  readonly periodicCheckpointMs?: number;
+  // Fresh dust start only: skip replaying the ledger-v8 dust history (SDK option
+  // skipLedgerV8DustHistory). Shielded/unshielded still replay from genesis.
+  readonly skipLedgerV8DustHistory?: boolean;
+}
+
+export interface WalletControls {
+  // Serialize and persist both checkpoints right now (atomic, mode 600).
+  readonly saveCheckpoints: () => Promise<void>;
 }
 
 export const buildWallet = async (
   config: Config,
   seed: string,
-  { mode, quiet = false, onWalletStarted }: BuildWalletOptions,
+  { mode, quiet = false, onWalletStarted, periodicCheckpointMs, skipLedgerV8DustHistory }: BuildWalletOptions,
 ): Promise<WalletContext> => {
   const log = (message: string): void => {
     if (!quiet) console.log(message);
@@ -183,10 +225,10 @@ export const buildWallet = async (
   const dustSecretKey = ledger.DustSecretKey.fromSeed(seeds.dust);
   const unshieldedKeystore = createKeystore({ kind: 'schnorr', secret: seeds.unshielded }, config.networkId);
 
-  const shieldedFile = checkpointFile('shielded', shieldedSecretKeys.coinPublicKey);
-  const dustFile = checkpointFile('dust', shieldedSecretKeys.coinPublicKey);
-  const shieldedCheckpoint = loadCheckpoint(shieldedFile);
-  const dustCheckpoint = loadCheckpoint(dustFile);
+  const shieldedFile = checkpointFile('shielded', config.networkId, shieldedSecretKeys.coinPublicKey);
+  const dustFile = checkpointFile('dust', config.networkId, shieldedSecretKeys.coinPublicKey);
+  const shieldedCheckpoint = loadCheckpoint(shieldedFile, 'shielded', config.networkId, shieldedSecretKeys.coinPublicKey);
+  const dustCheckpoint = loadCheckpoint(dustFile, 'dust', config.networkId, shieldedSecretKeys.coinPublicKey);
   const haveCheckpoints = shieldedCheckpoint !== null && dustCheckpoint !== null;
 
   if (mode === 'restore' && !haveCheckpoints) {
@@ -225,14 +267,37 @@ export const buildWallet = async (
         : ShieldedWallet(cfg).startWithSeed(seeds.shielded),
     unshielded: (cfg) => UnshieldedWallet(cfg).startWithPublicKey(PublicKey.fromKeyStore(unshieldedKeystore)),
     dust: (cfg) =>
-      dustCheckpoint !== null ? DustWallet(cfg).restore(dustCheckpoint) : DustWallet(cfg).startWithSeed(seeds.dust),
+      dustCheckpoint !== null
+        ? DustWallet(cfg).restore(dustCheckpoint)
+        : DustWallet(skipLedgerV8DustHistory ? { ...cfg, skipLedgerV8DustHistory: true } : cfg).startWithSeed(seeds.dust),
   });
   await wallet.start(seeds);
-  onWalletStarted?.(wallet);
+  let saving = false;
+  const saveCheckpoints = async (): Promise<void> => {
+    if (saving) return; // a snapshot is already being written
+    saving = true;
+    try {
+      saveCheckpoint(shieldedFile, await wallet.shielded.serializeState());
+      saveCheckpoint(dustFile, await wallet.dust.serializeState());
+    } finally {
+      saving = false;
+    }
+  };
+  let periodic: NodeJS.Timeout | undefined;
+  if (periodicCheckpointMs && periodicCheckpointMs > 0) {
+    periodic = setInterval(() => {
+      saveCheckpoints().then(
+        () => console.log('  [checkpoint] saved intermediate wallet snapshot'),
+        (e) => console.error('  [checkpoint] intermediate save failed:', e instanceof Error ? e.message : String(e)),
+      );
+    }, periodicCheckpointMs);
+  }
+  onWalletStarted?.(wallet, { saveCheckpoints });
 
   log(`\n  Unshielded address: ${unshieldedKeystore.getBech32Address()}`);
   const syncedState = await withStatus('Syncing with network', () => waitForSync(wallet));
   if (memGuard) clearInterval(memGuard);
+  if (periodic) clearInterval(periodic);
 
   // Refresh both checkpoints at the synced tip for the next run.
   try {
