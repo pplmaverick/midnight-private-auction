@@ -40,6 +40,7 @@ import * as Rx from 'rxjs';
 import { WebSocket } from 'ws';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
+import { randomBytes as cryptoRandomBytes } from 'node:crypto';
 import {
   type AuctionCircuits,
   type AuctionProviders,
@@ -75,6 +76,8 @@ export interface WalletContext {
   dustSecretKey: ledger.DustSecretKey;
   unshieldedKeystore: UnshieldedKeystore;
   networkId: Config['networkId'];
+  // true when both wallets were restored from .wallet-state/v9 checkpoints (no genesis sync).
+  restoredFromCheckpoint: boolean;
 }
 
 // ─── Wallet Setup ────────────────────────────────────────────────────────────
@@ -157,12 +160,21 @@ export const waitForFunds = (wallet: WalletFacade): Promise<bigint> =>
     ),
   );
 
-interface BuildWalletOptions {
+export interface BuildWalletOptions {
   // 'restore' requires both checkpoints; 'auto' restores when present, else syncs from genesis.
   readonly mode: 'auto' | 'restore';
+  // Suppress informational output (addresses, RSS lines). Sync status is still shown.
+  readonly quiet?: boolean;
 }
 
-const buildWallet = async (config: Config, seed: string, { mode }: BuildWalletOptions): Promise<WalletContext> => {
+export const buildWallet = async (
+  config: Config,
+  seed: string,
+  { mode, quiet = false }: BuildWalletOptions,
+): Promise<WalletContext> => {
+  const log = (message: string): void => {
+    if (!quiet) console.log(message);
+  };
   const seeds = deriveSeeds(seed);
   const shieldedSecretKeys = ledger.ZswapSecretKeys.fromSeed(seeds.shielded);
   const dustSecretKey = ledger.DustSecretKey.fromSeed(seeds.dust);
@@ -184,17 +196,17 @@ const buildWallet = async (config: Config, seed: string, { mode }: BuildWalletOp
   let memGuard: NodeJS.Timeout | undefined;
 
   if (haveCheckpoints) {
-    console.log('  Restoring wallet from v9 checkpoints (fast)...');
+    log('  Restoring wallet from v9 checkpoints (fast)...');
   } else {
-    console.log('  No v9 checkpoints — full genesis sync (first run is slow).');
-    console.log('  Expected time: 10-20 min per wallet  |  Peak RAM: ~8 GB');
+    log('  No v9 checkpoints — full genesis sync (first run is slow).');
+    log('  Expected time: 10-20 min per wallet  |  Peak RAM: ~8 GB');
     // WASM linear memory only grows. The old SDK leaked several GB during genesis sync and once
     // hard-locked the machine at ~11 GB RSS; keep the watchdog until the first sync completes.
     const MEM_LIMIT = 9 * 1024 * 1024 * 1024;
     memGuard = setInterval(() => {
       const rss = process.memoryUsage().rss;
       const gb = (rss / 1024 ** 3).toFixed(1);
-      console.log(`\n  [mem] RSS: ${gb} GB`);
+      log(`\n  [mem] RSS: ${gb} GB`);
       if (rss > MEM_LIMIT) {
         console.error(`\n  ✗ Memory guard: RSS ${gb} GB exceeded 9 GB limit — exiting safely`);
         process.exit(1);
@@ -214,7 +226,7 @@ const buildWallet = async (config: Config, seed: string, { mode }: BuildWalletOp
   });
   await wallet.start(seeds);
 
-  console.log(`\n  Unshielded address: ${unshieldedKeystore.getBech32Address()}`);
+  log(`\n  Unshielded address: ${unshieldedKeystore.getBech32Address()}`);
   const syncedState = await withStatus('Syncing with network', () => waitForSync(wallet));
   if (memGuard) clearInterval(memGuard);
 
@@ -228,11 +240,17 @@ const buildWallet = async (config: Config, seed: string, { mode }: BuildWalletOp
 
   const coinPubKey = ShieldedCoinPublicKey.fromHexString(syncedState.shielded.coinPublicKey.toHexString());
   const encPubKey = ShieldedEncryptionPublicKey.fromHexString(syncedState.shielded.encryptionPublicKey.toHexString());
-  console.log(
-    `  Shielded address: ${MidnightBech32m.encode(config.networkId, new ShieldedAddress(coinPubKey, encPubKey))}`,
-  );
+  log(`  Shielded address: ${MidnightBech32m.encode(config.networkId, new ShieldedAddress(coinPubKey, encPubKey))}`);
 
-  return { wallet, seeds, shieldedSecretKeys, dustSecretKey, unshieldedKeystore, networkId: config.networkId };
+  return {
+    wallet,
+    seeds,
+    shieldedSecretKeys,
+    dustSecretKey,
+    unshieldedKeystore,
+    networkId: config.networkId,
+    restoredFromCheckpoint: haveCheckpoints,
+  };
 };
 
 export const buildWalletAndWaitForFunds = async (config: Config, seed: string): Promise<WalletContext> => {
@@ -448,9 +466,6 @@ export const withStatus = async <T>(message: string, fn: () => Promise<T>): Prom
   }
 };
 
-// Generate a random 32-byte salt as Uint8Array.
-export const randomBytes32 = (): Uint8Array => {
-  const buf = new Uint8Array(32);
-  for (let i = 0; i < 32; i++) buf[i] = Math.floor(Math.random() * 256);
-  return buf;
-};
+// Generate 32 cryptographically secure random bytes (used for wallet seeds, secret keys, salts).
+// Must not use Math.random — these values protect funds and bid privacy.
+export const randomBytes32 = (): Uint8Array => new Uint8Array(cryptoRandomBytes(32));

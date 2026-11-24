@@ -27,7 +27,9 @@
     "debug-commitment:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/debug-commitment.ts",
     "create-only-test": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/create-only-test.ts",
     "close-only-test": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-only-test.ts",
-    "close-from-pending-reveal": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-from-pending-reveal.ts"
+    "close-from-pending-reveal": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm scripts/close-from-pending-reveal.ts",
+    "check-wallet": "node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/check-wallet.ts",
+    "check-wallet:mainnet": "MIDNIGHT_NETWORK=mainnet node --no-warnings --max-old-space-size=14336 --experimental-specifier-resolution=node --loader ts-node/esm scripts/check-wallet.ts"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.21.0",
