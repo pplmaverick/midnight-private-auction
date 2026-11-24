@@ -31,14 +31,13 @@
  * .wallet-state/v9/ so the next run restores in seconds.
  */
 
-import { inspect } from 'node:util';
 import * as Rx from 'rxjs';
-import { Cause } from 'effect';
 import type { WalletFacade } from '@midnight-ntwrk/wallet-sdk-facade';
 import * as ledger from '@midnight-ntwrk/midnight-js-protocol/v9';
 import { readFileSync } from 'node:fs';
 import { MainnetConfig, PreviewConfig } from '../src/config.js';
 import { buildWallet } from '../src/api.js';
+import { redact, safe, clip, installConsoleRedaction, rawConsoleLog, rawConsoleError, rawConsoleWarn } from '../src/redact.js';
 
 const TIMEOUT_MS = Number(process.env.CHECK_WALLET_TIMEOUT_SEC ?? 21_600) * 1000;
 const STALL_MS = Number(process.env.CHECK_WALLET_STALL_SEC ?? 600) * 1000;
@@ -47,55 +46,21 @@ const SKIP_V8_DUST = process.env.CHECK_WALLET_SKIP_V8_DUST === '1';
 const PROGRESS_EVERY_MS = 30_000;
 const MAX_ERRORS_PRINTED = 40; // full text for the first N SDK errors; the rest are only counted
 
-// ── redaction ────────────────────────────────────────────────────────────────
-// Strips: project_id=… ; the query string of ANY http(s)/ws(s) URL ; the Blockfrost token shape ;
-// the seed (hex, either case). Applied to every line this script prints, including intercepted
-// SDK log output.
-const redact = (text: string): string => {
-  let out = text;
-  const seed = process.env.WALLET_SEED;
-  if (seed) out = out.split(seed).join('***').split(seed.toLowerCase()).join('***').split(seed.toUpperCase()).join('***');
-  out = out.replace(/\b(https?|wss?):\/\/[^\s"'<>)]*/gi, (url) => url.split('?')[0] + (url.includes('?') ? '?***' : ''));
-  out = out.replace(/project_id=[^&\s"')]+/gi, 'project_id=***');
-  out = out.replace(/\bnight(mainnet|preprod|preview)[A-Za-z0-9]+/g, 'night$1***');
-  out = out.replace(/\b[0-9a-fA-F]{64}\b/g, '<64hex>'); // any 64-hex string (seeds / keys / hashes)
-  return out;
-};
-
-// Full expansion of an error / Effect Cause / arbitrary object: message, cause chain, status codes.
-const describe = (value: unknown): string => {
-  try {
-    if (Cause.isCause(value)) return Cause.pretty(value);
-    if (value instanceof Error || (typeof value === 'object' && value !== null)) {
-      return inspect(value, { depth: 6, breakLength: 160, maxStringLength: 600, getters: true, showHidden: false });
-    }
-  } catch {
-    /* fall through */
-  }
-  return String(value);
-};
-const clip = (text: string, max = 1500): string => (text.length > max ? `${text.slice(0, max)}…[truncated]` : text);
-const safe = (value: unknown): string => clip(redact(describe(value)));
-
 // ── intercept SDK logging (Effect's default logger writes to console) ────────
 let syncErrorCount = 0;
 let lastSyncError = '';
-const origLog = console.log.bind(console);
-const origError = console.error.bind(console);
-const origWarn = console.warn.bind(console);
+const origLog = rawConsoleLog;
+const origError = rawConsoleError;
+const origWarn = rawConsoleWarn;
 
-const intercept =
-  (orig: (...a: unknown[]) => void) =>
-  (...args: unknown[]): void => {
-    const text = args.map((a) => (typeof a === 'string' ? a : describe(a))).join(' ');
-    if (/Wallet\.[A-Za-z]+|ECONN|ENOTFOUND|ETIMEDOUT|WebSocket|Failed to|statusCode|status code|HTTP [45]\d\d/i.test(text)) {
-      syncErrorCount += 1;
-      lastSyncError = clip(redact(text));
-      if (syncErrorCount <= MAX_ERRORS_PRINTED) orig(`[sdk-error #${syncErrorCount}] ${lastSyncError}`);
-      return;
-    }
-    orig(redact(text)); // anything else is passed through redacted
-  };
+// SDK error lines are counted and capped; everything else goes through the shared redactor.
+const sdkErrorFilter = (text: string, _red: string, orig: (...a: unknown[]) => void): boolean => {
+  if (!/Wallet\.[A-Za-z]+|ECONN|ENOTFOUND|ETIMEDOUT|WebSocket|Failed to|statusCode|status code|HTTP [45]\d\d/i.test(text)) return false;
+  syncErrorCount += 1;
+  lastSyncError = clip(redact(text));
+  if (syncErrorCount <= MAX_ERRORS_PRINTED) orig(`[sdk-error #${syncErrorCount}] ${lastSyncError}`);
+  return true;
+};
 
 // ── WebSocket close/error diagnostics ───────────────────────────────────────
 // Why the SDK prints "[object Object]": WsSubscriptionClient.js (indexer-client, lines 34 and 111)
@@ -221,9 +186,7 @@ async function main(): Promise<void> {
     `limits: timeout=${TIMEOUT_MS / 1000}s stall=${STALL_MS / 1000}s checkpoint_every=${CHECKPOINT_MS / 1000}s skip_v8_dust=${SKIP_V8_DUST} (sdk errors are logged, not fatal)`,
   );
   installWebSocketDiagnostics();
-  console.log = intercept(origLog);
-  console.error = intercept(origError);
-  console.warn = intercept(origWarn);
+  installConsoleRedaction({ filter: sdkErrorFilter });
 
   const startedAt = Date.now();
   let reporter: NodeJS.Timeout | undefined;

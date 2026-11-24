@@ -25,6 +25,9 @@ import {
 } from '@midnight-ntwrk/midnight-js-types';
 import * as api from '../src/api.js';
 import { MainnetConfig, PreviewConfig } from '../src/config.js';
+import { redact as redactText, installConsoleRedaction } from '../src/redact.js';
+
+const redact = (t: string): string => redactText(t).slice(0, 400);
 import { createAuctionPrivateState } from '../contract/src/index.js';
 
 const SPECK_PER_DUST = 10n ** 15n;
@@ -33,9 +36,6 @@ const fmt = (speck: bigint): string => {
   const frac = (speck % SPECK_PER_DUST).toString().padStart(15, '0').replace(/0+$/, '');
   return `${whole}${frac ? '.' + frac : ''} DUST (${speck} SPECK)`;
 };
-const redact = (t: string): string =>
-  t.replace(/project_id=[^&\s"')]+/gi, 'project_id=***').replace(/\b(https?|wss?):\/\/[^\s"']*/gi, (u) => u.split('?')[0]).slice(0, 400);
-
 class DryRunStop extends Error {
   constructor() {
     super('dry-run: submission intentionally blocked');
@@ -57,6 +57,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   const config = network === 'mainnet' ? new MainnetConfig() : new PreviewConfig();
+  installConsoleRedaction(); // SDK/Effect console output is redacted from here on (seed, tokens, URL queries, 64-hex)
   console.log(`network: ${network}`);
 
   // Proving needs the ledger-9 proof server; check it is reachable before the slow wallet restore.
