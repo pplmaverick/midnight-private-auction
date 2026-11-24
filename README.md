@@ -12,6 +12,20 @@ https://midnight-private-auction.vercel.app
 ![Compact](https://img.shields.io/badge/Compact-0.23.0-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+## Legacy Contract
+
+The current production contract (M5) was deployed with the **ledger 8 Compact toolchain** (compiler `0.31.0`, language `0.23.0`, compact-runtime `0.16.0`) and stays on Midnight mainnet at its original address. It is **not** upgraded in place: the ledger 9 migration (M6) recompiles the contract with compiler `0.36.1` (compact-runtime `0.21.0`), which produces different verifier keys, so it is deployed as a new contract.
+
+| | |
+|---|---|
+| Legacy address | [`5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069`](https://explorer.1am.xyz/contract/5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069) |
+| Toolchain | ledger 8 — Compact compiler 0.31.0 / language 0.23.0 / compact-runtime 0.16.0 |
+| Deployed | 2026-09-14 (see [DEPLOYMENT.md](DEPLOYMENT.md), generation M5) |
+| State at migration | 3 auctions (ids 0–2), all closed and claimed; 6 sealed bids, all revealed |
+| Build artifacts | git tag `m5-ledger8` (commit `638e164`): `contract/src/managed/auction/` with the ledger 8 compiled contract, keys and ZKIR; compiler metadata also kept in [`legacy/contract-info-0.31.0.json`](legacy/contract-info-0.31.0.json) |
+
+The legacy contract is permanent, public chain history and remains readable through the indexer; its auctions are not carried over to the new contract (bids are bound to bidders' private keys and cannot be re-created).
+
 ## Overview
 
 Sealed-bid auction on Midnight Network. During the bidding phase, bid amounts and bidder identities are hidden by ZK proofs — chain observers can see that a `placeBid()` call occurred, but not who made it or how much they bid. The amount only appears on-chain when the bidder voluntarily calls `revealBid()`. This is a commit-reveal auction implemented as a **Compact smart contract**, purpose-built for Midnight's ZK circuit model — not a port from an EVM contract.
