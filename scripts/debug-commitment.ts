@@ -54,7 +54,7 @@ import { ledgerFromRead } from '../src/ledger-state.js';
 import { PreprodConfig, resolveMainnetEndpoints } from '../src/config.js';
 import { Auction } from '../contract/src/index.js';
 
-const CONTRACT_ADDRESS = '5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069';
+const CONTRACT_ADDRESS = '118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78';
 const DIVIDER = '══════════════════════════════════════════════════════════════';
 
 // This script only ever calls indexerPublicDataProvider(indexer, indexerWS) — use just
