@@ -38,5 +38,9 @@ export const buildAuctionProviders = async <
     privateStateProvider,
     walletProvider: walletAndMidnightProvider,
     midnightProvider: walletAndMidnightProvider,
+    // midnight-js 5.x: the network id is no longer a global (setNetworkId was removed); it
+    // travels with the providers. The frontend is mainnet-only (see walletConnector.ts).
+    // ttlSeconds: 3600 matches midnight-js 4.x's default transaction TTL (1 hour).
+    config: { networkId: 'mainnet', ttlSeconds: 3600 },
   }
 }

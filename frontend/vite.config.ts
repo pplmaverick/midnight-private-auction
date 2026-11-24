@@ -22,10 +22,18 @@ export default defineConfig({
   // of X"). dedupe forces Vite to resolve these to one instance regardless of which directory
   // imports them.
   resolve: {
+    // NB: the ledger-9 toolchain publishes under a DIFFERENT npm scope, `@midnightntwrk`
+    // (no hyphen), for onchain-runtime-v4 and ledger-v8/v9 — only compact-runtime kept the
+    // old `@midnight-ntwrk` scope. The v3 onchain-runtime and the `compact-runtime-ledger8`
+    // alias (0.16.0) are the retained pre-fork runtime inside midnight-js-protocol; they are
+    // deduped too so the contract/ directory cannot pull in a second wasm instance.
     dedupe: [
       '@midnight-ntwrk/compact-runtime',
+      '@midnightntwrk/onchain-runtime-v4',
+      '@midnightntwrk/ledger-v9',
+      '@midnightntwrk/ledger-v8',
       '@midnight-ntwrk/onchain-runtime-v3',
-      '@midnight-ntwrk/ledger-v8',
+      'compact-runtime-ledger8',
     ],
   },
   // wasm() is required for @midnight-ntwrk/ledger-v8 (and other wasm-bindgen packages in

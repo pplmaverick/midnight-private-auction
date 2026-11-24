@@ -8,8 +8,14 @@ if (typeof window !== 'undefined' && !(window as unknown as { Buffer?: unknown }
 }
 
 import type { ConnectedAPI } from '@midnight-ntwrk/dapp-connector-api'
-import { Transaction, type CoinPublicKey, type EncPublicKey, type FinalizedTransaction, type TransactionId } from '@midnight-ntwrk/midnight-js-protocol/ledger'
-import type { MidnightProvider, UnboundTransaction, WalletProvider } from '@midnight-ntwrk/midnight-js-types'
+import { Transaction, type CoinPublicKey, type EncPublicKey, type TransactionId } from '@midnight-ntwrk/midnight-js-protocol/v9'
+import {
+  createLedger9MidnightProvider,
+  createLedger9WalletProvider,
+  type LedgerTransaction,
+  type MidnightProvider,
+  type WalletProvider,
+} from '@midnight-ntwrk/midnight-js-types'
 import { MidnightBech32m } from '@midnight-ntwrk/wallet-sdk-address-format'
 
 // Combines WalletProvider + MidnightProvider into one object, mirroring the Node CLI's
@@ -28,7 +34,10 @@ export class WalletNotReadyError extends Error {
 // as unsuitable for tracking a specific transaction because transactions can be merged;
 // identifiers() entries are documented as safe for exactly that purpose. Our contract calls
 // are always single-intent (no merging), so identifiers()[0] is the one that matters.
-const getTransactionId = (tx: FinalizedTransaction): TransactionId => {
+const getTransactionId = (handle: LedgerTransaction<'Finalized', 'v9'>): TransactionId => {
+  // midnight-js 5.x hands providers an era-tagged handle, not a ledger Transaction: decode it
+  // with the ledger-9 Transaction class to reach identifiers().
+  const tx = handle.deserialize({ v9: Transaction })
   const [transactionId] = tx.identifiers()
   if (!transactionId) {
     throw new Error('Finalized transaction has no identifiers — nothing to submit')
@@ -45,16 +54,18 @@ export const createBrowserWalletAndMidnightProvider = (
   let coinPublicKeyHex: CoinPublicKey | null = null
   let encryptionPublicKeyHex: EncPublicKey | null = null
 
-  return {
-    async initialize(): Promise<void> {
-      const addresses = await connectorAPI.getShieldedAddresses()
-      // Bech32m -> raw hex, same conversion validated in stage 1 (32-byte data, matches
-      // what the Node CLI's ShieldedCoinPublicKey.toHexString() already produces and feeds
-      // into this exact interface in production).
-      coinPublicKeyHex = MidnightBech32m.parse(addresses.shieldedCoinPublicKey).data.toString('hex')
-      encryptionPublicKeyHex = MidnightBech32m.parse(addresses.shieldedEncryptionPublicKey).data.toString('hex')
-    },
+  const initialize = async (): Promise<void> => {
+    const addresses = await connectorAPI.getShieldedAddresses()
+    // Bech32m -> raw hex, same conversion validated in stage 1 (32-byte data, matches
+    // what the Node CLI's ShieldedCoinPublicKey.toHexString() already produces and feeds
+    // into this exact interface in production).
+    coinPublicKeyHex = MidnightBech32m.parse(addresses.shieldedCoinPublicKey).data.toString('hex')
+    encryptionPublicKeyHex = MidnightBech32m.parse(addresses.shieldedEncryptionPublicKey).data.toString('hex')
+  }
 
+  // midnight-js 5.x: WalletProvider/MidnightProvider are era-declared. The ledger-9 helpers
+  // below serve v9 only (supportedEras: ['v9']) and seal the wallet's answer into a handle.
+  const walletProvider: WalletProvider = createLedger9WalletProvider({
     getCoinPublicKey(): CoinPublicKey {
       if (coinPublicKeyHex === null) throw new WalletNotReadyError()
       return coinPublicKeyHex
@@ -65,7 +76,7 @@ export const createBrowserWalletAndMidnightProvider = (
       return encryptionPublicKeyHex
     },
 
-    async balanceTx(tx: UnboundTransaction, ttl?: Date): Promise<FinalizedTransaction> {
+    async balanceTx(tx, ttl) {
       // TODO(ttl): dapp-connector-api's balanceUnsealedTransaction has no ttl parameter —
       // the wallet applies its own default TTL internally. Caller-supplied ttl is currently
       // dropped; revisit if a specific TTL ever becomes load-bearing.
@@ -73,15 +84,17 @@ export const createBrowserWalletAndMidnightProvider = (
 
       const serializedHex = Buffer.from(tx.serialize()).toString('hex')
       const { tx: balancedHex } = await connectorAPI.balanceUnsealedTransaction(serializedHex)
-      const balancedBytes = Buffer.from(balancedHex, 'hex')
-      return Transaction.deserialize('signature', 'proof', 'binding', balancedBytes)
+      // TransactionAnswer: raw bytes are accepted and sealed by the helper.
+      return Buffer.from(balancedHex, 'hex')
     },
+  })
 
-    async submitTx(tx: FinalizedTransaction): Promise<TransactionId> {
-      const transactionId = getTransactionId(tx)
-      const serializedHex = Buffer.from(tx.serialize()).toString('hex')
-      await connectorAPI.submitTransaction(serializedHex)
-      return transactionId
-    },
-  }
+  const midnightProvider: MidnightProvider = createLedger9MidnightProvider(async (tx) => {
+    const transactionId = getTransactionId(tx)
+    const serializedHex = Buffer.from(tx.serialize()).toString('hex')
+    await connectorAPI.submitTransaction(serializedHex)
+    return transactionId
+  })
+
+  return Object.assign({}, walletProvider, midnightProvider, { initialize })
 }

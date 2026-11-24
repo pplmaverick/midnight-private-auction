@@ -3,18 +3,12 @@ import type { ProvableCircuitId } from '@midnight-ntwrk/compact-js'
 import { CompiledContract } from '@midnight-ntwrk/compact-js'
 import { findDeployedContract, type DeployedContract, type FoundContract } from '@midnight-ntwrk/midnight-js/contracts'
 import { assertIsContractAddress } from '@midnight-ntwrk/midnight-js/utils'
-import { setNetworkId } from '@midnight-ntwrk/midnight-js/network-id'
 import { Auction, witnesses, createAuctionPrivateState, type AuctionPrivateState } from '../../../contract/src/index.js'
 
 export { createAuctionPrivateState, type AuctionPrivateState, Auction }
 
-// Mirrors src/config.ts's MainnetConfig constructor, which calls setNetworkId('mainnet')
-// before any wallet/provider operation. midnight-js-contracts (findDeployedContract,
-// callTx.*) reads this as global module state via getNetworkId() — never set anywhere in
-// the frontend otherwise. The frontend is mainnet-only (walletConnector.ts already hardcodes
-// provider.connect('mainnet')), so this runs unconditionally at module load, before
-// getDeployedAuction below can be called.
-setNetworkId('mainnet')
+// midnight-js 5.x removed the global setNetworkId(): the network id is now carried by
+// providers.config (see auctionProviders.ts), so nothing needs to run at module load.
 
 // Mirrors src/common-types.ts's role-ID scheme (Node CLI) — one provider set per role,
 // each keyed by a distinct private-state ID so a single browser session can hold

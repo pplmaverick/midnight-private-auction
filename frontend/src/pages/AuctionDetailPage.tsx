@@ -235,9 +235,8 @@ export default function AuctionDetailPage({
       })
 
       if (provider && isUnlocked) {
-        provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
-        const storedAuctioneer = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
-        const storedBidder = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+        const storedAuctioneer = (await provider.forContract(AUCTION_CONTRACT_ADDRESS).get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
+        const storedBidder = (await provider.forContract(AUCTION_CONTRACT_ADDRESS).get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
         const auctioneerPK = storedAuctioneer ? Auction.pureCircuits.auctioneerPublicKey(storedAuctioneer.secretKey) : null
         const bidderPK = storedBidder ? Auction.pureCircuits.bidderPublicKey(storedBidder.secretKey, auctionId) : null
         setMyAuctioneerPK(auctioneerPK)
@@ -382,10 +381,10 @@ export default function AuctionDetailPage({
       const bidSalt = crypto.getRandomValues(new Uint8Array(32))
 
       // Merge into whatever bids this identity already has recorded for OTHER auctions —
-      // provider.set() overwrites the whole stored object, so building a fresh one with
+      // provider.forContract(AUCTION_CONTRACT_ADDRESS).set() overwrites the whole stored object, so building a fresh one with
       // only this auctionId would silently erase those auctions' bid records, making them
       // unrevealable.
-      const stored = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+      const stored = (await provider.forContract(AUCTION_CONTRACT_ADDRESS).get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
       const existingBids = stored?.bids ?? {}
       const mergedBids = {
         ...existingBids,
@@ -434,8 +433,7 @@ export default function AuctionDetailPage({
       // an abandoned auction past the grace period — the contract's permissionless-close
       // path doesn't check who's calling once closeGraceElapsed is true, so any identity
       // works there.
-      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
-      let stored = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
+      let stored = (await provider.forContract(AUCTION_CONTRACT_ADDRESS).get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
       if (!stored) {
         if (!isAuctioneer && closeGraceElapsed) {
           const secretKey = await deriveWalletBoundSecretKey(walletState.address, AUCTIONEER_STATE_ID)
@@ -480,8 +478,7 @@ export default function AuctionDetailPage({
     try {
       // Must reuse the exact secretKey/bidAmount/bidSalt recorded at placeBid time —
       // the commitment check on-chain only passes against those original values.
-      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
-      const stored = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+      const stored = (await provider.forContract(AUCTION_CONTRACT_ADDRESS).get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
       const bid = stored?.bids[auctionId.toString()]
       if (!stored || !bid) {
         setRevealError('No sealed bid found in this browser for this auction ID.')
@@ -519,8 +516,7 @@ export default function AuctionDetailPage({
 
     setClaiming(true)
     try {
-      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
-      const stored = (await provider.get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
+      const stored = (await provider.forContract(AUCTION_CONTRACT_ADDRESS).get(BIDDER1_STATE_ID)) as AuctionPrivateState | null
       if (!stored) {
         setClaimError('No bidder identity found in this browser for this auction.')
         return
@@ -557,8 +553,7 @@ export default function AuctionDetailPage({
 
     setClosing(true)
     try {
-      provider.setContractAddress(AUCTION_CONTRACT_ADDRESS)
-      const stored = (await provider.get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
+      const stored = (await provider.forContract(AUCTION_CONTRACT_ADDRESS).get(AUCTIONEER_STATE_ID)) as AuctionPrivateState | null
       if (!stored) {
         setCloseError('No auctioneer identity found in this browser for this auction.')
         return
