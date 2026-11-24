@@ -230,14 +230,14 @@ Deployment-specific limitations (public RPC transaction size limits, wallet WASM
 |---|---|
 | Smart contract | Compact (pragma ≥0.20; compiled with compiler 0.36.1 / language 0.28.0 / compact-runtime 0.21.0) |
 | ZK backend | Midnight Proof Server (local), WASM-executed `.zkir` circuits |
-| Runtime SDK | `@midnight-ntwrk/midnight-js` ^4.1.1 |
-| Wallet (backend scripts) | `@midnight-ntwrk/wallet-sdk-facade` ^3.0.0 (Shielded + Dust + Unshielded) |
+| Runtime SDK | `@midnight-ntwrk/midnight-js` 5.0.1 (backend and frontend), `@midnight-ntwrk/compact-runtime` 0.21.0 |
+| Wallet (backend scripts) | `@midnight-ntwrk/wallet-sdk-facade` 5.0.1 (Shielded 4.0.1 + Dust 5.1.0 + Unshielded 4.0.1; `wallet-sdk-hd` 4.0.0, `wallet-sdk-address-format` 4.0.1) |
 | Private state storage | LevelDB via `midnight-js-level-private-state-provider` |
 | Backend language | TypeScript (ESM, Node.js ≥ 22) |
-| Frontend | React 19, Vite, Tailwind CSS 4, `@midnight-ntwrk/dapp-connector-api` |
+| Frontend | React 19, Vite 8, Tailwind CSS 4, `@midnight-ntwrk/dapp-connector-api` 4.0.1 |
 | Frontend hosting | Vercel |
 
-`@midnight-ntwrk/ledger-v8` (`8.1.0`) and `@midnight-ntwrk/onchain-runtime-v3` (`3.0.0`) — transitive dependencies pulled in by the SDK above — are pinned to exact versions via `overrides` in `package.json` (both root and `frontend/`), not left on a floating `^` range. A clean `npm install` otherwise resolves newer patch releases of both that were never covered by this project's Independent Reference Model Testing or mainnet e2e verification; see the commit history around the M4 deploy for the incident that motivated this.
+Versions are pinned exactly in `package.json` (root and `frontend/`). The only `overrides` entry is in the root `package.json`: `smoldot` is replaced by an empty package (`npm:@aspect-build/empty@0.0.0`); `frontend/` has none. The former exact-version pins of `@midnight-ntwrk/ledger-v8` and `@midnight-ntwrk/onchain-runtime-v3` were removed with the ledger 9 migration (the SDK now uses `@midnight-ntwrk/midnight-js-protocol/v9`).
 
 ---
 
