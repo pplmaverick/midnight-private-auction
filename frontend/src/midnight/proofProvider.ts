@@ -1,4 +1,4 @@
-import { createProofProvider } from '@midnight-ntwrk/midnight-js-types'
+import { createLedger9ProofProvider } from '@midnight-ntwrk/midnight-js-types'
 import type { ConnectedAPI, KeyMaterialProvider } from '@midnight-ntwrk/dapp-connector-api'
 
 // Thrown when the connected wallet does not actually support proof generation.
@@ -16,9 +16,10 @@ export class ProvingNotSupportedError extends Error {
 
 // Delegates proving to the connected wallet instead of running a local proof server.
 // connectorAPI.getProvingProvider() returns a circuit-level ProvingProvider (check/prove
-// on serialized preimages) — createProofProvider (from midnight-js-types) is the same
+// on serialized preimages) — createLedger9ProofProvider (from midnight-js-types) is the same
 // adapter midnight-js-http-client-proof-provider uses internally to lift that into the
 // transaction-level ProofProvider (proveTx) that MidnightProviders.proofProvider expects.
+// midnight-js 5.x renamed it createLedger9ProofProvider (v9-only, supportedEras: ['v9']).
 export const buildProofProvider = async (
   connectorAPI: ConnectedAPI,
   keyMaterialProvider: KeyMaterialProvider,
@@ -32,5 +33,21 @@ export const buildProofProvider = async (
     }
     throw err
   }
-  return createProofProvider(provingProvider)
+  // ledger-v9's ProvingProvider additionally requires lookupKey(keyLocation) (key material for a
+  // circuit); the DApp Connector's ProvingProvider only has check/prove. The wallet already asked
+  // our KeyMaterialProvider for the same artifacts, so serve lookupKey from it too.
+  const withLookupKey = {
+    check: provingProvider.check.bind(provingProvider),
+    prove: provingProvider.prove.bind(provingProvider),
+    async lookupKey(keyLocation: string) {
+      const [proverKey, verifierKey, ir] = await Promise.all([
+        keyMaterialProvider.getProverKey(keyLocation),
+        keyMaterialProvider.getVerifierKey(keyLocation),
+        keyMaterialProvider.getZKIR(keyLocation),
+      ])
+      if (!proverKey || !verifierKey || !ir) return undefined
+      return { proverKey, verifierKey, ir }
+    },
+  }
+  return createLedger9ProofProvider(withLookupKey)
 }

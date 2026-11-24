@@ -1,0 +1,159 @@
+{
+  "manifest-version": "1",
+  "compiler-version": "0.36.1",
+  "compiler-commit": "7fa3a117c5e7efe9d2c51da04263e5f0b3509144",
+  "language-version": "0.28.0",
+  "runtime-version": "0.21.0",
+  "compiler": {
+    "type": "directory",
+    "contract-info.json": {
+      "type": "file",
+      "size": 9767,
+      "hash": "736e25e6463d7d175329cdaf65a9d61e8f8aa47fa645afa31f8c16ce35ff85a2"
+    }
+  },
+  "contract": {
+    "type": "directory",
+    "index.d.ts": {
+      "type": "file",
+      "size": 8445,
+      "hash": "4b0bc6a94e240107631c989b4425e9dec20c0f965c6b912f1fe612e2b20210ff"
+    },
+    "index.js": {
+      "type": "file",
+      "size": 292917,
+      "hash": "cef7766650447b0f16842151d822efce72ca545a63ded526cd206cf84be2e485"
+    },
+    "index.js.map": {
+      "type": "file",
+      "size": 8384,
+      "hash": "6436683f3e1cb9ecdd66e8a5898afccff37b3e1956f63808cab5f415864a0906"
+    }
+  },
+  "zkir": {
+    "type": "directory",
+    "claimItem.bzkir": {
+      "type": "file",
+      "size": 1536,
+      "hash": "b32cb1e9e1ee0f766dda6f6e4f792d1227a471ce70c3444cf4688420fd3e39f3"
+    },
+    "claimItem.zkir": {
+      "type": "file",
+      "size": 5417,
+      "hash": "bf302dcfed878e3a9156125ccd200cbe069160c57bb7f79c938b53c204f55b6e"
+    },
+    "closeAuction.bzkir": {
+      "type": "file",
+      "size": 1684,
+      "hash": "86bb0fe5426c5330d6852ff13fa92fefcf2c5559a49877270316e300d2b1e306"
+    },
+    "closeAuction.zkir": {
+      "type": "file",
+      "size": 5625,
+      "hash": "0cccf54448e9ca185caea7b174ed81b27c1e0a95dd51ae0d2b1d6f0250ebc897"
+    },
+    "createAuction.bzkir": {
+      "type": "file",
+      "size": 2613,
+      "hash": "775ef290742617506aee37e0a05cd1e69e9f9b2785940311686900c6b117e645"
+    },
+    "createAuction.zkir": {
+      "type": "file",
+      "size": 7483,
+      "hash": "d220b0f7b543ff5f11b9b6b5f8caf983303d57cfdbd13721e40e0d212feaf065"
+    },
+    "finalizeAuction.bzkir": {
+      "type": "file",
+      "size": 1330,
+      "hash": "9e188c73de080be9bf151854150b8b92717cdd025daac65bcb12a8d9c9181d17"
+    },
+    "finalizeAuction.zkir": {
+      "type": "file",
+      "size": 4716,
+      "hash": "ce8dd97a762e8cf37117fa884875f1556f3c361d9df0eed5f5f592dc601824a9"
+    },
+    "placeBid.bzkir": {
+      "type": "file",
+      "size": 1588,
+      "hash": "efbe581aab6eaf56986800f1e96c4f5c2d85736f7bfe2ba2e249b2afb9a9b830"
+    },
+    "placeBid.zkir": {
+      "type": "file",
+      "size": 5792,
+      "hash": "06d42df419fb09d885fbdd40c75bd17fec1552863a463f0c3a16389f0da532a0"
+    },
+    "revealBid.bzkir": {
+      "type": "file",
+      "size": 2606,
+      "hash": "18fe4f9bf37118d4cdf51c06fe9fcce14052bd135a413d9eafa215f7181d26ae"
+    },
+    "revealBid.zkir": {
+      "type": "file",
+      "size": 8822,
+      "hash": "e030d1cad66871c41d6d6adbd9999a4dcaf37cec1dc3d0aea5df9ed744e52945"
+    }
+  },
+  "keys": {
+    "type": "directory",
+    "claimItem.prover": {
+      "type": "file",
+      "size": 11278096,
+      "hash": "327c2304069964ae45f341c182488ad474c9a4f5f68fa04e92409b9db093e53b"
+    },
+    "claimItem.verifier": {
+      "type": "file",
+      "size": 2121,
+      "hash": "2957d225c4d63fadc932a264338130d89aff28240ba263fd23ec5183e76f9da8"
+    },
+    "closeAuction.prover": {
+      "type": "file",
+      "size": 11278244,
+      "hash": "3b6246c801e2673640a525f02867acf4af1decdf6eedbadba8d38ad7bf587a22"
+    },
+    "closeAuction.verifier": {
+      "type": "file",
+      "size": 2121,
+      "hash": "2adfef4ee3745d860309f3b9042bc2aa30957365bdd900ab53564f5c8e04b3ad"
+    },
+    "createAuction.prover": {
+      "type": "file",
+      "size": 11279173,
+      "hash": "c23ceca3cde7ba02dd3e38c6b819499adfc48d44fea9d0e41989b05af501029f"
+    },
+    "createAuction.verifier": {
+      "type": "file",
+      "size": 2121,
+      "hash": "7ee0b237ecbd847df6d223b23e382432cba4034e02bf1a5e92238cd8b29d7866"
+    },
+    "finalizeAuction.prover": {
+      "type": "file",
+      "size": 11277890,
+      "hash": "77f66b0809e139534abdc2cfafe7c5e6c113c09b5b9956baccaba2a69f4d5266"
+    },
+    "finalizeAuction.verifier": {
+      "type": "file",
+      "size": 2121,
+      "hash": "cbda85d2a0f35d5e20d8ea44ed33bae95895070207c52bccff38a4ea02be2b79"
+    },
+    "placeBid.prover": {
+      "type": "file",
+      "size": 11278148,
+      "hash": "2a19d0fa9c266de67abd40e09786560fa6f92e76910a922c8bd0f53fd872d857"
+    },
+    "placeBid.verifier": {
+      "type": "file",
+      "size": 2121,
+      "hash": "68aa16e47dabf9aaa307aee5bd4099e705f77cd0bc7e3f1cf4e445706a91507c"
+    },
+    "revealBid.prover": {
+      "type": "file",
+      "size": 11279166,
+      "hash": "2b156662ecfadc97abd69be43d23b2995b2c89d5718b2452ee0b9a4bcb91e429"
+    },
+    "revealBid.verifier": {
+      "type": "file",
+      "size": 2121,
+      "hash": "9a8d3bdc6e5b126ddf801d4ca4da0d775bdb132e377454514bb59fa3d0662dc5"
+    }
+  }
+}

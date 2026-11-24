@@ -5,18 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "cp ../contract/src/managed/auction/keys/*.verifier ../contract/src/managed/auction/keys/*.prover public/keys/ && cp ../contract/src/managed/auction/zkir/*.bzkir public/zkir/",
+    "prebuild": "cp ../contract/src/managed/auction/keys/*.verifier ../contract/src/managed/auction/keys/*.prover public/keys/ && cp ../contract/src/managed/auction/zkir/*.bzkir public/zkir/ && mkdir -p public/compiler && cp ../contract/src/managed/auction/compiler/contract-info.json public/compiler/",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@midnight-ntwrk/compact-runtime": "^0.16.0",
+    "@midnight-ntwrk/compact-runtime": "0.21.0",
     "@midnight-ntwrk/dapp-connector-api": "4.0.1",
-    "@midnight-ntwrk/midnight-js": "^4.1.1",
-    "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "^4.1.1",
-    "@midnight-ntwrk/midnight-js-types": "^4.1.1",
-    "@midnight-ntwrk/wallet-sdk-address-format": "^3.1.2",
+    "@midnight-ntwrk/midnight-js": "5.0.1",
+    "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "5.0.1",
+    "@midnight-ntwrk/midnight-js-types": "5.0.1",
+    "@midnight-ntwrk/wallet-sdk-address-format": "^4.0.1",
     "buffer": "^6.0.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
@@ -32,8 +32,5 @@
     "typescript": "~6.0.2",
     "vite": "^8.1.1",
     "vite-plugin-wasm": "^3.6.0"
-  },
-  "overrides": {
-    "@midnight-ntwrk/onchain-runtime-v3": "3.0.0"
   }
 }

@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { setNetworkId } from '@midnight-ntwrk/midnight-js/network-id';
+import type { NetworkId } from '@midnight-ntwrk/midnight-js-types';
 
 const currentDir = path.resolve(new URL(import.meta.url).pathname, '..');
 
@@ -8,6 +8,9 @@ export const zkConfigPath = path.resolve(currentDir, '..', 'contract', 'src', 'm
 export const privateStateStoreName = 'auction-private-state';
 
 export interface Config {
+  // midnight-js 5.x removed the global setNetworkId(): the id now lives on the config and is
+  // handed to the wallet and to providers.config.
+  readonly networkId: NetworkId;
   readonly logDir: string;
   readonly indexer: string;
   readonly indexerWS: string;
@@ -15,15 +18,28 @@ export interface Config {
   readonly proofServer: string;
 }
 
+// RETIRED: these Midnight-hosted preprod endpoints now answer HTTP 410. Kept only so the existing
+// scripts that import PreprodConfig still compile; do not use it. Use PreviewConfig (public,
+// no token) or a Blockfrost-based Preprod config (needs a Preprod project token).
+/** @deprecated endpoints retired (HTTP 410) */
 export class PreprodConfig implements Config {
+  networkId: NetworkId = 'preprod';
   logDir = path.resolve(currentDir, '..', 'logs', 'preprod');
   indexer = 'https://indexer.preprod.midnight.network/api/v4/graphql';
   indexerWS = 'wss://indexer.preprod.midnight.network/api/v4/graphql/ws';
   node = 'https://rpc.preprod.midnight.network';
   proofServer = process.env.MIDNIGHT_PROOF_SERVER ?? 'http://127.0.0.1:6300';
-  constructor() {
-    setNetworkId('preprod');
-  }
+}
+
+// Preview: Midnight-hosted public network (ledger 9), no token needed. Used as the control group
+// when diagnosing wallet-sync problems, and for deploy dry runs.
+export class PreviewConfig implements Config {
+  networkId: NetworkId = 'preview';
+  logDir = path.resolve(currentDir, '..', 'logs', 'preview');
+  indexer = 'https://indexer.preview.midnight.network/api/v4/graphql';
+  indexerWS = 'wss://indexer.preview.midnight.network/api/v4/graphql/ws';
+  node = 'https://rpc.preview.midnight.network';
+  proofServer = process.env.MIDNIGHT_PROOF_SERVER ?? 'http://127.0.0.1:6300';
 }
 
 // The Midnight-hosted mainnet indexer/RPC were shut down (2026-09-30); mainnet traffic now
@@ -74,6 +90,7 @@ export const resolveMainnetEndpoints = (): MainnetEndpoints => {
 // Mainnet config. Endpoints come from resolveMainnetEndpoints() above.
 //   MIDNIGHT_PROOF_SERVER — local proof server (default: http://127.0.0.1:6300)
 export class MainnetConfig implements Config {
+  networkId: NetworkId = 'mainnet';
   logDir = path.resolve(currentDir, '..', 'logs', 'mainnet');
   indexer: string;
   indexerWS: string;
@@ -85,6 +102,5 @@ export class MainnetConfig implements Config {
     this.indexerWS = endpoints.indexerWS;
     this.node = endpoints.node;
     this.proofServer = process.env.MIDNIGHT_PROOF_SERVER ?? 'http://127.0.0.1:6300';
-    setNetworkId('mainnet');
   }
 }

@@ -8,7 +8,6 @@
  * Prints the unshielded (cNIGHT receiving) address and the shielded address.
  */
 
-import { setNetworkId, getNetworkId } from '@midnight-ntwrk/midnight-js/network-id';
 import { HDWallet, Roles } from '@midnight-ntwrk/wallet-sdk-hd';
 import { createKeystore } from '@midnight-ntwrk/wallet-sdk-unshielded-wallet';
 import {
@@ -18,11 +17,10 @@ import {
   ShieldedEncryptionPublicKey,
   DustAddress,
 } from '@midnight-ntwrk/wallet-sdk-address-format';
-import * as ledger from '@midnight-ntwrk/ledger-v8';
+import * as ledger from '@midnight-ntwrk/midnight-js-protocol/v9';
 import { Buffer } from 'buffer';
 
 const network = (process.env.MIDNIGHT_NETWORK ?? 'preprod') as 'mainnet' | 'preprod';
-setNetworkId(network);
 
 const seed = process.env.WALLET_SEED;
 if (!seed) {
@@ -53,10 +51,10 @@ if (result.type !== 'keysDerived') {
 const keys = result.keys;
 hdWallet.hdWallet.clear();
 
-const networkId = getNetworkId();
+const networkId = network; // midnight-js 5.x removed the global network id
 
 // Unshielded address — this is where cNIGHT should be sent
-const keystore = createKeystore(keys[Roles.NightExternal], networkId);
+const keystore = createKeystore({ kind: 'schnorr', secret: keys[Roles.NightExternal] }, networkId);
 const unshieldedAddress = keystore.getBech32Address();
 
 // Shielded address — derived purely from ZswapSecretKeys (no network needed)

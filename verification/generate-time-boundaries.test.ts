@@ -11,12 +11,10 @@
 // AuctionSimulator crashes this repo's `ts-node/esm` script runner in this
 // environment, but runs cleanly under vitest.
 import { describe, it, expect } from 'vitest';
-import { setNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { AuctionSimulator } from '../src/test/auction-simulator.js';
 import { randomBytes } from '../src/test/utils.js';
 
-setNetworkId('undeployed');
 
 // Deltas applied around each boundary value, chosen to hit: far below, one below,
 // exactly on, one above, far above.
@@ -31,8 +29,8 @@ const errorMessage = (e: unknown): string => (e instanceof Error ? e.message : S
 type CaseRow = Record<string, unknown>;
 
 describe('Independent Reference Model Testing — numeric/time boundary data generation', () => {
-  it('generates createAuction (revealDeadline > endTime) boundary outcomes from the real compiled contract', () => {
-    const sim = new AuctionSimulator(randomBytes(32));
+  it('generates createAuction (revealDeadline > endTime) boundary outcomes from the real compiled contract', async () => {
+    const sim = await AuctionSimulator.create(randomBytes(32));
     const N_BASES = 100;
     const rows: CaseRow[] = [];
 
@@ -43,7 +41,7 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
         let actualPass = true;
         let actualError: string | null = null;
         try {
-          sim.createAuction('Item', 'Desc', 100n, endTime, revealDeadline);
+          await sim.createAuction('Item', 'Desc', 100n, endTime, revealDeadline);
         } catch (e) {
           actualPass = false;
           actualError = errorMessage(e);
@@ -57,16 +55,16 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
     expect(rows).toHaveLength(N_BASES * DELTAS.length);
   }, 180_000);
 
-  it('generates placeBid (now < endTime) boundary outcomes from the real compiled contract', () => {
+  it('generates placeBid (now < endTime) boundary outcomes from the real compiled contract', async () => {
     const auctioneerKey = randomBytes(32);
-    const sim = new AuctionSimulator(auctioneerKey);
+    const sim = await AuctionSimulator.create(auctioneerKey);
     const N_BASES = 100;
     const rows: CaseRow[] = [];
 
     for (let i = 0; i < N_BASES; i++) {
       const endTime = randomBase();
       const revealDeadline = endTime + 10_000_000n; // structurally valid, irrelevant to this check
-      const auctionId = sim.createAuction('Item', 'Desc', 100n, endTime, revealDeadline);
+      const auctionId = await sim.createAuction('Item', 'Desc', 100n, endTime, revealDeadline);
       for (const delta of DELTAS) {
         // Fresh bidderKey per delta: placeBid rejects a second bid from the same
         // bidderPK on the same auction, which would otherwise mask the endTime
@@ -77,7 +75,7 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
         let actualPass = true;
         let actualError: string | null = null;
         try {
-          sim.placeBid(auctionId, 150n, randomBytes(32));
+          await sim.placeBid(auctionId, 150n, randomBytes(32));
         } catch (e) {
           actualPass = false;
           actualError = errorMessage(e);
@@ -91,9 +89,9 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
     expect(rows).toHaveLength(N_BASES * DELTAS.length);
   }, 180_000);
 
-  it('generates closeAuction (now < newRevealDeadline) boundary outcomes from the real compiled contract', () => {
+  it('generates closeAuction (now < newRevealDeadline) boundary outcomes from the real compiled contract', async () => {
     const auctioneerKey = randomBytes(32);
-    const sim = new AuctionSimulator(auctioneerKey);
+    const sim = await AuctionSimulator.create(auctioneerKey);
     const N_BASES = 30;
     const rows: CaseRow[] = [];
 
@@ -103,13 +101,13 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
         // Fresh auction per delta (each closeAuction call needs BIDDING phase).
         // endTime/revealDeadline given to createAuction are irrelevant to closeAuction's
         // own time check (it overwrites revealDeadline unconditionally on success).
-        const auctionId = sim.createAuction('Item', 'Desc', 100n, base + 20_000_000n, base + 30_000_000n);
+        const auctionId = await sim.createAuction('Item', 'Desc', 100n, base + 20_000_000n, base + 30_000_000n);
         const newRevealDeadline = base + delta;
         sim.setBlockTime(base); // "now" at the moment closeAuction is called
         let actualPass = true;
         let actualError: string | null = null;
         try {
-          sim.closeAuction(auctionId, newRevealDeadline);
+          await sim.closeAuction(auctionId, newRevealDeadline);
         } catch (e) {
           actualPass = false;
           actualError = errorMessage(e);
@@ -123,10 +121,10 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
     expect(rows).toHaveLength(N_BASES * DELTAS.length);
   }, 180_000);
 
-  it('generates revealBid (now < revealDeadline) boundary outcomes from the real compiled contract', () => {
+  it('generates revealBid (now < revealDeadline) boundary outcomes from the real compiled contract', async () => {
     const auctioneerKey = randomBytes(32);
     const bidderKey = randomBytes(32);
-    const sim = new AuctionSimulator(auctioneerKey);
+    const sim = await AuctionSimulator.create(auctioneerKey);
     const N_BASES = 15;
     const rows: CaseRow[] = [];
 
@@ -135,15 +133,15 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
       for (const delta of DELTAS) {
         const salt = randomBytes(32);
         sim.switchUser(auctioneerKey);
-        const auctionId = sim.createAuction('Item', 'Desc', 100n, base + 50_000_000n, base + 60_000_000n);
+        const auctionId = await sim.createAuction('Item', 'Desc', 100n, base + 50_000_000n, base + 60_000_000n);
 
         sim.switchUser(bidderKey);
         sim.setBlockTime(0n); // well before endTime, so placeBid itself always succeeds here
-        sim.placeBid(auctionId, 150n, salt);
+        await sim.placeBid(auctionId, 150n, salt);
 
         sim.switchUser(auctioneerKey);
         sim.setBlockTime(0n); // well before `base`, so closeAuction's own check always passes here
-        sim.closeAuction(auctionId, base);
+        await sim.closeAuction(auctionId, base);
 
         const now = base + delta;
         sim.switchUser(bidderKey);
@@ -151,7 +149,7 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
         let actualPass = true;
         let actualError: string | null = null;
         try {
-          sim.revealBid(auctionId, 150n, salt);
+          await sim.revealBid(auctionId, 150n, salt);
         } catch (e) {
           actualPass = false;
           actualError = errorMessage(e);
@@ -165,10 +163,10 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
     expect(rows).toHaveLength(N_BASES * DELTAS.length);
   }, 180_000);
 
-  it('generates claimItem (now >= revealDeadline) boundary outcomes from the real compiled contract', () => {
+  it('generates claimItem (now >= revealDeadline) boundary outcomes from the real compiled contract', async () => {
     const auctioneerKey = randomBytes(32);
     const bidderKey = randomBytes(32);
-    const sim = new AuctionSimulator(auctioneerKey);
+    const sim = await AuctionSimulator.create(auctioneerKey);
     const N_BASES = 15;
     const rows: CaseRow[] = [];
 
@@ -177,26 +175,26 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
       for (const delta of DELTAS) {
         const salt = randomBytes(32);
         sim.switchUser(auctioneerKey);
-        const auctionId = sim.createAuction('Item', 'Desc', 100n, base + 50_000_000n, base + 60_000_000n);
+        const auctionId = await sim.createAuction('Item', 'Desc', 100n, base + 50_000_000n, base + 60_000_000n);
 
         sim.switchUser(bidderKey);
         sim.setBlockTime(0n);
-        sim.placeBid(auctionId, 150n, salt);
+        await sim.placeBid(auctionId, 150n, salt);
 
         sim.switchUser(auctioneerKey);
         sim.setBlockTime(0n);
-        sim.closeAuction(auctionId, base);
+        await sim.closeAuction(auctionId, base);
 
         sim.switchUser(bidderKey);
         sim.setBlockTime(0n); // well before `base`, so revealBid's own deadline check always passes here
-        sim.revealBid(auctionId, 150n, salt);
+        await sim.revealBid(auctionId, 150n, salt);
 
         const now = base + delta;
         sim.setBlockTime(now);
         let actualPass = true;
         let actualError: string | null = null;
         try {
-          sim.claimItem(auctionId);
+          await sim.claimItem(auctionId);
         } catch (e) {
           actualPass = false;
           actualError = errorMessage(e);
@@ -210,9 +208,9 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
     expect(rows).toHaveLength(N_BASES * DELTAS.length);
   }, 180_000);
 
-  it('generates finalizeAuction (now >= revealDeadline) boundary outcomes from the real compiled contract', () => {
+  it('generates finalizeAuction (now >= revealDeadline) boundary outcomes from the real compiled contract', async () => {
     const auctioneerKey = randomBytes(32);
-    const sim = new AuctionSimulator(auctioneerKey);
+    const sim = await AuctionSimulator.create(auctioneerKey);
     const N_BASES = 20;
     const rows: CaseRow[] = [];
 
@@ -222,17 +220,17 @@ describe('Independent Reference Model Testing — numeric/time boundary data gen
         // No bid needed: the blockTimeGte(revealDeadline) assert in finalizeAuction
         // fires unconditionally right after the phase check, before the
         // highestBid==0 branch, so a bid-free auction exercises the same gate.
-        const auctionId = sim.createAuction('Item', 'Desc', 100n, base + 50_000_000n, base + 60_000_000n);
+        const auctionId = await sim.createAuction('Item', 'Desc', 100n, base + 50_000_000n, base + 60_000_000n);
 
         sim.setBlockTime(0n); // well before `base`, so closeAuction's own check always passes here
-        sim.closeAuction(auctionId, base);
+        await sim.closeAuction(auctionId, base);
 
         const now = base + delta;
         sim.setBlockTime(now);
         let actualPass = true;
         let actualError: string | null = null;
         try {
-          sim.finalizeAuction(auctionId);
+          await sim.finalizeAuction(auctionId);
         } catch (e) {
           actualPass = false;
           actualError = errorMessage(e);

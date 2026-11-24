@@ -16,18 +16,18 @@ export type ImpureCircuits<PS> = {
                 desc_0: string,
                 startPrice_0: bigint,
                 auctionEndTime_0: bigint,
-                auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
-  placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+                auctionRevealDeadline_0: bigint): Promise<__compactRuntime.CircuitResults<PS, bigint>>;
+  placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   closeAuction(context: __compactRuntime.CircuitContext<PS>,
                auctionId_0: bigint,
-               newRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+               newRevealDeadline_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
             auctionId_0: bigint,
             amount_0: bigint,
-            salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
-  claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+            salt_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
+  claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   finalizeAuction(context: __compactRuntime.CircuitContext<PS>,
-                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+                  auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
 }
 
 export type ProvableCircuits<PS> = {
@@ -36,18 +36,18 @@ export type ProvableCircuits<PS> = {
                 desc_0: string,
                 startPrice_0: bigint,
                 auctionEndTime_0: bigint,
-                auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
-  placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+                auctionRevealDeadline_0: bigint): Promise<__compactRuntime.CircuitResults<PS, bigint>>;
+  placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   closeAuction(context: __compactRuntime.CircuitContext<PS>,
                auctionId_0: bigint,
-               newRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+               newRevealDeadline_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
             auctionId_0: bigint,
             amount_0: bigint,
-            salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
-  claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+            salt_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
+  claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   finalizeAuction(context: __compactRuntime.CircuitContext<PS>,
-                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+                  auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
 }
 
 export type PureCircuits = {
@@ -62,31 +62,31 @@ export type PureCircuits = {
 export type Circuits<PS> = {
   bidderPublicKey(context: __compactRuntime.CircuitContext<PS>,
                   sk_0: Uint8Array,
-                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, Uint8Array>;
+                  auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, Uint8Array>>;
   auctioneerPublicKey(context: __compactRuntime.CircuitContext<PS>,
-                      sk_0: Uint8Array): __compactRuntime.CircuitResults<PS, Uint8Array>;
+                      sk_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, Uint8Array>>;
   computeCommitment(context: __compactRuntime.CircuitContext<PS>,
                     sk_0: Uint8Array,
                     auctionId_0: bigint,
                     amount_0: bigint,
-                    salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, Uint8Array>;
+                    salt_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, Uint8Array>>;
   createAuction(context: __compactRuntime.CircuitContext<PS>,
                 item_0: string,
                 desc_0: string,
                 startPrice_0: bigint,
                 auctionEndTime_0: bigint,
-                auctionRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, bigint>;
-  placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+                auctionRevealDeadline_0: bigint): Promise<__compactRuntime.CircuitResults<PS, bigint>>;
+  placeBid(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   closeAuction(context: __compactRuntime.CircuitContext<PS>,
                auctionId_0: bigint,
-               newRevealDeadline_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+               newRevealDeadline_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   revealBid(context: __compactRuntime.CircuitContext<PS>,
             auctionId_0: bigint,
             amount_0: bigint,
-            salt_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
-  claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+            salt_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
+  claimItem(context: __compactRuntime.CircuitContext<PS>, auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
   finalizeAuction(context: __compactRuntime.CircuitContext<PS>,
-                  auctionId_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+                  auctionId_0: bigint): Promise<__compactRuntime.CircuitResults<PS, []>>;
 }
 
 export type Ledger = {
@@ -193,18 +193,17 @@ export type Ledger = {
   };
 }
 
-export type ContractReferenceLocations = any;
-
-export declare const contractReferenceLocations : ContractReferenceLocations;
-
 export declare class Contract<PS = any, W extends Witnesses<PS> = Witnesses<PS>> {
   witnesses: W;
   circuits: Circuits<PS>;
   impureCircuits: ImpureCircuits<PS>;
   provableCircuits: ProvableCircuits<PS>;
   constructor(witnesses: W);
-  initialState(context: __compactRuntime.ConstructorContext<PS>): __compactRuntime.ConstructorResult<PS>;
+  initialState(context: __compactRuntime.ConstructorContext<PS>): Promise<__compactRuntime.ConstructorResult<PS>>;
 }
 
 export declare function ledger(state: __compactRuntime.StateValue | __compactRuntime.ChargedState): Ledger;
 export declare const pureCircuits: PureCircuits;
+export declare const expectedVk: Record<string, string>;
+export declare const circuitSignatures: __compactRuntime.CircuitSignatures;
+export declare const declaredInterfaces: __compactRuntime.DeclaredInterfaces;

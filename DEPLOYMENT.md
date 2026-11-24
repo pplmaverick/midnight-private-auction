@@ -10,16 +10,86 @@ Midnight mainnet launched in 2026. As of block **1,498,136** (~3 months post-lau
 
 | | |
 |---|---|
-| Active contract | [`5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069`](https://explorer.1am.xyz/contract/5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069) |
+| Active contract | [`118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78`](https://explorer.1am.xyz/contract/118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78) |
 | Network | Midnight Mainnet |
-| Generation | M5 |
+| Generation | M6 |
 | Status | ✅ Current |
 
 ---
 
 ## Deployment History
 
-### M5 (Current) — deployed 2026-09-14
+### M6 (Current) — ledger 9 migration, deployed at block 3,591,168
+
+> **Status: deployed.** Address, tx hash and block height below are read back from the indexer (contract action `ContractDeploy`, block 3,591,168). The step list, prerequisites and pre-flight table further down are the pre-deploy notes as written before the deployment and are kept for reference; `src/deploy-only.ts` has since been hardened (restore-only wallet, `CONFIRM_MAINNET_DEPLOY=1`, no implicit DUST registration).
+
+Recompiled, unchanged contract source for the ledger 9 network (ledger 9 went live on mainnet 2026-11-06). The M5 contract (`5de1a75b…1e4069`, ledger 8 toolchain) cannot be upgraded in place: its verifier keys differ from the ledger 9 build for all six circuits, so M6 is a fresh deployment. M5 stays on-chain as permanent public history (git tag `m5-ledger8`).
+
+| | |
+|---|---|
+| Contract Address | [`118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78`](https://explorer.1am.xyz/contract/118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78) |
+| Deploy Tx Hash | `9b1690bd528d921138862189c7a3ecf4b8e97a44899bfea04252e778b73437a1` |
+| Block Height | 3591168 |
+| Fee paid | 7316523200000001 SPECK (≈ 7.3165 DUST), per the indexer |
+| Network | Midnight Mainnet |
+| Toolchain | Compact compiler 0.36.1 / language 0.28.0 / compact-runtime 0.21.0 |
+| SDK | midnight-js 5.0.1; wallet-sdk-facade 5.0.1 (dust-wallet 5.1.0, shielded 4.0.1, unshielded 4.0.1, hd 4.0.0, address-format 4.0.1) |
+| Proof server | `midnightntwrk/proof-server:9.0.2` (see pre-flight) |
+| Supersedes | M5 `5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069` |
+| Status | ✅ Current |
+
+Verifier key fingerprints (first 16 hex chars of SHA-256 of `contract/src/managed/auction/keys/<circuit>.verifier`; compare against the keys read back from the deployed contract state after deploy):
+
+| Circuit | M6 key fingerprint | M5 key fingerprint |
+|---|---|---|
+| createAuction | `7ee0b237ecbd847d` | `6411a410b1d974c0` |
+| placeBid | `68aa16e47dabf9aa` | `a3e58f54022a2f1a` |
+| closeAuction | `2adfef4ee3745d86` | `037c5df65096d9bc` |
+| revealBid | `9a8d3bdc6e5b126d` | `e6fb3ba0749ed90a` |
+| finalizeAuction | `cbda85d2a0f35d5e` | `1449d16411c1c434` |
+| claimItem | `2957d225c4d63fad` | `c253e0f300b4dc79` |
+
+**What `npm run deploy:mainnet` (`src/deploy-only.ts`) does, in order**
+
+1. Reads `WALLET_SEED`, `MIDNIGHT_NETWORK`, optional `MIDNIGHT_DEPLOY_NODE`; mainnet endpoints (indexer HTTP/WS, node RPC) are resolved from `BLOCKFROST_PROJECT_ID` (`.env.local`).
+2. Builds the wallet (`buildWalletAndWaitForFunds`): restores `.wallet-state/v9/` checkpoints if present, otherwise a full genesis sync of the shielded, unshielded and dust wallets (10–20 min each, ~8 GB RAM, RSS watchdog at 9 GB) and then writes the v9 checkpoints.
+3. Waits until the unshielded NIGHT balance is non-zero (or DUST is already available).
+4. **Sends a transaction if DUST is not yet available:** registers the wallet's NIGHT UTXOs for DUST generation, then waits for a positive DUST balance.
+5. Generates the auctioneer's initial private state (a fresh 32-byte secret key from `node:crypto`) and builds providers (LevelDB private-state store, NodeZkConfigProvider on `contract/src/managed/auction`, HTTP proof provider, wallet/midnight providers, `config.networkId`).
+6. If `MIDNIGHT_DEPLOY_NODE` is set: restores a second short-lived wallet (requires checkpoints) against that RPC and deploys through it; otherwise deploys through the public (Blockfrost) RPC.
+7. `deployContract`: builds the deploy transaction (initial state + six verifier keys), proves the wallet's DUST spend through the proof server, balances and signs it, submits it, waits for finalization.
+8. Prints contract address, tx hash and block height; stops the wallet.
+
+**Prerequisites for a mainnet deploy**
+
+- Proof server **9.0.2** running locally (`http://127.0.0.1:6300`); verify with `curl http://127.0.0.1:6300/version` (an 8.x server produces proofs the ledger 9 network rejects as `InvalidProof`).
+- Deploy wallet funded with NIGHT and with DUST available (or enough NIGHT to register for DUST generation, which takes time).
+- v9 wallet checkpoints (or time for a genesis sync).
+- `BLOCKFROST_PROJECT_ID` for a **Mainnet** Blockfrost project (`nightmainnet…`).
+- Result of the fee estimate and of a successful dry run on Preview (see pre-flight).
+
+**Pre-flight status (as of 2026-11-24 — see the migration report for sources)**
+
+| Item | State |
+|---|---|
+| Deploy tx size | Verifier keys total ≈ 12.7 KB (M5: 12.7 KB). Protocol limits: 1 MiB per transaction; one transaction may use ≈65% of a block cost dimension (`block_usage` 1,000,000 B, `bytes_written` 50,000 B). The old M5 note about a public-RPC size rejection is **unexplained** against these numbers — unverified for Blockfrost's RPC |
+| `MIDNIGHT_DEPLOY_NODE` | Not set in the shell or `.env.local`; usefulness for M6 unknown |
+| Deploy fee | **Unknown** until measured (`wallet.estimateTransactionFee` / indexer `fees` of a Preview deploy) |
+| Test network | Preview (Midnight-hosted, no token, faucet available) — recommended first target; `PreprodConfig` in `src/config.ts` still points at retired endpoints and must be updated before any testnet deploy |
+| Browser wallets | 1AM implements `getProvingProvider`; Lace ≥ 2.4.2 reportedly does; neither verified against ledger 9 here |
+
+**Post-deploy sync (mandatory — contract address is hard-coded, not an env var)**
+
+Update the address in every one of: `frontend/src/midnight/contract.ts:27`, `src/e2e-existing.ts`, `scripts/{claim-item,close-and-reveal,close-from-pending-reveal,close-only-test,create-and-bid,create-only-test,debug-commitment}.ts`, `verification/e2e-mainnet-test.ts`, `README.md` (Current Contract line, Compact badge, stack table), this file (Active contract table, deployment history). Then:
+
+1. Authoritative source = the address printed by the deploy script / this file; consumer = `AUCTION_CONTRACT_ADDRESS` in `contract.ts`. Compare character by character.
+2. Vercel env: only `BLOCKFROST_PROJECT_ID` (Production and Preview) exists; no address variable. Re-check with `vercel env ls` and report both environments.
+3. Read the deployed state back through the indexer and compare each circuit's verifier key fingerprint with the table above.
+4. Run the full e2e (`npm run e2e:existing:mainnet`) before announcing.
+
+---
+
+### M5 (Superseded by M6) — deployed 2026-09-14, ledger 8 toolchain
 
 Two circuit-level fixes found during self-audit follow-up: (1) `revealBid` had no protection against a bidder calling it twice for the same auction — added `revealedBidders: Map<Uint<32>, Map<Bytes<32>, Boolean>>` ledger tracking, initialized empty in `createAuction`, checked and set in `revealBid` right after commitment verification and before the `highestBid` update. (2) `closeAuction` required the exact auctioneer identity with no fallback, so a bid could be permanently stuck in BIDDING phase if the auctioneer went silent — added a permissionless-close grace period: `closeAuction` now accepts either the recorded auctioneer, or anyone once `blockTimeGte(endTime + 259200)` (3 days past `endTime`). Full rationale and status: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). Reference-model unit tests covering both fixes, including a `delta=0` boundary test at the exact 3-day mark: `src/test/auction.test.ts`.
 
@@ -29,7 +99,7 @@ Two circuit-level fixes found during self-audit follow-up: (1) `revealBid` had n
 | Deploy Tx Hash | `00fe467c9facb7b97b13f7ae59defa091c6d643b00c2cc0df54d6a2c3d72825c49` |
 | Block Height | 2,578,777 |
 | Network | Midnight Mainnet |
-| Status | ✅ Current |
+| Status | Superseded (by M6; still on-chain as public history, git tag `m5-ledger8`) |
 
 ---
 

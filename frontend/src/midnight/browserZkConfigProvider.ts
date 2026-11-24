@@ -30,6 +30,24 @@ export class BrowserZkConfigProvider<K extends string> extends ZKConfigProvider<
     return new Uint8Array(buffer)
   }
 
+  // midnight-js 5.x places every contract on a ledger era by the `runtime-version` the compiler
+  // recorded in compiler/contract-info.json (never inferred from the generated code), and every
+  // contract operation asks the ZK config provider for it. The prebuild script publishes the
+  // file at {baseUrl}/compiler/contract-info.json beside keys/ and zkir/.
+  async getArtifactRuntimeVersion(): Promise<string> {
+    const url = `${this.baseUrl}/compiler/contract-info.json`
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`)
+    }
+    const info = (await response.json()) as { 'runtime-version'?: unknown }
+    const version = info['runtime-version']
+    if (typeof version !== 'string') {
+      throw new Error(`${url} has no string "runtime-version" field`)
+    }
+    return version
+  }
+
   async getZKIR(circuitId: K) {
     const bytes = await this.fetchBytes(ZKIR_DIR, circuitId, ZKIR_EXT)
     return createZKIR(bytes)

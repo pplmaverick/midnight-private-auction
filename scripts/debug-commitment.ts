@@ -50,11 +50,11 @@
 import { Buffer } from 'node:buffer';
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { assertIsContractAddress } from '@midnight-ntwrk/midnight-js/utils';
-import { setNetworkId } from '@midnight-ntwrk/midnight-js/network-id';
+import { ledgerFromRead } from '../src/ledger-state.js';
 import { PreprodConfig, resolveMainnetEndpoints } from '../src/config.js';
 import { Auction } from '../contract/src/index.js';
 
-const CONTRACT_ADDRESS = '5de1a75b560c1fad56bd4b41eece7ec15f16e8e0734617b46afd0a664a1e4069';
+const CONTRACT_ADDRESS = '118dc9f773df2137a1e0cfb0e9e0243dbf1c64e6a908c84442ca8bb272347e78';
 const DIVIDER = '══════════════════════════════════════════════════════════════';
 
 // This script only ever calls indexerPublicDataProvider(indexer, indexerWS) — use just
@@ -62,11 +62,10 @@ const DIVIDER = '═════════════════════
 // carry the Blockfrost project_id.
 function resolveIndexerEndpoints(network: string): { indexer: string; indexerWS: string } {
   if (network === 'mainnet') {
-    setNetworkId('mainnet');
     const { indexer, indexerWS } = resolveMainnetEndpoints();
     return { indexer, indexerWS };
   }
-  const preprod = new PreprodConfig(); // hardcoded values, no required env vars, sets networkId
+  const preprod = new PreprodConfig(); // hardcoded values, no required env vars
   return { indexer: preprod.indexer, indexerWS: preprod.indexerWS };
 }
 
@@ -185,7 +184,7 @@ async function main() {
     console.error(`Error: contract ${CONTRACT_ADDRESS} not found on ${network}.`);
     process.exit(1);
   }
-  const ledgerState = Auction.ledger(state.data);
+  const ledgerState = ledgerFromRead(state);
 
   if (!ledgerState.phase.member(auctionId)) {
     console.error(`Error: auction #${auctionId} does not exist on-chain.`);
