@@ -5,7 +5,7 @@
  * `project_id=…`; Blockfrost-shaped tokens (`night<network>…`); and ANY bare 64-hex string
  * (seeds / keys). Because a contract address and a tx hash are ALSO 64 hex characters, results that
  * must stay readable are printed with printResult(), which bypasses the 64-hex mask but only accepts
- * a strictly whitelisted shape (64 hex, or a plain non-negative integer) and refuses anything equal
+ * a strictly whitelisted shape (64–66 hex, or a plain non-negative integer) and refuses anything equal
  * to the seed. Everything else — including SDK console output — goes through redact().
  */
 import { inspect } from 'node:util';
@@ -36,7 +36,7 @@ export const redact = (text: string): string => {
   out = out.replace(/\b(https?|wss?):\/\/[^\s"'<>)]*/gi, (url) => url.split('?')[0] + (url.includes('?') ? '?***' : ''));
   out = out.replace(/project_id=[^&\s"')]+/gi, 'project_id=***');
   out = out.replace(/\bnight(mainnet|preprod|preview)[A-Za-z0-9]+/g, 'night$1***');
-  out = out.replace(/\b[0-9a-fA-F]{64}\b/g, '<64hex>');
+  out = out.replace(/\b[0-9a-fA-F]{64,}\b/g, '<64hex>'); // 64+ : \b{64} alone would skip a 66-hex id entirely
   return out;
 };
 
@@ -60,7 +60,7 @@ export type ResultKind = 'hex64' | 'int';
 /** Whitelisted, unmasked result line: `label: value`. Refuses any value that is not the expected shape or equals the seed. */
 export const printResult = (label: string, value: unknown, kind: ResultKind, prefix = ''): void => {
   const text = typeof value === 'bigint' || typeof value === 'number' ? String(value) : String(value ?? '');
-  const shapeOk = kind === 'hex64' ? /^[0-9a-fA-F]{64}$/.test(text) : /^[0-9]{1,15}$/.test(text);
+  const shapeOk = kind === 'hex64' ? /^[0-9a-fA-F]{64,66}$/.test(text) : /^[0-9]{1,15}$/.test(text);
   const seed = process.env.WALLET_SEED?.toLowerCase();
   if (!shapeOk || (seed && text.toLowerCase() === seed)) {
     rawLog(`${prefix}${label}: <withheld: unexpected shape>`);

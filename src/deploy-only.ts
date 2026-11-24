@@ -7,7 +7,7 @@
  *     genesis sync. Run `npm run check-wallet:mainnet` first to create the checkpoints.
  *   - Never sends a DUST-registration transaction implicitly: no DUST => exit with instructions.
  *   - All console output (incl. SDK logging) is redacted; the final result lines are printed through a
- *     strict whitelist (64-hex address / tx hash, integer block height) so they stay readable.
+ *     strict whitelist (64-hex address / 64–66-hex tx identifier, integer block height) so they stay readable.
  *
  * Env vars:
  *   WALLET_SEED or WALLET_SEED_FILE — 64-hex seed
@@ -139,7 +139,7 @@ async function main() {
   console.log('  Deploy Complete');
   console.log(DIVIDER);
   printResult('Contract Address', contractAddress, 'hex64', '  ');
-  printResult('Deploy Tx Hash  ', txId, 'hex64', '  ');
+  printResult('Deploy Tx Id    ', txId, 'hex64', '  ');
   printResult('Block Height    ', blockHeight, 'int', '  ');
   console.log(`  Network          : ${network}`);
   console.log(`${DIVIDER}\n`);
