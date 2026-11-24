@@ -1,4 +1,5 @@
 import { createLedger9ProofProvider } from '@midnight-ntwrk/midnight-js-types'
+import { resolveLookupKey } from './zkKeyLocation'
 import type { ConnectedAPI, KeyMaterialProvider } from '@midnight-ntwrk/dapp-connector-api'
 
 // Thrown when the connected wallet does not actually support proof generation.
@@ -40,6 +41,16 @@ export const buildProofProvider = async (
     check: provingProvider.check.bind(provingProvider),
     prove: provingProvider.prove.bind(provingProvider),
     async lookupKey(keyLocation: string) {
+      // keyLocation is `contract:<address>/<circuit>?vk=<sha256>` — KeyMaterialProvider (our
+      // BrowserZkConfigProvider) resolves it to a circuit id and checks the vk. Protocol builtins
+      // (`midnight/...`) are not ours: like midnight-js's own resolver, answer "no key material".
+      if (!keyLocation.startsWith('contract:')) {
+        try {
+          resolveLookupKey(keyLocation)
+        } catch {
+          return undefined
+        }
+      }
       const [proverKey, verifierKey, ir] = await Promise.all([
         keyMaterialProvider.getProverKey(keyLocation),
         keyMaterialProvider.getVerifierKey(keyLocation),
