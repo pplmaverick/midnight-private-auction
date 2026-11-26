@@ -105,3 +105,25 @@ before the `highestBid` comparison/update — so a second `revealBid` call from 
 the same auction is rejected with `"Already revealed your bid"`. Verified via unit tests: a second
 reveal from the same bidder is rejected, and two different bidders can each reveal once in the same
 auction without interference (`src/test/auction.test.ts`).
+
+## 6. Private state is bound to origin and wallet address
+
+**Status:** Open (by design of the browser architecture)
+
+A bidder's private state (bid amount and salt) is stored by the Midnight private-state provider in the browser's IndexedDB. It is keyed to the site origin and the wallet address that placed the bid. Consequences:
+
+- Clearing site data, or opening the app in another browser or device, loses the bid's amount and salt. The on-chain commitment then cannot be reproduced and the bid **cannot be revealed**.
+- A different origin (for example a Vercel Preview URL versus production) has its own, empty IndexedDB, so a bid placed on one origin cannot be revealed from the other.
+- A different wallet address does not see the private state of another one.
+
+The storage key is composed of the wallet address hash + the contract address + the `privateStateId` (`frontend/src/midnight/browserPrivateStateProvider.ts`), so after a contract redeployment (for example M5 → M6) the private state stored under the old contract is not read by the new contract.
+
+There is no on-chain or server-side recovery path. Mitigation is operational: use one browser profile and one origin per auction, and do not clear site data until the auction is finalized.
+
+## 7. Unexplained Reveal commitment mismatch
+
+**Status:** Open — root cause **not established**
+
+`revealBid` has failed with a commitment mismatch in two observed cases: auction 10, and once with wallet A on 2026-11-24. In neither case has the cause been identified. No hypothesis has been verified, and no fix is claimed.
+
+Recommended practice until explained: press place-bid only once and wait for wallet signing to finish; do not retry while a signature request is pending.

@@ -26,6 +26,21 @@ The previous production contract (M5, superseded by M6) was deployed with the **
 
 The legacy contract is permanent, public chain history and remains readable through the indexer; its auctions are not carried over to the new contract (bids are bound to bidders' private keys and cannot be re-created).
 
+## Verified on mainnet
+
+All six circuits — `createAuction`, `placeBid`, `closeAuction`, `revealBid`, `finalizeAuction`, `claimItem` — were exercised end to end on **2026-11-25** against the current M6 contract (`118dc9f7…7e78`, block 3,591,168) through the production frontend (https://midnight-private-auction.vercel.app), using two 1AM wallets. This was a manual test performed by the maintainer in production; this README does not list transaction hashes or block heights for it.
+
+`createAuction` verifier key fingerprint (SHA-256 of `contract/src/managed/auction/keys/createAuction.verifier`): `7ee0b237ecbd847df6d223b23e382432cba4034e02bf1a5e92238cd8b29d7866` (value supplied by the maintainer; the full digest was recomputed from the committed verifier file and matches). Fingerprints for all six circuits are in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+1AM registry listing: TODO — add the PR link once it exists.
+
+## Known limitations
+
+See [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md) for the full list. The ones that affect users directly:
+
+- **Private state lives only in the browser.** A bid's amount and random salt are kept in the browser's IndexedDB, bound to the site origin and the wallet address. Clearing site data or switching browser/device means a bid already placed can no longer be revealed, because the commitment cannot be reproduced.
+- **Occasional unexplained Reveal commitment mismatch.** `revealBid` has failed with a commitment mismatch in a small number of cases. The root cause has **not** been established. Until it is, place a bid only once and wait for the wallet signing to finish before doing anything else.
+
 ## Overview
 
 Sealed-bid auction on Midnight Network. During the bidding phase, bid amounts and bidder identities are hidden by ZK proofs — chain observers can see that a `placeBid()` call occurred, but not who made it or how much they bid. The amount only appears on-chain when the bidder voluntarily calls `revealBid()`. This is a commit-reveal auction implemented as a **Compact smart contract**, purpose-built for Midnight's ZK circuit model — not a port from an EVM contract.

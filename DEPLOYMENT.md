@@ -89,6 +89,24 @@ Update the address in every one of: `frontend/src/midnight/contract.ts:27`, `src
 
 ---
 
+### M6 post-deployment fixes
+
+These changes were made after the M6 deploy. The contract itself is unchanged (same address, same verifier keys); only the frontend was fixed.
+
+**ZK `lookupKey` fix (commit `28047af`)**
+
+`fix(frontend): resolve ZK lookupKey to circuit id before fetching key material`. The browser ZK config provider now resolves the SDK's `lookupKey` to the circuit id before fetching the prover/verifier key and ZKIR files (`frontend/src/midnight/zkKeyLocation.ts`, `browserZkConfigProvider.ts`, `proofProvider.ts`; unit test `src/test/zk-lookup-key.test.ts`).
+
+**Production verification**
+
+On 2026-11-25 the maintainer ran all six circuits (`createAuction`, `placeBid`, `closeAuction`, `revealBid`, `finalizeAuction`, `claimItem`) on https://midnight-private-auction.vercel.app with two 1AM wallets, against contract `118dc9f7…7e78`. This was a manual production test; no transaction hashes or block heights are recorded here.
+
+**Preview vs. production private state**
+
+Bid private state (amount and salt) is stored in browser IndexedDB, which is scoped per origin. A Vercel Preview deployment and production have different origins, so they do not share it: a bid placed on a Preview URL cannot be revealed from production, and vice versa. Place and reveal a bid on the same origin with the same wallet.
+
+---
+
 ### M5 (Superseded by M6) — deployed 2026-09-14, ledger 8 toolchain
 
 Two circuit-level fixes found during self-audit follow-up: (1) `revealBid` had no protection against a bidder calling it twice for the same auction — added `revealedBidders: Map<Uint<32>, Map<Bytes<32>, Boolean>>` ledger tracking, initialized empty in `createAuction`, checked and set in `revealBid` right after commitment verification and before the `highestBid` update. (2) `closeAuction` required the exact auctioneer identity with no fallback, so a bid could be permanently stuck in BIDDING phase if the auctioneer went silent — added a permissionless-close grace period: `closeAuction` now accepts either the recorded auctioneer, or anyone once `blockTimeGte(endTime + 259200)` (3 days past `endTime`). Full rationale and status: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). Reference-model unit tests covering both fixes, including a `delta=0` boundary test at the exact 3-day mark: `src/test/auction.test.ts`.
