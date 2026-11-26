@@ -32,7 +32,7 @@ All six circuits — `createAuction`, `placeBid`, `closeAuction`, `revealBid`, `
 
 `createAuction` verifier key fingerprint (SHA-256 of `contract/src/managed/auction/keys/createAuction.verifier`): `7ee0b237ecbd847df6d223b23e382432cba4034e02bf1a5e92238cd8b29d7866` (value supplied by the maintainer; the full digest was recomputed from the committed verifier file and matches). Fingerprints for all six circuits are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
-1AM registry listing: TODO — add the PR link once it exists.
+1AM registry listing: [registry update to the M6 contract (PR #39)](https://github.com/webisoftSoftware/1AM-app-registery/pull/39) — open, awaiting maintainer merge.
 
 ## Known limitations
 
